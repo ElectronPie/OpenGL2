@@ -64,7 +64,7 @@ int main(int argc, char** argv)
     // Set key callback
     glfwSetKeyCallback(window, KeyCallback);
 
-    // Create a vertex array object on the GPU to store used vertex attributes
+    // Create a vertex array object on the GPU to store used vertex attributes, VBOs and EBOs
     GLuint VAO;
     glGenVertexArrays(1, &VAO);
 
@@ -73,12 +73,38 @@ int main(int argc, char** argv)
 
     // clang-format off
 
-    // Vertices of a triangle
+    // Instead of doing something like
+    /*
+    // Vertices of two triangles
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f,
+        // First triangle
+         0.5f,  0.5f, 0.0f, // top right
+         0.5f, -0.5f, 0.0f, // bottom right
+        -0.5f,  0.5f, 0.0f, // top left
+        // Second triangle
+         0.5f, -0.5f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f, // bottom left
+        -0.5f,  0.5f, 0.0f, // top left
     };
+    // clang-format on
+    */
+
+    // clang-format off
+
+    // We can
+    float vertices[] = {
+         0.5f,  0.5f, 0.0f, // top right
+         0.5f, -0.5f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f, // bottom left
+        -0.5f,  0.5f, 0.0f, // top left
+    };
+    unsigned int indices[] = {
+        0, 1, 3,    // first triangle
+        1, 2, 3,    // second triangle
+    };
+    // So that we only use 4 vertices instead of 6
+    // The difference is much more apparent with bigger models
+
     // clang-format on
 
     // Create a vertex buffer object on the GPU to store the vertices data
@@ -98,6 +124,14 @@ int main(int argc, char** argv)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void*)0);
     // Enable that vertex attribute specifying that it's allowed to use
     glEnableVertexAttribArray(0);
+
+    // Create an element buffer object on the GPU to store the vertex indices
+    GLuint EBO;
+    glGenBuffers(1, &EBO);
+
+    // Bind the EBO and load the elements (vertex indices) data
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
 
     const char* vertexShaderSource =
         "#version 430 core\n"
@@ -211,7 +245,7 @@ int main(int argc, char** argv)
         glBindVertexArray(VAO);
 
         // The render call itself
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // Swap front and back buffers
         glfwSwapBuffers(window);
