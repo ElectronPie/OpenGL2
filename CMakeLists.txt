@@ -5,6 +5,10 @@ project(OpenGL2
     LANGUAGES CXX
 )
 
+# Let's support IDEs nicely
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
 # GLAD
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad")
 list(APPEND OpenGL2_LIBRARIES glad)
@@ -19,6 +23,28 @@ list(APPEND OpenGL2_LIBRARIES glfw)
 
 set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Application.cpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/GLFWRAII.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/GLFWRAII.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Renderer.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Renderer.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/VAO.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/VAO.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/VBO.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/VBO.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/VBLayout.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/VBLayout.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/EBO.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/EBO.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/EBO.inl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ShaderProgram.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ShaderProgram.hpp"
 )
 
 add_executable(OpenGL2
@@ -27,6 +53,15 @@ add_executable(OpenGL2
 
 list(REMOVE_DUPLICATES OpenGL2_LIBRARIES)
 target_link_libraries(OpenGL2 PUBLIC ${OpenGL2_LIBRARIES})
+
+target_compile_features(OpenGL2 PUBLIC cxx_std_20)
+
+add_custom_command(TARGET OpenGL2 POST_BUILD
+    COMMAND
+        ${CMAKE_COMMAND} -E copy_directory_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets"
+        "${CMAKE_BINARY_DIR}/assets"
+)
 
 # Additional target to perform clang-format run, requires clang-format
 find_program(CLANG_FORMAT_EXE clang-format)
