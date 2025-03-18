@@ -4,22 +4,22 @@
 
 VAO::VAO()
 {
-    glGenVertexArrays(1, &m_rendererID);
+    GLCall(glGenVertexArrays(1, &m_rendererID));
 }
 
 VAO::~VAO()
 {
-    glDeleteVertexArrays(1, &m_rendererID);
+    GLCall(glDeleteVertexArrays(1, &m_rendererID));
 }
 
 void VAO::Bind() const noexcept
 {
-    glBindVertexArray(m_rendererID);
+    GLCall(glBindVertexArray(m_rendererID));
 }
 
 void VAO::Unbind() const noexcept
 {
-    glBindVertexArray(0);
+    GLCall(glBindVertexArray(0));
 }
 
 void VAO::AttachVBO(const VBO& vbo, const VBLayout& layout) noexcept
@@ -31,10 +31,10 @@ void VAO::AttachVBO(const VBO& vbo, const VBLayout& layout) noexcept
     for(unsigned int i = 0; i < elements.size(); ++i)
     {
         const auto& element = elements[i];
-        glVertexAttribPointer(
+        GLCall(glVertexAttribPointer(
             i, element.count, element.type, element.normalized, layout.GetStride(), (const void*)(uintptr_t)offset
-        );
-        glEnableVertexAttribArray(i);
+        ));
+        GLCall(glEnableVertexAttribArray(i));
         offset += element.count * VBElement::GetTypeSize(element.type);
     }
 }

@@ -22,7 +22,7 @@ EBO::EBO(const T* data, unsigned int count)
         static_assert(false);
     }
     m_count = count;
-    glGenBuffers(1, &m_rendererID);
+    GLCall(glGenBuffers(1, &m_rendererID));
     Bind();
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(T), data, GL_STATIC_DRAW);
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(T), data, GL_STATIC_DRAW));
 }

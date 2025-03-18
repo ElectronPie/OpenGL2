@@ -21,6 +21,10 @@ set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw)
 list(APPEND OpenGL2_LIBRARIES glfw)
 
+#debugbreak
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/debugbreak")
+list(APPEND OpenGL2_LIBRARIES debugbreak)
+
 set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Application.cpp"
 
@@ -56,11 +60,15 @@ target_link_libraries(OpenGL2 PUBLIC ${OpenGL2_LIBRARIES})
 
 target_compile_features(OpenGL2 PUBLIC cxx_std_20)
 
+set(ENABLE_FANCY_DEBUG_OUTPUT YES CACHE BOOL "")
+target_compile_definitions(OpenGL2 PRIVATE $<$<BOOL:${ENABLE_FANCY_DEBUG_OUTPUT}>:ENABLE_FANCY_DEBUG_OUTPUT>)
+target_compile_definitions(OpenGL2 PRIVATE $<$<CONFIG:Debug>:DEBUG>)
+
 add_custom_command(TARGET OpenGL2 POST_BUILD
     COMMAND
         ${CMAKE_COMMAND} -E copy_directory_if_different
         "${CMAKE_CURRENT_SOURCE_DIR}/assets"
-        "${CMAKE_BINARY_DIR}/assets"
+        "$<TARGET_FILE_DIR:OpenGL2>/assets"
 )
 
 # Additional target to perform clang-format run, requires clang-format

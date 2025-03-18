@@ -1,7 +1,9 @@
 #pragma once
 
+#include <debugbreak.h>
 #include <glad/glad.h>
 
+// Forward declarations
 namespace std
 {
     template<typename T>
@@ -10,8 +12,32 @@ namespace std
 class GLFWRAII;
 class VAO;
 class ShaderProgram;
-
 struct GLFWwindow;
+
+#ifdef DEBUG
+    #define ASSERT(x)      \
+        if(!(x))           \
+        {                  \
+            debug_break(); \
+        }
+#else
+    #define ASSERT(x)
+#endif
+
+#if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
+    #define GLCall(x)    \
+        GLClearErrors(); \
+        x;               \
+        ASSERT(GLCheckError(#x, __FILE__, __LINE__))
+#else
+    #define GLCall(x) x
+#endif
+
+#if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
+void GLClearErrors();
+
+bool GLCheckError(const char* function, const char* file, int line);
+#endif
 
 /**
  * @brief Represents the OpenGL renderer along with a GLFW window it renders to
