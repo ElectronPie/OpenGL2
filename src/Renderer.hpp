@@ -4,39 +4,47 @@
 #include <glad/glad.h>
 
 // Forward declarations
-namespace std
-{
-    template<typename T>
-    class shared_ptr;
-}
-class GLFWRAII;
 class VAO;
 class ShaderProgram;
 struct GLFWwindow;
 
 #ifdef DEBUG
+    /**
+     * @brief if \a x doesn't evaluate to true breaks at the execution point
+     *
+     * @param x Statement to be asserted
+     */
     #define ASSERT(x)      \
         if(!(x))           \
         {                  \
             debug_break(); \
         }
 #else
+    /**
+     * @brief if \a x doesn't evaluate to true breaks at the execution point
+     *
+     * @param x Statement to be asserted
+     */
     #define ASSERT(x)
 #endif
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
-    #define GLCall(x)    \
-        GLClearErrors(); \
-        x;               \
-        ASSERT(GLCheckError(#x, __FILE__, __LINE__))
+    /**
+     * @brief evaluates \a x and reports GL errors produced if any
+     *
+     * @param x Statement cantaining a GL call
+     */
+    #define GLCall(x)              \
+        Renderer::ClearGLErrors(); \
+        x;                         \
+        ASSERT(Renderer::CheckGLError(#x, __FILE__, __LINE__))
 #else
+    /**
+     * @brief evaluates \a x and reports GL errors produced if any
+     *
+     * @param x Statement cantaining a GL call
+     */
     #define GLCall(x) x
-#endif
-
-#if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
-void GLClearErrors();
-
-bool GLCheckError(const char* function, const char* file, int line);
 #endif
 
 /**
@@ -102,9 +110,28 @@ public:
      */
     void FinishFrame() noexcept;
 
+#if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
+    /**
+     * @brief Clears all OpenGL errors accumulated
+     *
+     */
+    static void ClearGLErrors() noexcept;
+
+    /**
+     * @brief For each OpenGL error currently accumulated in the stack reports it
+     *
+     * @note Gets called automatically by GLCall if ENABLE_FANCY_DEBUG_OUTPUT is defined
+     *
+     * @param function Stringified statement containing a GL call that was executed prior to calling this function
+     * @param file File in which the statement is situated
+     * @param line Line in file on which the statement is situated
+     * @return true If no errors were accumulated
+     * @return false If any error was accumulated and processed
+     */
+    static bool CheckGLError(const char* function, const char* file, int line);
+#endif
+
 private:
     GLFWwindow* m_window;
     bool m_initialized = false;
-
-    static std::shared_ptr<GLFWRAII> s_g;
 };

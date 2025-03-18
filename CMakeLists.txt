@@ -28,9 +28,6 @@ list(APPEND OpenGL2_LIBRARIES debugbreak)
 set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Application.cpp"
 
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/GLFWRAII.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/GLFWRAII.hpp"
-
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Renderer.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Renderer.hpp"
 

@@ -2,34 +2,11 @@
 
 #include <GLFW/glfw3.h>
 
-#include "GLFWRAII.hpp"
 #include "VAO.hpp"
 #include "ShaderProgram.hpp"
 
 #include <iostream>
 #include <iomanip>
-#include <memory>
-
-#if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
-void GLClearErrors()
-{
-    while(glGetError() != GL_NO_ERROR);
-}
-
-bool GLCheckError(const char* function, const char* file, int line)
-{
-    while(GLenum error = glGetError())
-    {
-        std::cout << "[OpenGL Error] (" << std::showbase << std::hex << error
-                  << std::resetiosflags(std::ios_base::showbase | std::ios_base::hex) << "): " << function << " "
-                  << file << ":" << line << std::endl;
-        return false;
-    }
-    return true;
-}
-#endif
-
-std::shared_ptr<GLFWRAII> Renderer::s_g;
 
 static void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
@@ -146,9 +123,11 @@ static void APIENTRY GLDebugOutput(
 
 Renderer::Renderer()
 {
-    if(s_g.get() == nullptr)
+    // Initialize GLFW
+    if(!glfwInit())
     {
-        s_g = std::make_shared<GLFWRAII>();
+        std::cout << "Couldn't initialize GLFW library!" << std::endl;
+        return;
     }
 
     // OpenGL version 4.3, no legacy functions support
@@ -209,7 +188,7 @@ Renderer::Renderer()
 
 Renderer::~Renderer()
 {
-    glfwDestroyWindow(m_window);
+    glfwTerminate();
 }
 
 void Renderer::Draw(const VAO& vao, const ShaderProgram& shaderProgram) noexcept
@@ -242,3 +221,23 @@ void Renderer::FinishFrame() noexcept
     // Poll and process events
     glfwPollEvents();
 }
+
+#if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
+static void Renderer::ClearGLErrors() noexcept
+{
+    while(glGetError() != GL_NO_ERROR);
+}
+
+static bool Renderer::CheckGLError(const char* function, const char* file, int line)
+{
+    bool result = true;
+    while(GLenum error = glGetError())
+    {
+        std::cout << "[OpenGL Error] (" << std::showbase << std::hex << error
+                  << std::resetiosflags(std::ios_base::showbase | std::ios_base::hex) << "): " << function << " "
+                  << file << ":" << line << std::endl;
+        result = false;
+    }
+    return result;
+}
+#endif
