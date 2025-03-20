@@ -101,3 +101,67 @@ void ShaderProgram::Unbind() const noexcept
 {
     GLCall(glUseProgram(0));
 }
+
+#define UNIFORM_FUNC_VECTOR_1(PREFIX, TYPE)                              \
+    void ShaderProgram::SetUniform1(const std::string& name, TYPE value) \
+    {                                                                    \
+        GLCall(glUniform1##PREFIX(GetUniformLocation(name), value));     \
+    }
+
+#define UNIFORM_FUNC_VECTOR_2(PREFIX, TYPE)                                           \
+    void ShaderProgram::SetUniform2(const std::string& name, glm::vec<2, TYPE> value) \
+    {                                                                                 \
+        GLCall(glUniform2##PREFIX(GetUniformLocation(name), value[0], value[1]));     \
+    }
+
+#define UNIFORM_FUNC_VECTOR_3(PREFIX, TYPE)                                                 \
+    void ShaderProgram::SetUniform3(const std::string& name, glm::vec<3, TYPE> value)       \
+    {                                                                                       \
+        GLCall(glUniform3##PREFIX(GetUniformLocation(name), value[0], value[1], value[2])); \
+    }
+
+#define UNIFORM_FUNC_VECTOR_4(PREFIX, TYPE)                                                           \
+    void ShaderProgram::SetUniform4(const std::string& name, glm::vec<4, TYPE> value)                 \
+    {                                                                                                 \
+        GLCall(glUniform4##PREFIX(GetUniformLocation(name), value[0], value[1], value[2], value[3])); \
+    }
+
+#define UNIFORM_FUNC_MATRIX_M_X_M(M)                                                         \
+    void ShaderProgram::SetUniformMat##M(const std::string& name, const glm::mat##M& value)  \
+    {                                                                                        \
+        GLCall(glUniformMatrix##M##fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0])); \
+    }
+
+#define UNIFORM_FUNC_MATRIX_M_X_N(M, N)                                                                 \
+    void ShaderProgram::SetUniformMat##M##x##N(const std::string& name, const glm::mat##M##x##N& value) \
+    {                                                                                                   \
+        GLCall(glUniformMatrix##M##x##N##fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]));      \
+    }
+
+UNIFORM_FUNCS
+
+#undef UNIFORM_FUNC_VECTOR_1
+#undef UNIFORM_FUNC_VECTOR_2
+#undef UNIFORM_FUNC_VECTOR_3
+#undef UNIFORM_FUNC_VECTOR_4
+#undef UNIFORM_FUNC_MATRIX_M_X_M
+#undef UNIFORM_FUNC_MATRIX_M_X_N
+
+unsigned int ShaderProgram::GetUniformLocation(const std::string& name) const
+{
+    int location;
+    try
+    {
+        location = m_uniformLocationCache.at(name);
+    }
+    catch(const std::out_of_range& e)
+    {
+        GLCall(location = glGetUniformLocation(m_rendererID, name.c_str()));
+        m_uniformLocationCache[name] = location;
+    }
+    if(location == -1)
+    {
+        std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
+    }
+    return location;
+}

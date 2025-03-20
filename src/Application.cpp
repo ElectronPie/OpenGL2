@@ -2,6 +2,7 @@
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include "Renderer.hpp"
 #include "VAO.hpp"
@@ -17,6 +18,10 @@ int main(int argc, char** argv)
     {
         return 1;
     }
+
+    int numAttribs;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &numAttribs);
+    std::cout << "Max number of vertex attributes is " << numAttribs << std::endl;
 
     // Create the VAO
     VAO vao;
@@ -83,6 +88,12 @@ int main(int argc, char** argv)
         // Clear color
         r.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         r.Clear();
+
+        // Calculate uniform color
+        float timeValue  = glfwGetTime();
+        float greenValue = glm::sin(timeValue * 2 * M_PI) / 2.0f + 0.5f;
+        // Set shader uniform color to green
+        shaderProgram.SetUniform4("u_ourColor", glm::vec4{1.0f, greenValue, 0.5f, 1.0f});
 
         // Draw the VAO using our shader program
         r.Draw(vao, shaderProgram);

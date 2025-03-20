@@ -118,6 +118,8 @@ static void APIENTRY GLDebugOutput(
     std::cout << std::endl;
 
     std::cout << std::endl;
+
+    debug_break();
 }
 #endif
 

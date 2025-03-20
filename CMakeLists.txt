@@ -5,6 +5,8 @@ project(OpenGL2
     LANGUAGES CXX
 )
 
+include(FetchContent)
+
 # Let's support IDEs nicely
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
@@ -20,6 +22,15 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw)
 list(APPEND OpenGL2_LIBRARIES glfw)
+
+# glm
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY  https://github.com/g-truc/glm.git
+    GIT_TAG         1.0.1
+)
+FetchContent_MakeAvailable(glm)
+list(APPEND OpenGL2_LIBRARIES glm::glm)
 
 #debugbreak
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/debugbreak")
