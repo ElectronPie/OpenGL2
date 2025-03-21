@@ -41,6 +41,8 @@ void VBLayout::Push(unsigned int count)
 template<>
 void VBLayout::Push<float>(unsigned int count)
 {
+    ASSERT(count > 0);
+    ASSERT(count <= 4);
     m_elements.push_back({GL_FLOAT, count, GL_FALSE});
     m_stride += count * VBElement::GetTypeSize(GL_FLOAT);
 }
@@ -48,6 +50,8 @@ void VBLayout::Push<float>(unsigned int count)
 template<>
 void VBLayout::Push<double>(unsigned int count)
 {
+    ASSERT(count > 0);
+    ASSERT(count <= 4);
     m_elements.push_back({GL_FLOAT, count, GL_FALSE});
     m_stride += count * VBElement::GetTypeSize(GL_FLOAT);
 }
@@ -55,6 +59,8 @@ void VBLayout::Push<double>(unsigned int count)
 template<>
 void VBLayout::Push<unsigned int>(unsigned int count)
 {
+    ASSERT(count > 0);
+    ASSERT(count <= 4);
     m_elements.push_back({GL_UNSIGNED_INT, count, GL_FALSE});
     m_stride += count * VBElement::GetTypeSize(GL_UNSIGNED_INT);
 }
@@ -62,6 +68,8 @@ void VBLayout::Push<unsigned int>(unsigned int count)
 template<>
 void VBLayout::Push<int>(unsigned int count)
 {
+    ASSERT(count > 0);
+    ASSERT(count <= 4);
     m_elements.push_back({GL_INT, count, GL_FALSE});
     m_stride += count * VBElement::GetTypeSize(GL_INT);
 }
@@ -69,6 +77,8 @@ void VBLayout::Push<int>(unsigned int count)
 template<>
 void VBLayout::Push<unsigned short>(unsigned int count)
 {
+    ASSERT(count > 0);
+    ASSERT(count <= 4);
     m_elements.push_back({GL_UNSIGNED_SHORT, count, GL_FALSE});
     m_stride += count * VBElement::GetTypeSize(GL_UNSIGNED_SHORT);
 }
@@ -76,6 +86,8 @@ void VBLayout::Push<unsigned short>(unsigned int count)
 template<>
 void VBLayout::Push<short>(unsigned int count)
 {
+    ASSERT(count > 0);
+    ASSERT(count <= 4);
     m_elements.push_back({GL_SHORT, count, GL_FALSE});
     m_stride += count * VBElement::GetTypeSize(GL_SHORT);
 }
@@ -83,6 +95,8 @@ void VBLayout::Push<short>(unsigned int count)
 template<>
 void VBLayout::Push<unsigned char>(unsigned int count)
 {
+    ASSERT(count > 0);
+    ASSERT(count <= 4);
     m_elements.push_back({GL_UNSIGNED_BYTE, count, GL_FALSE});
     m_stride += count * VBElement::GetTypeSize(GL_UNSIGNED_BYTE);
 }
@@ -90,6 +104,8 @@ void VBLayout::Push<unsigned char>(unsigned int count)
 template<>
 void VBLayout::Push<char>(unsigned int count)
 {
+    ASSERT(count > 0);
+    ASSERT(count <= 4);
     m_elements.push_back({GL_BYTE, count, GL_FALSE});
     m_stride += count * VBElement::GetTypeSize(GL_BYTE);
 }

@@ -31,10 +31,10 @@ int main(int argc, char** argv)
 
     // Vertex data
     float vertices[] = {
-        0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,// top right
-        0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,// bottom right
-        -0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,     1.0f, 1.0f, 1.0f,// top left
+        0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   // top right
+        0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,     1.0f, 1.0f, 1.0f,   // top left
     };
     // Element data
     unsigned int indices[] = {
