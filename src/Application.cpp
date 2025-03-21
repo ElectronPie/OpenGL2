@@ -29,37 +29,18 @@ int main(int argc, char** argv)
 
     // clang-format off
 
-    // Instead of doing something like
-    /*
-    // Vertices of two triangles
+    // Vertex data
     float vertices[] = {
-        // First triangle
-        0.5f,  0.5f, 0.0f, // top right
-        0.5f, -0.5f, 0.0f, // bottom right
-        -0.5f,  0.5f, 0.0f, // top left
-        // Second triangle
-        0.5f, -0.5f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f, // top left
+        0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,// top right
+        0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,// bottom right
+        -0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f, // bottom left
+        -0.5f,  0.5f, 0.0f,     1.0f, 1.0f, 1.0f,// top left
     };
-    // clang-format on
-    */
-
-    // clang-format off
-
-    // We can
-    float vertices[] = {
-        0.5f,  0.5f, 0.0f, // top right
-        0.5f, -0.5f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f, // top left
-    };
+    // Element data
     unsigned int indices[] = {
         0, 1, 3,    // first triangle
         1, 2, 3,    // second triangle
     };
-    // So that we only use 4 vertices instead of 6
-    // The difference is much more apparent with bigger models
 
     // clang-format on
 
@@ -69,6 +50,7 @@ int main(int argc, char** argv)
 
     // Create the layout for the VBO
     VBLayout layout;
+    layout.Push<float>(3);
     layout.Push<float>(3);
 
     // Attach the VBO to the VAO
@@ -88,12 +70,6 @@ int main(int argc, char** argv)
         // Clear color
         r.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         r.Clear();
-
-        // Calculate uniform color
-        float timeValue  = glfwGetTime();
-        float greenValue = glm::sin(timeValue * 2 * M_PI) / 2.0f + 0.5f;
-        // Set shader uniform color to green
-        shaderProgram.SetUniform4("u_ourColor", glm::vec4{1.0f, greenValue, 0.5f, 1.0f});
 
         // Draw the VAO using our shader program
         r.Draw(vao, shaderProgram);
