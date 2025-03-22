@@ -36,6 +36,10 @@ list(APPEND OpenGL2_LIBRARIES glm::glm)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/debugbreak")
 list(APPEND OpenGL2_LIBRARIES debugbreak)
 
+#stb_image
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb")
+list(APPEND OpenGL2_LIBRARIES stb)
+
 set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Application.cpp"
 
@@ -57,6 +61,9 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ShaderProgram.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ShaderProgram.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.hpp"
 )
 
 add_executable(OpenGL2
