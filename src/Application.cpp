@@ -69,7 +69,9 @@ int main(int argc, char** argv)
     texture1.Bind(0);
     texture2.Bind(1);
 
+    // Set Sampler2D #0 to texture1
     shaderProgram.SetUniform1("u_texture1", 0);
+    // Set Sampler2D #1 to texture2
     shaderProgram.SetUniform1("u_texture2", 1);
 
     // ImGui state
