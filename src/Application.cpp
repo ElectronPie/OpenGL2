@@ -19,7 +19,6 @@ int main(int argc, char** argv)
     {
         return 1;
     }
-    r.ClearColor(0.0f, 0.5f, 0.7f, 1.0f);
 
     // Create the VAO
     VAO vao;
@@ -73,15 +72,69 @@ int main(int argc, char** argv)
     shaderProgram.SetUniform1("u_texture1", 0);
     shaderProgram.SetUniform1("u_texture2", 1);
 
+    // ImGui state
+    ImGuiIO& io            = r.GetImGuiIO();
+    bool showDemoWindow    = true;
+    bool showAnotherWindow = false;
+    glm::vec4 clearColor{0.0f, 0.5f, 0.7f, 1.0f};
+
     // Main loop
     while(!r.ShouldClose())
     {
-        // Clear color
-        r.Clear();
+        if(r.StartFrame())
+        {
+            // Rendering
+            // Clear color
+            r.ClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+            r.Clear();
 
-        // Draw the VAO using our shader program
-        r.Draw(vao, shaderProgram);
+            // Draw the VAO using our shader program
+            r.Draw(vao, shaderProgram);
 
+            // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its
+            // code to learn more about Dear ImGui!).
+            if(showDemoWindow)
+            {
+                ImGui::ShowDemoWindow(&showDemoWindow);
+            }
+
+            // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+            {
+                static float f     = 0.0f;
+                static int counter = 0;
+
+                ImGui::Begin("Hello, world!"); // Create a window called "Hello, world!" and append into it.
+
+                ImGui::Text("This is some useful text.");        // Display some text (you can use a format strings too)
+                ImGui::Checkbox("Demo Window", &showDemoWindow); // Edit bools storing our window open/close state
+                ImGui::Checkbox("Another Window", &showAnotherWindow);
+
+                ImGui::SliderFloat("float", &f, 0.0f, 1.0f);      // Edit 1 float using a slider from 0.0f to 1.0f
+                ImGui::ColorEdit4("clear color", &clearColor[0]); // Edit 4 floats representing a color
+
+                if(ImGui::Button("Button"
+                   )) // Buttons return true when clicked (most widgets return true when edited/activated)
+                    counter++;
+                ImGui::SameLine();
+                ImGui::Text("counter = %d", counter);
+
+                ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+                ImGui::End();
+            }
+
+            // 3. Show another simple window.
+            if(showAnotherWindow)
+            {
+                ImGui::Begin(
+                    "Another Window", &showAnotherWindow
+                ); // Pass a pointer to our bool variable (the window will have a closing button that will clear the
+                   // bool when clicked)
+                ImGui::Text("Hello from another window!");
+                if(ImGui::Button("Close Me"))
+                    showAnotherWindow = false;
+                ImGui::End();
+            }
+        }
         r.FinishFrame();
     }
 }

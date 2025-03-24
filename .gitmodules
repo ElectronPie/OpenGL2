@@ -4,3 +4,7 @@
 [submodule "vendor/debugbreak"]
 	path = vendor/debugbreak
 	url = https://github.com/NeoDoa-Collective/debugbreak.git
+[submodule "vendor/imgui/imgui"]
+	path = vendor/imgui/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking

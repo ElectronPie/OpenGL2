@@ -40,6 +40,13 @@ list(APPEND OpenGL2_LIBRARIES debugbreak)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb")
 list(APPEND OpenGL2_LIBRARIES stb)
 
+# Dear ImGui
+set(IMGUI_IMPL_GLFW ON CACHE BOOL "" FORCE)
+set(IMGUI_IMPL_OPENGL3 ON CACHE BOOL "" FORCE)
+set(IMGUI_USE_FREETYPE OFF CACHE BOOL "" FORCE)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui")
+list(APPEND OpenGL2_LIBRARIES imgui)
+
 set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Application.cpp"
 

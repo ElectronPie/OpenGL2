@@ -2,6 +2,7 @@
 
 #include <debugbreak.h>
 #include <glad/glad.h>
+#include <imgui.h>
 
 // Forward declarations
 class VAO;
@@ -77,6 +78,16 @@ public:
     }
 
     /**
+     * @brief Get a global reference to the ImGuiIO struct
+     *
+     * @return ImGuiIO&
+     */
+    inline ImGuiIO& GetImGuiIO() const noexcept
+    {
+        return *m_ImGuiIO;
+    }
+
+    /**
      * @brief Draws the vertex array object using the provided shader program
      *
      * @param vao
@@ -105,6 +116,13 @@ public:
      */
     bool ShouldClose() const noexcept;
     /**
+     * @brief Tell the renderer to start drawing a new frame
+     *
+     * @return true If one should continue rendering to the current frame
+     * @return false If one should finish the frame with Renderer::FinishFrame immediately
+     */
+    bool StartFrame() noexcept;
+    /**
      * @brief Tell the renderer that it should finish drawing the current frame
      *
      */
@@ -132,6 +150,7 @@ public:
 #endif
 
 private:
-    GLFWwindow* m_window;
-    bool m_initialized = false;
+    GLFWwindow* m_window = nullptr;
+    ImGuiIO* m_ImGuiIO   = nullptr;
+    bool m_initialized   = false;
 };
