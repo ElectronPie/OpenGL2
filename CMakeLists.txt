@@ -71,10 +71,19 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.inl"
 )
 
 add_executable(OpenGL2
     ${OpenGL2_SOURCES}
+)
+
+target_include_directories(OpenGL2 PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test"
 )
 
 list(REMOVE_DUPLICATES OpenGL2_LIBRARIES)
