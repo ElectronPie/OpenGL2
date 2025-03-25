@@ -125,6 +125,13 @@ static void APIENTRY GLDebugOutput(
 }
 #endif
 
+Renderer Renderer::m_instance;
+
+Renderer& Renderer::GetInstance()
+{
+    return m_instance;
+}
+
 Renderer::Renderer()
 {
     // Initialize GLFW

@@ -49,21 +49,27 @@ struct GLFWwindow;
 #endif
 
 /**
- * @brief Represents the OpenGL renderer along with a GLFW window it renders to
+ * @brief Represents the OpenGL renderer along with a GLFW window it renders to as a singleton
  */
 class Renderer
 {
 public:
     /**
-     * @brief Construct a new Renderer object
+     * @brief Obtain a reference to a renderer instance
      *
-     * @note At time of construction GLFW must be initialized
+     * @return Renderer&
      */
-    Renderer();
+    static Renderer& GetInstance();
     /**
      * @brief Destroy the Renderer object
      */
     ~Renderer();
+
+    Renderer(const Renderer& other)           = delete;
+    Renderer operator=(const Renderer& other) = delete;
+
+    Renderer(Renderer&& other)           = delete;
+    Renderer operator=(Renderer&& other) = delete;
 
     /**
      * @brief Check if the renderer was initialized correctly
@@ -143,9 +149,25 @@ public:
      */
     static bool CheckGLError(const char* function, const char* file, int line);
 #endif
+private:
+    /**
+     * @brief Construct a new Renderer object
+     */
+    Renderer();
 
 private:
+    /**
+     * @brief The window rendered to
+     */
     GLFWwindow* m_window = nullptr;
+    /**
+     * @brief The ImGui IO
+     */
     ImGuiIO* m_ImGuiIO   = nullptr;
+    /**
+     * @brief If the renderer is correctly initialized
+     */
     bool m_initialized   = false;
+
+    static Renderer m_instance;
 };

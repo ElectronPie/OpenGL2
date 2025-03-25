@@ -20,6 +20,7 @@ namespace Tests
          */
         Test()
         {}
+
         /**
          * @brief Destroy the Test object
          */
@@ -33,11 +34,13 @@ namespace Tests
          */
         virtual void OnUpdate(float deltaTime)
         {}
+
         /**
          * @brief To be called each frame for OpenGL rendering purposes
          */
         virtual void OnRender()
         {}
+
         /**
          * @brief To be called each frame for ImGui rendering purposes
          */

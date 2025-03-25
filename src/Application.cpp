@@ -30,7 +30,7 @@ static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-    Renderer r;
+    Renderer& r = Renderer::GetInstance();
     if(!r)
     {
         return 1;
