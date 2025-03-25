@@ -5,6 +5,10 @@
 #include <filesystem>
 #include <unordered_map>
 
+/**
+ * @brief A X-macro for declaring/defining functions for setting shader uniforms
+ *
+ */
 #define UNIFORM_FUNCS                       \
     UNIFORM_FUNC_VECTOR_1(i, int)           \
     UNIFORM_FUNC_VECTOR_1(ui, unsigned int) \
@@ -30,7 +34,6 @@
 
 /**
  * @brief Represents an OpenGL shader program
- *
  */
 class ShaderProgram
 {
@@ -44,18 +47,15 @@ public:
     ShaderProgram(const std::filesystem::path& vertexSourcePath, const std::filesystem::path& fragmentSourcePath);
     /**
      * @brief Destroy the Shader Program object
-     *
      */
     ~ShaderProgram();
 
     /**
      * @brief Activate the shader program
-     *
      */
     void Bind() const noexcept;
     /**
      * @brief Deactivate the shader program
-     *
      */
     void Unbind() const noexcept;
 
@@ -93,12 +93,10 @@ private:
 private:
     /**
      * @brief OpenGL program ID
-     *
      */
     unsigned int m_rendererID = 0;
     /**
      * @brief Stores a cache of known uniform locations by name
-     *
      */
     mutable std::unordered_map<std::string, int> m_uniformLocationCache;
 };

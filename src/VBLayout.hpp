@@ -13,19 +13,16 @@ struct VBElement
 
 /**
  * @brief Represents the memory layout of an OpenGL vertex buffer
- *
  */
 class VBLayout
 {
 public:
     /**
      * @brief Construct a new VBLayout object
-     *
      */
     VBLayout();
     /**
      * @brief Destroy the VBLayout object
-     *
      */
     ~VBLayout();
 
@@ -61,12 +58,10 @@ public:
 private:
     /**
      * @brief Elements of the layout
-     *
      */
     std::vector<VBElement> m_elements;
     /**
      * @brief Layout's stride
-     *
      */
     unsigned int m_stride = 0;
 };

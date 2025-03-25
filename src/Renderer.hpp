@@ -50,7 +50,6 @@ struct GLFWwindow;
 
 /**
  * @brief Represents the OpenGL renderer along with a GLFW window it renders to
- *
  */
 class Renderer
 {
@@ -63,7 +62,6 @@ public:
     Renderer();
     /**
      * @brief Destroy the Renderer object
-     *
      */
     ~Renderer();
 
@@ -96,7 +94,6 @@ public:
     void Draw(const VAO& vao, const ShaderProgram& shaderProgram) noexcept;
     /**
      * @brief Clear the color buffer/screen
-     *
      */
     void Clear() noexcept;
     /**
@@ -124,14 +121,12 @@ public:
     bool StartFrame() noexcept;
     /**
      * @brief Tell the renderer that it should finish drawing the current frame
-     *
      */
     void FinishFrame() noexcept;
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
     /**
      * @brief Clears all OpenGL errors accumulated
-     *
      */
     static void ClearGLErrors() noexcept;
 

@@ -6,30 +6,25 @@
 
 /**
  * @brief Represents a OpenGL vertex array object
- *
  */
 class VAO
 {
 public:
     /**
      * @brief Construct a new VAO object
-     *
      */
     VAO();
     /**
      * @brief Destroy the VAO object
-     *
      */
     ~VAO();
 
     /**
      * @brief Bind the VAO
-     *
      */
     void Bind() const noexcept;
     /**
      * @brief Unbind the VAO
-     *
      */
     void Unbind() const noexcept;
 
@@ -70,17 +65,14 @@ public:
 private:
     /**
      * @brief OpenGL vertex array object ID
-     *
      */
     unsigned int m_rendererID = 0;
     /**
      * @brief OpenGL enum for the underlying type of data in the attached element buffer
-     *
      */
     unsigned int m_elementsDataType;
     /**
      * @brief Number of elements in the attached element buffer
-     *
      */
     unsigned int m_elementsCount = 0;
 };

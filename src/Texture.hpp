@@ -4,7 +4,6 @@
 
 /**
  * @brief Represents a 2D OpenGL texture
- *
  */
 class Texture
 {
@@ -17,7 +16,6 @@ public:
     Texture(const std::filesystem::path& texturePath);
     /**
      * @brief Destroy the Texture object
-     *
      */
     ~Texture();
 
@@ -29,14 +27,12 @@ public:
     void Bind(unsigned int location = 0) const noexcept;
     /**
      * @brief Unbind the texture
-     *
      */
     void Unbind() const noexcept;
 
 private:
     /**
      * @brief OpenGL texture ID
-     *
      */
     unsigned int m_rendererID = 0;
 };

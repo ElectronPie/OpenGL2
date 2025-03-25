@@ -2,7 +2,6 @@
 
 /**
  * @brief Represents a OpenGL element buffer object
- *
  */
 class EBO
 {
@@ -18,18 +17,15 @@ public:
     EBO(const T* data, unsigned int count);
     /**
      * @brief Destroy the EBO object
-     *
      */
     ~EBO();
 
     /**
      * @brief Bind the EBO
-     *
      */
     void Bind() const noexcept;
     /**
      * @brief Unbind the EBO
-     *
      */
     void Unbind() const noexcept;
 
@@ -56,17 +52,14 @@ public:
 private:
     /**
      * @brief OpenGL buffer ID
-     *
      */
     unsigned int m_rendererID = 0;
     /**
      * @brief OpenGL enum for the underlying type of data in the element buffer
-     *
      */
     unsigned int m_dataType;
     /**
      * @brief Number of elements in the element buffer
-     *
      */
     unsigned int m_count = 0;
 };
