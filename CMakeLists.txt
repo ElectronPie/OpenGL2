@@ -75,6 +75,9 @@ set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.inl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestClearColor.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestClearColor.hpp"
 )
 
 add_executable(OpenGL2

@@ -14,14 +14,13 @@
 #include "Texture.hpp"
 
 #include "test/Test.hpp"
+#include "test/TestClearColor.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
     for(int i = 1; i < argc - 1; ++i)
     {
-        if(std::string t{argv[i]};
-           t == "-t" ||
-           t == "--test")
+        if(std::string t{argv[i]}; t == "-t" || t == "--test")
         {
             return std::make_optional<std::string>(argv[i + 1]);
         }
@@ -38,9 +37,13 @@ int main(int argc, char** argv)
     }
     r.ClearColor(0.0f, 0.5f, 0.7f, 1.0f);
 
-    Tests::Test* currentTest = nullptr;
+    Tests::Test* currentTest  = nullptr;
     Tests::TestMenu* testMenu = new Tests::TestMenu{currentTest};
-    currentTest = testMenu;
+    currentTest               = testMenu;
+
+    testMenu->RegisterTest<Tests::TestClearColor>("Clear color");
+
+    testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 
     float timeMark = glfwGetTime();
 

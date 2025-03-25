@@ -4,8 +4,7 @@
 
 namespace Tests
 {
-    TestMenu::TestMenu(Test*& currentTestPointer):
-        m_currentTest{currentTestPointer}
+    TestMenu::TestMenu(Test*& currentTestPointer): m_currentTest{currentTestPointer}
     {}
 
     void TestMenu::OnImGuiRender()
@@ -38,4 +37,3 @@ namespace Tests
         std::cout << "Test " << std::quoted(name) << " was not found!" << std::endl;
     }
 } // namespace Tests
-
