@@ -14,7 +14,7 @@ namespace Tests
         /**
          * @brief Destroy the Test Clear Color object
          */
-        ~TestClearColor();
+        virtual ~TestClearColor() override;
 
         /**
          * @copydoc Tests::Test::OnRender

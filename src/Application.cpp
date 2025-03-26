@@ -15,6 +15,7 @@
 
 #include "test/Test.hpp"
 #include "test/TestClearColor.hpp"
+#include "test/TestTexture.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
@@ -42,6 +43,7 @@ int main(int argc, char** argv)
     currentTest               = testMenu;
 
     testMenu->RegisterTest<Tests::TestClearColor>("Clear color");
+    testMenu->RegisterTest<Tests::TestTexture>("Texture");
 
     testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 

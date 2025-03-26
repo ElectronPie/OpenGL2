@@ -102,40 +102,43 @@ void ShaderProgram::Unbind() const noexcept
     GLCall(glUseProgram(0));
 }
 
-#define UNIFORM_FUNC_VECTOR_1(PREFIX, TYPE)                              \
-    void ShaderProgram::SetUniform1(const std::string& name, TYPE value) \
-    {                                                                    \
-        GLCall(glUniform1##PREFIX(GetUniformLocation(name), value));     \
+#define UNIFORM_FUNC_VECTOR_1(PREFIX, TYPE)                                               \
+    void ShaderProgram::SetUniform1(const std::string& name, TYPE value)                  \
+    {                                                                                     \
+        GLCall(glProgramUniform1##PREFIX(m_rendererID, GetUniformLocation(name), value)); \
     }
 
-#define UNIFORM_FUNC_VECTOR_2(PREFIX, TYPE)                                           \
-    void ShaderProgram::SetUniform2(const std::string& name, glm::vec<2, TYPE> value) \
-    {                                                                                 \
-        GLCall(glUniform2##PREFIX(GetUniformLocation(name), value[0], value[1]));     \
+#define UNIFORM_FUNC_VECTOR_2(PREFIX, TYPE)                                                            \
+    void ShaderProgram::SetUniform2(const std::string& name, glm::vec<2, TYPE> value)                  \
+    {                                                                                                  \
+        GLCall(glProgramUniform2##PREFIX(m_rendererID, GetUniformLocation(name), value[0], value[1])); \
     }
 
-#define UNIFORM_FUNC_VECTOR_3(PREFIX, TYPE)                                                 \
-    void ShaderProgram::SetUniform3(const std::string& name, glm::vec<3, TYPE> value)       \
-    {                                                                                       \
-        GLCall(glUniform3##PREFIX(GetUniformLocation(name), value[0], value[1], value[2])); \
+#define UNIFORM_FUNC_VECTOR_3(PREFIX, TYPE)                                                                      \
+    void ShaderProgram::SetUniform3(const std::string& name, glm::vec<3, TYPE> value)                            \
+    {                                                                                                            \
+        GLCall(glProgramUniform3##PREFIX(m_rendererID, GetUniformLocation(name), value[0], value[1], value[2])); \
     }
 
-#define UNIFORM_FUNC_VECTOR_4(PREFIX, TYPE)                                                           \
-    void ShaderProgram::SetUniform4(const std::string& name, glm::vec<4, TYPE> value)                 \
-    {                                                                                                 \
-        GLCall(glUniform4##PREFIX(GetUniformLocation(name), value[0], value[1], value[2], value[3])); \
+#define UNIFORM_FUNC_VECTOR_4(PREFIX, TYPE)                                                                           \
+    void ShaderProgram::SetUniform4(const std::string& name, glm::vec<4, TYPE> value)                                 \
+    {                                                                                                                 \
+        GLCall(                                                                                                       \
+            glProgramUniform4##PREFIX(m_rendererID, GetUniformLocation(name), value[0], value[1], value[2], value[3]) \
+        );                                                                                                            \
     }
 
-#define UNIFORM_FUNC_MATRIX_M_X_M(M)                                                         \
-    void ShaderProgram::SetUniformMat##M(const std::string& name, const glm::mat##M& value)  \
-    {                                                                                        \
-        GLCall(glUniformMatrix##M##fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0])); \
+#define UNIFORM_FUNC_MATRIX_M_X_M(M)                                                                              \
+    void ShaderProgram::SetUniformMat##M(const std::string& name, const glm::mat##M& value)                       \
+    {                                                                                                             \
+        GLCall(glProgramUniformMatrix##M##fv(m_rendererID, GetUniformLocation(name), 1, GL_FALSE, &value[0][0])); \
     }
 
-#define UNIFORM_FUNC_MATRIX_M_X_N(M, N)                                                                 \
-    void ShaderProgram::SetUniformMat##M##x##N(const std::string& name, const glm::mat##M##x##N& value) \
-    {                                                                                                   \
-        GLCall(glUniformMatrix##M##x##N##fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]));      \
+#define UNIFORM_FUNC_MATRIX_M_X_N(M, N)                                                                               \
+    void ShaderProgram::SetUniformMat##M##x##N(const std::string& name, const glm::mat##M##x##N& value)               \
+    {                                                                                                                 \
+        GLCall(glProgramUniformMatrix##M##x##N##fv(m_rendererID, GetUniformLocation(name), 1, GL_FALSE, &value[0][0]) \
+        );                                                                                                            \
     }
 
 UNIFORM_FUNCS
