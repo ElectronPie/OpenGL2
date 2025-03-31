@@ -3,7 +3,10 @@
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Renderer.hpp"
 #include "VAO.hpp"
@@ -16,6 +19,7 @@
 #include "test/Test.hpp"
 #include "test/TestClearColor.hpp"
 #include "test/TestTexture.hpp"
+#include "test/TestTransform.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
@@ -38,12 +42,14 @@ int main(int argc, char** argv)
     }
     r.ClearColor(0.0f, 0.5f, 0.7f, 1.0f);
 
+    //Tests
     Tests::Test* currentTest  = nullptr;
     Tests::TestMenu* testMenu = new Tests::TestMenu{currentTest};
     currentTest               = testMenu;
 
     testMenu->RegisterTest<Tests::TestClearColor>("Clear color");
     testMenu->RegisterTest<Tests::TestTexture>("Texture");
+    testMenu->RegisterTest<Tests::TestTransform>("Transforms");
 
     testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 
