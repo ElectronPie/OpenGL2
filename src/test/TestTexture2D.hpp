@@ -12,14 +12,32 @@
 
 namespace Tests
 {
-    class TestTexture: public Test
+    /**
+     * @brief Test for textures on 2D objects
+     */
+    class TestTexture2D: public Test
     {
     public:
-        TestTexture();
-        virtual ~TestTexture();
+        /**
+         * @brief Construct a new TestTexture2D object
+         */
+        TestTexture2D();
+        /**
+         * @brief Destroy the TestTexture2D object
+         */
+        virtual ~TestTexture2D();
 
+        /**
+         * @copydoc Tests::Test::OnRender
+         */
         void OnRender() override;
+        /**
+         * @copydoc Tests::Test::OnImGuiRender
+         */
         void OnImGuiRender() override;
+        /**
+         * @copydoc Tests::Test::OnUpdate
+         */
         void OnUpdate(float deltaTime) override;
 
     private:
@@ -45,7 +63,13 @@ namespace Tests
         Texture m_texture2;
         Renderer& m_rendererInstance;
 
+        /**
+         * @brief Coefficient for mixing the two textures
+         */
         float m_mixCoefficient = 0.0f;
+        /**
+         * @brief Whether m_mixCoefficient should be set manually
+         */
         bool m_checkbox        = true;
     };
 } // namespace Tests

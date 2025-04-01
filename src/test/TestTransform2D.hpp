@@ -17,15 +17,26 @@
 
 namespace Tests
 {
-    class TestTransform: public Test
+    class TestTransform2D: public Test
     {
     public:
-        TestTransform();
-        virtual ~TestTransform();
+        /**
+         * @brief Construct a new TestTransform2D object
+         */
+        TestTransform2D();
+        /**
+         * @brief Destroy the TestTransform2D object
+         */
+        virtual ~TestTransform2D();
 
+        /**
+         * @copydoc Tests::Test::OnRender
+         */
         void OnRender() override;
+        /**
+         * @copydoc Tests::Test::OnImGuiRender
+         */
         void OnImGuiRender() override;
-        void OnUpdate(float deltaTime) override;
 
     private:
         // clang-format off
@@ -50,9 +61,21 @@ namespace Tests
         Texture m_texture2;
         Renderer& m_rendererInstance;
 
+        /**
+         * @brief How much translation should apply to the transform matrix each time the "Translate" button is pressed
+         */
         glm::vec3 m_translation{0.0f, 0.0f, 0.0f};
+        /**
+         * @brief How much rotation should apply to the transform matrix each time the "Rotate" button is pressed
+         */
         float m_rotation = 0.0f;
+        /**
+         * @brief How much scale should apply to the transform matrix each time the "Scale" button is pressed
+         */
         glm::vec3 m_scale{1.0f, 1.0f, 1.0f};
+        /**
+         * @brief The transform matrix
+         */
         glm::mat4 m_transform{1.0f};
     };
 } // namespace Tests

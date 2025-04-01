@@ -1,4 +1,4 @@
-#include "TestTransform.hpp"
+#include "TestTransform2D.hpp"
 
 #include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -9,9 +9,9 @@
 
 namespace Tests
 {
-    TestTransform::TestTransform():
+    TestTransform2D::TestTransform2D():
         m_vbo{s_vertices, sizeof(s_vertices)}, m_ebo{s_indices, sizeof(s_indices) / sizeof(s_indices[0])},
-        m_shaderProgram{"assets/shaders/TestTransform.vert.glsl", "assets/shaders/TestTransform.frag.glsl"},
+        m_shaderProgram{"assets/shaders/TestTransform2D.vert.glsl", "assets/shaders/TestTransform2D.frag.glsl"},
         m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"},
         m_rendererInstance{Renderer::GetInstance()}
     {
@@ -31,17 +31,17 @@ namespace Tests
         m_shaderProgram.SetUniform1("u_texture2", 1);
     }
 
-    TestTransform::~TestTransform()
+    TestTransform2D::~TestTransform2D()
     {}
 
-    void TestTransform::OnRender()
+    void TestTransform2D::OnRender()
     {
         m_shaderProgram.SetUniformMat4("u_transform", m_transform);
 
         m_rendererInstance.Draw(m_vao, m_shaderProgram);
     }
 
-    void TestTransform::OnImGuiRender()
+    void TestTransform2D::OnImGuiRender()
     {
         if(ImGui::BeginTable("Transform", 4))
         {
@@ -71,10 +71,7 @@ namespace Tests
         ImGui::InputFloat3("Scale", &m_scale[0]);
         if(ImGui::Button("Scale##2"))
         {
-            m_transform = glm::scale(m_transform, m_translation);
+            m_transform = glm::scale(m_transform, m_scale);
         }
     }
-
-    void TestTransform::OnUpdate(float deltaTime)
-    {}
 } // namespace Tests

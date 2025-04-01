@@ -4,17 +4,20 @@
 
 namespace Tests
 {
+    /**
+     * @brief Test for clear color
+     */
     class TestClearColor: public Test
     {
     public:
         /**
-         * @brief Construct a new Test Clear Color object
+         * @brief Construct a new TestClearColor object
          */
         TestClearColor();
         /**
-         * @brief Destroy the Test Clear Color object
+         * @brief Destroy the TestClearColor object
          */
-        virtual ~TestClearColor() override;
+        virtual ~TestClearColor();
 
         /**
          * @copydoc Tests::Test::OnRender

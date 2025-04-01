@@ -43,7 +43,6 @@ list(APPEND OpenGL2_LIBRARIES stb)
 # Dear ImGui
 set(IMGUI_IMPL_GLFW ON CACHE BOOL "" FORCE)
 set(IMGUI_IMPL_OPENGL3 ON CACHE BOOL "" FORCE)
-set(IMGUI_USE_FREETYPE OFF CACHE BOOL "" FORCE)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui")
 list(APPEND OpenGL2_LIBRARIES imgui)
 
@@ -79,11 +78,11 @@ set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestClearColor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestClearColor.hpp"
 
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTexture.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTexture.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTexture2D.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTexture2D.hpp"
 
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTransform.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTransform.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTransform2D.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTransform2D.hpp"
 )
 
 add_executable(OpenGL2
@@ -92,7 +91,6 @@ add_executable(OpenGL2
 
 target_include_directories(OpenGL2 PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/test"
 )
 
 list(REMOVE_DUPLICATES OpenGL2_LIBRARIES)

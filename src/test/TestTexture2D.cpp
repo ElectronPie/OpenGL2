@@ -1,13 +1,13 @@
-#include "TestTexture.hpp"
+#include "TestTexture2D.hpp"
 
 #include <glm/glm.hpp>
 #include <imgui.h>
 
 namespace Tests
 {
-    TestTexture::TestTexture():
+    TestTexture2D::TestTexture2D():
         m_vbo{s_vertices, sizeof(s_vertices)}, m_ebo{s_indices, sizeof(s_indices) / sizeof(s_indices[0])},
-        m_shaderProgram{"assets/shaders/TestTexture.vert.glsl", "assets/shaders/TestTexture.frag.glsl"},
+        m_shaderProgram{"assets/shaders/TestTexture2D.vert.glsl", "assets/shaders/TestTexture2D.frag.glsl"},
         m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"},
         m_rendererInstance{Renderer::GetInstance()}
     {
@@ -27,10 +27,10 @@ namespace Tests
         m_shaderProgram.SetUniform1("u_texture2", 1);
     }
 
-    TestTexture::~TestTexture()
+    TestTexture2D::~TestTexture2D()
     {}
 
-    void TestTexture::OnRender()
+    void TestTexture2D::OnRender()
     {
         // Bind textures to samplers
         m_texture1.Bind(0);
@@ -42,7 +42,7 @@ namespace Tests
         m_rendererInstance.Draw(m_vao, m_shaderProgram);
     }
 
-    void TestTexture::OnImGuiRender()
+    void TestTexture2D::OnImGuiRender()
     {
         ImGui::Checkbox("Adjust the mix coefficient manually", &m_checkbox);
         if(!m_checkbox)
@@ -64,7 +64,7 @@ namespace Tests
         }
     }
 
-    void TestTexture::OnUpdate(float deltaTime)
+    void TestTexture2D::OnUpdate(float deltaTime)
     {
         if(!m_checkbox)
         {

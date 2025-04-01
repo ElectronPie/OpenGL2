@@ -18,8 +18,8 @@
 
 #include "test/Test.hpp"
 #include "test/TestClearColor.hpp"
-#include "test/TestTexture.hpp"
-#include "test/TestTransform.hpp"
+#include "test/TestTexture2D.hpp"
+#include "test/TestTransform2D.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
@@ -48,8 +48,8 @@ int main(int argc, char** argv)
     currentTest               = testMenu;
 
     testMenu->RegisterTest<Tests::TestClearColor>("Clear color");
-    testMenu->RegisterTest<Tests::TestTexture>("Texture");
-    testMenu->RegisterTest<Tests::TestTransform>("Transforms");
+    testMenu->RegisterTest<Tests::TestTexture2D>("Texture (2D)");
+    testMenu->RegisterTest<Tests::TestTransform2D>("Transforms (2D)");
 
     testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 
