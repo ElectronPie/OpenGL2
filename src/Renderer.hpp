@@ -4,6 +4,8 @@
 #include <glad/glad.h>
 #include <imgui.h>
 
+#include <utility>
+
 // Forward declarations
 class VAO;
 class ShaderProgram;
@@ -92,6 +94,24 @@ public:
     }
 
     /**
+     * @brief Set the Viewport size
+     *
+     * @param width New width of the viewport
+     * @param height New height of the viewport
+     */
+    void SetViewportSize(unsigned int width, unsigned int height);
+
+    /**
+     * @brief Get the Viewport size
+     *
+     * @return std::pair<unsigned int, unsigned int>
+     */
+    inline std::pair<unsigned int, unsigned int> GetViewportSize() const
+    {
+        return {m_viewportWidth, m_viewportHeight};
+    }
+
+    /**
      * @brief Draws the vertex array object using the provided shader program
      *
      * @param vao
@@ -168,6 +188,15 @@ private:
      * @brief If the renderer is correctly initialized
      */
     bool m_initialized   = false;
+
+    /**
+     * @brief Viewport width
+     */
+    unsigned int m_viewportWidth;
+    /**
+     * @brief Viewport height
+     */
+    unsigned int m_viewportHeight;
 
     static Renderer m_instance;
 };

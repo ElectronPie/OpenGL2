@@ -12,7 +12,7 @@
 
 static void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
-    glViewport(0, 0, width, height);
+    Renderer::GetInstance().SetViewportSize(width, height);
 }
 
 static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -158,6 +158,8 @@ Renderer::Renderer()
         std::cout << "Failed to create a GLFW window!" << std::endl;
         return;
     }
+    m_viewportWidth  = 800;
+    m_viewportHeight = 600;
 
     // Make the window context current
     glfwMakeContextCurrent(m_window);
@@ -211,6 +213,9 @@ Renderer::Renderer()
     // Set key callback
     glfwSetKeyCallback(m_window, KeyCallback);
 
+    // Enable depth testing
+    GLCall(glEnable(GL_DEPTH_TEST));
+
 #if defined(DEBUG) && defined(ENABLE_FANCY_DEBUG_OUTPUT)
     int flags;
     GLCall(glGetIntegerv(GL_CONTEXT_FLAGS, &flags));
@@ -246,7 +251,7 @@ void Renderer::Draw(const VAO& vao, const ShaderProgram& shaderProgram) noexcept
 
 void Renderer::Clear() noexcept
 {
-    GLCall(glClear(GL_COLOR_BUFFER_BIT));
+    GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
 void Renderer::ClearColor(float r, float g, float b, float a) noexcept
@@ -303,6 +308,13 @@ void Renderer::FinishFrame() noexcept
 
     // Swap front and back buffers
     glfwSwapBuffers(m_window);
+}
+
+void Renderer::SetViewportSize(unsigned int width, unsigned int height)
+{
+    GLCall(glViewport(0, 0, width, height));
+    m_viewportWidth  = width;
+    m_viewportHeight = height;
 }
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)

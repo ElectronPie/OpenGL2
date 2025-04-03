@@ -17,6 +17,9 @@
 
 namespace Tests
 {
+    /**
+     * @brief Test for \(mostly\) 2D transforms on a plane
+     */
     class TestTransform2D: public Test
     {
     public:

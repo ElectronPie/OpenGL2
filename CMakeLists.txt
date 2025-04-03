@@ -83,6 +83,9 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTransform2D.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestTransform2D.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestMVP.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestMVP.hpp"
 )
 
 add_executable(OpenGL2
