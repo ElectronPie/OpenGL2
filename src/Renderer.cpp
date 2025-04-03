@@ -242,7 +242,14 @@ Renderer::~Renderer()
     glfwTerminate();
 }
 
-void Renderer::Draw(const VAO& vao, const ShaderProgram& shaderProgram) noexcept
+void Renderer::DrawVertices(const VAO& vao, const ShaderProgram& shaderProgram) noexcept
+{
+    shaderProgram.Bind();
+    vao.Bind();
+    GLCall(glDrawArrays(GL_TRIANGLES, 0, vao.GetVerticesCount()));
+}
+
+void Renderer::DrawElements(const VAO& vao, const ShaderProgram& shaderProgram) noexcept
 {
     shaderProgram.Bind();
     vao.Bind();

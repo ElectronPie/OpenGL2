@@ -57,6 +57,7 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/VBO.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/VBO.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/VBO.inl"
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/VBLayout.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/VBLayout.hpp"

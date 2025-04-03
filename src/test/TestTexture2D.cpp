@@ -6,7 +6,8 @@
 namespace Tests
 {
     TestTexture2D::TestTexture2D():
-        m_vbo{s_vertices, sizeof(s_vertices)}, m_ebo{s_indices, sizeof(s_indices) / sizeof(s_indices[0])},
+        m_vbo{s_vertices, sizeof(s_vertices) / sizeof(s_vertices[0])},
+        m_ebo{s_indices, sizeof(s_indices) / sizeof(s_indices[0])},
         m_shaderProgram{"assets/shaders/TestTexture2D.vert.glsl", "assets/shaders/TestTexture2D.frag.glsl"},
         m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"},
         m_rendererInstance{Renderer::GetInstance()}
@@ -39,7 +40,7 @@ namespace Tests
         m_shaderProgram.SetUniform1("u_texture2", 1);
 
         m_shaderProgram.SetUniform1("u_mixCoefficient", m_mixCoefficient);
-        m_rendererInstance.Draw(m_vao, m_shaderProgram);
+        m_rendererInstance.DrawElements(m_vao, m_shaderProgram);
     }
 
     void TestTexture2D::OnImGuiRender()

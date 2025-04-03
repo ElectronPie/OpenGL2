@@ -43,6 +43,16 @@ public:
     void AttachEBO(const EBO& ebo) noexcept;
 
     /**
+     * @brief Get the number of elements in the attached element buffer
+     *
+     * @return unsigned int
+     */
+    inline unsigned int GetVerticesCount() const noexcept
+    {
+        return m_verticesCount;
+    }
+
+    /**
      * @brief Get the OpenGL enum for the underlying type of data in the attached element buffer
      *
      * @return unsigned int
@@ -66,7 +76,11 @@ private:
     /**
      * @brief OpenGL vertex array object ID
      */
-    unsigned int m_rendererID = 0;
+    unsigned int m_rendererID    = 0;
+    /**
+     * @brief Number of vertices in the attached element buffer
+     */
+    unsigned int m_verticesCount = 0;
     /**
      * @brief OpenGL enum for the underlying type of data in the attached element buffer
      */

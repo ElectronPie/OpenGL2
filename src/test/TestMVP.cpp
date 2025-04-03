@@ -28,10 +28,9 @@ static inline void EditMatrix4(const std::string& name, glm::mat4& matrix)
 namespace Tests
 {
     TestMVP::TestMVP():
-        m_planeVbo{s_planeVertices, sizeof(s_planeVertices)},
+        m_planeVbo{s_planeVertices, sizeof(s_planeVertices) / sizeof(s_planeVertices[0])},
         m_planeEbo{s_planeIndices, sizeof(s_planeIndices) / sizeof(s_planeIndices[0])},
-        m_cubeVbo{s_cubeVertices, sizeof(s_cubeVertices)},
-        m_cubeEbo{s_cubeIndices, sizeof(s_cubeIndices) / sizeof(s_cubeIndices[0])},
+        m_cubeVbo{s_cubeVertices, sizeof(s_cubeVertices) / sizeof(s_cubeVertices[0])},
         m_shaderProgram{"assets/shaders/TestMVP.vert.glsl", "assets/shaders/TestMVP.frag.glsl"},
         m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"},
         m_rendererInstance{Renderer::GetInstance()}, m_mode{0}
@@ -50,7 +49,6 @@ namespace Tests
 
         // Setup cube VAO
         m_cubeVao.AttachVBO(m_cubeVbo, m_cubeLayout);
-        m_cubeVao.AttachEBO(m_cubeEbo);
 
         // Bind textures to samplers
         m_texture1.Bind(0);
@@ -78,13 +76,13 @@ namespace Tests
             m_shaderProgram.SetUniformMat4("u_model", transformData.model);
             m_shaderProgram.SetUniformMat4("u_view", transformData.view);
             m_shaderProgram.SetUniformMat4("u_proj", transformData.proj);
-            m_rendererInstance.Draw(m_planeVao, m_shaderProgram);
+            m_rendererInstance.DrawElements(m_planeVao, m_shaderProgram);
             break;
         case 1: // Cube
             m_shaderProgram.SetUniformMat4("u_model", transformData.model);
             m_shaderProgram.SetUniformMat4("u_view", transformData.view);
             m_shaderProgram.SetUniformMat4("u_proj", transformData.proj);
-            m_rendererInstance.Draw(m_cubeVao, m_shaderProgram);
+            m_rendererInstance.DrawVertices(m_cubeVao, m_shaderProgram);
             break;
         case 2:
             m_shaderProgram.SetUniformMat4("u_view", transformData.view);
@@ -96,7 +94,7 @@ namespace Tests
                 float angle = 20.0f * i * PartyModeAngleCoefficient();
                 model       = glm::rotate(model, glm::radians(angle), glm::vec3{1.0f, 0.3f, 0.5f});
                 m_shaderProgram.SetUniformMat4("u_model", model);
-                m_rendererInstance.Draw(m_cubeVao, m_shaderProgram);
+                m_rendererInstance.DrawVertices(m_cubeVao, m_shaderProgram);
             }
         }
     }

@@ -37,6 +37,7 @@ void VAO::AttachVBO(const VBO& vbo, const VBLayout& layout) noexcept
         GLCall(glEnableVertexAttribArray(i));
         offset += element.count * VBElement::GetTypeSize(element.type);
     }
+    m_verticesCount = vbo.GetCount();
 }
 
 void VAO::AttachEBO(const EBO& ebo) noexcept

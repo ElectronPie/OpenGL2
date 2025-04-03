@@ -112,12 +112,19 @@ public:
     }
 
     /**
-     * @brief Draws the vertex array object using the provided shader program
+     * @brief Draws the vertex array object's vertices using the provided shader program
      *
      * @param vao
      * @param shaderProgram
      */
-    void Draw(const VAO& vao, const ShaderProgram& shaderProgram) noexcept;
+    void DrawVertices(const VAO& vao, const ShaderProgram& shaderProgram) noexcept;
+    /**
+     * @brief Draws the vertex array object's elements using the provided shader program
+     *
+     * @param vao
+     * @param shaderProgram
+     */
+    void DrawElements(const VAO& vao, const ShaderProgram& shaderProgram) noexcept;
     /**
      * @brief Clear the color buffer/screen
      */
