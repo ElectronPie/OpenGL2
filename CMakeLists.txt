@@ -72,6 +72,9 @@ set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.hpp"
 
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Camera.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Camera.hpp"
+
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.inl"
@@ -87,6 +90,9 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestMVP.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestMVP.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestCamera.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestCamera.hpp"
 )
 
 add_executable(OpenGL2

@@ -1,0 +1,126 @@
+#pragma once
+
+#include "Test.hpp"
+#include "Camera.hpp"
+
+#include "VBO.hpp"
+#include "VBLayout.hpp"
+#include "VAO.hpp"
+#include "ShaderProgram.hpp"
+#include "Texture.hpp"
+#include "Renderer.hpp"
+
+#include <glm/glm.hpp>
+
+namespace Tests
+{
+    /**
+     * @brief Camera test
+     */
+    class TestCamera: public Test
+    {
+    public:
+        /**
+         * @brief Construct a new TestCamera object
+         */
+        TestCamera();
+        /**
+         * @brief Destroy the TestCamera object
+         */
+        virtual ~TestCamera();
+
+        /**
+         * @copydoc Tests::Test::OnRender
+         */
+        void OnRender() override;
+        /**
+         * @copydoc Tests::Test::OnImGuiRender
+         */
+        void OnImGuiRender() override;
+        /**
+         * @copydoc Tests::Test::OnUpdate
+         */
+        void OnUpdate(float deltaTime) override;
+
+    private:
+        // clang-format off
+        static inline float s_vertices[180] = {
+            // position             // texture coords
+            -0.5f, -0.5f, -0.5f,    0.0f, 0.0f,
+            +0.5f, -0.5f, -0.5f,    1.0f, 0.0f,
+            +0.5f, +0.5f, -0.5f,    1.0f, 1.0f,
+            +0.5f, +0.5f, -0.5f,    1.0f, 1.0f,
+            -0.5f, +0.5f, -0.5f,    0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,    0.0f, 0.0f,
+
+            -0.5f, -0.5f, +0.5f,    0.0f, 0.0f,
+            +0.5f, -0.5f, +0.5f,    1.0f, 0.0f,
+            +0.5f, +0.5f, +0.5f,    1.0f, 1.0f,
+            +0.5f, +0.5f, +0.5f,    1.0f, 1.0f,
+            -0.5f, +0.5f, +0.5f,    0.0f, 1.0f,
+            -0.5f, -0.5f, +0.5f,    0.0f, 0.0f,
+
+            -0.5f, +0.5f, +0.5f,    1.0f, 0.0f,
+            -0.5f, +0.5f, -0.5f,    1.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+            -0.5f, -0.5f, +0.5f,    0.0f, 0.0f,
+            -0.5f, +0.5f, +0.5f,    1.0f, 0.0f,
+
+            +0.5f, +0.5f, +0.5f,    1.0f, 0.0f,
+            +0.5f, +0.5f, -0.5f,    1.0f, 1.0f,
+            +0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+            +0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+            +0.5f, -0.5f, +0.5f,    0.0f, 0.0f,
+            +0.5f, +0.5f, +0.5f,    1.0f, 0.0f,
+
+            -0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+            +0.5f, -0.5f, -0.5f,    1.0f, 1.0f,
+            +0.5f, -0.5f, +0.5f,    1.0f, 0.0f,
+            +0.5f, -0.5f, +0.5f,    1.0f, 0.0f,
+            -0.5f, -0.5f, +0.5f,    0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+
+            -0.5f, +0.5f, -0.5f,    0.0f, 1.0f,
+            +0.5f, +0.5f, -0.5f,    1.0f, 1.0f,
+            +0.5f, +0.5f, +0.5f,    1.0f, 0.0f,
+            +0.5f, +0.5f, +0.5f,    1.0f, 0.0f,
+            -0.5f, +0.5f, +0.5f,    0.0f, 0.0f,
+            -0.5f, +0.5f, -0.5f,    0.0f, 1.0f,
+        };
+        // clang-format on
+        VBO m_vbo;
+        VBLayout m_layout;
+        VAO m_vao;
+        ShaderProgram m_shaderProgram;
+        Texture m_texture1;
+        Texture m_texture2;
+        Renderer& m_rendererInstance;
+
+        static inline glm::vec3 s_cubePositions[] = {
+            {0.0f,  0.0f,  0.0f  },
+            {2.0f,  5.0f,  -15.0f},
+            {-1.5f, -2.2f, -2.5f },
+            {-3.8f, -2.0f, -12.3f},
+            {2.4f,  -0.4f, -3.5f },
+            {-1.7f, 3.0f,  -7.5f },
+            {1.3f,  -2.0f, -2.5f },
+            {1.5f,  2.0f,  -2.5f },
+            {1.5f,  0.2f,  -1.5f },
+            {-1.3f, 1.0f,  -1.5f },
+        };
+
+        /**
+         * @brief The camera being tested
+         */
+        Camera m_camera;
+
+        int m_cameraMode     = 0;
+        float m_timeMark     = 0.0f;
+        float m_circleRadius = 10.0f;
+
+        glm::vec2 m_cursorPos;
+
+        bool m_mouseButtonPressed = false;
+    };
+} // namespace Tests

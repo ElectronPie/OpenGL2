@@ -21,6 +21,7 @@
 #include "test/TestTexture2D.hpp"
 #include "test/TestTransform2D.hpp"
 #include "test/TestMVP.hpp"
+#include "test/TestCamera.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
@@ -52,6 +53,7 @@ int main(int argc, char** argv)
     testMenu->RegisterTest<Tests::TestTexture2D>("Texture (2D)");
     testMenu->RegisterTest<Tests::TestTransform2D>("Transforms (2D)");
     testMenu->RegisterTest<Tests::TestMVP>("MVP");
+    testMenu->RegisterTest<Tests::TestCamera>("Camera");
 
     testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 

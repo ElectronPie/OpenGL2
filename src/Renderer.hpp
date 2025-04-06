@@ -112,6 +112,16 @@ public:
     }
 
     /**
+     * @brief Get the underlying window
+     *
+     * @return GLFWwindow*
+     */
+    inline GLFWwindow* GetWindow() const
+    {
+        return m_window;
+    }
+
+    /**
      * @brief Draws the vertex array object's vertices using the provided shader program
      *
      * @param vao

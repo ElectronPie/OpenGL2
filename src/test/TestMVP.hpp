@@ -12,10 +12,6 @@
 
 #include <glm/glm.hpp>
 
-#include <memory>
-#include <ranges>
-#include <vector>
-
 namespace Tests
 {
     class TestMVP: public Test
