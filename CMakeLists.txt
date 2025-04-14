@@ -93,6 +93,9 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestCamera.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestCamera.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestShader.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestShader.hpp"
 )
 
 add_executable(OpenGL2

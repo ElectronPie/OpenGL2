@@ -246,6 +246,9 @@ void Renderer::DrawVertices(const VAO& vao, const ShaderProgram& shaderProgram) 
 {
     shaderProgram.Bind();
     vao.Bind();
+#ifdef DEBUG
+    shaderProgram.Validate();
+#endif
     GLCall(glDrawArrays(GL_TRIANGLES, 0, vao.GetVerticesCount()));
 }
 
@@ -253,6 +256,9 @@ void Renderer::DrawElements(const VAO& vao, const ShaderProgram& shaderProgram) 
 {
     shaderProgram.Bind();
     vao.Bind();
+#ifdef DEBUG
+    shaderProgram.Validate();
+#endif
     GLCall(glDrawElements(GL_TRIANGLES, vao.GetElementsCount(), vao.GetElementsDataType(), NULL));
 }
 
