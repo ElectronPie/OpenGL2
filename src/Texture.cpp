@@ -39,6 +39,22 @@ Texture::~Texture()
     GLCall(glDeleteTextures(1, &m_rendererID));
 }
 
+Texture::Texture(Texture&& other)
+{
+    m_rendererID = other.m_rendererID;
+
+    other.m_rendererID = 0;
+}
+
+Texture& Texture::operator=(Texture&& other)
+{
+    m_rendererID = other.m_rendererID;
+
+    other.m_rendererID = 0;
+
+    return *this;
+}
+
 void Texture::Bind(unsigned int location) const noexcept
 {
     GLCall(glActiveTexture(GL_TEXTURE0 + location));

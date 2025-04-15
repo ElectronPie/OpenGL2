@@ -19,6 +19,9 @@ public:
      */
     ~Texture();
 
+    Texture(Texture&& other);
+    Texture& operator=(Texture&& other);
+
     /**
      * @brief Bind the texture
      *

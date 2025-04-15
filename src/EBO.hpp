@@ -20,6 +20,9 @@ public:
      */
     ~EBO();
 
+    EBO(EBO&& other);
+    EBO& operator=(EBO&& other);
+
     /**
      * @brief Bind the EBO
      */

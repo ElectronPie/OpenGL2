@@ -19,6 +19,9 @@ public:
      */
     ~VAO();
 
+    VAO(VAO&& other);
+    VAO& operator=(VAO&& other);
+
     /**
      * @brief Bind the VAO
      */

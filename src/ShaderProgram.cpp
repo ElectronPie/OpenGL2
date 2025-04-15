@@ -92,6 +92,24 @@ ShaderProgram::~ShaderProgram()
     GLCall(glDeleteProgram(m_rendererID));
 }
 
+ShaderProgram::ShaderProgram(ShaderProgram&& other)
+{
+    m_rendererID           = std::move(other.m_rendererID);
+    m_uniformLocationCache = std::move(other.m_uniformLocationCache);
+
+    other.m_rendererID = 0;
+}
+
+ShaderProgram& ShaderProgram::operator=(ShaderProgram&& other)
+{
+    m_rendererID           = other.m_rendererID;
+    m_uniformLocationCache = std::move(other.m_uniformLocationCache);
+
+    other.m_rendererID = 0;
+
+    return *this;
+}
+
 void ShaderProgram::Bind() const noexcept
 {
     GLCall(glUseProgram(m_rendererID));
