@@ -30,6 +30,8 @@ VAO& VAO::operator=(VAO&& other)
     m_elementsDataType = other.m_elementsDataType;
 
     other.m_rendererID = 0;
+
+    return *this;
 }
 
 void VAO::Bind() const noexcept
