@@ -45,7 +45,7 @@ namespace Tests
         VBLayout m_layout;
         EBO m_ebo;
         VAO m_vao;
-        std::unique_ptr<ShaderProgram> m_shaderProgram;
+        ShaderProgram m_shaderProgram;
         Renderer& m_rendererInstance;
 
         float m_time = 0.0f;
