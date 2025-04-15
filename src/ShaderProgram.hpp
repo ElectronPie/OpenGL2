@@ -50,6 +50,9 @@ public:
      */
     ~ShaderProgram();
 
+    ShaderProgram(ShaderProgram&& other);
+    ShaderProgram& operator=(ShaderProgram&& other);
+
     /**
      * @brief Activate the shader program
      */

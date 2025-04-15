@@ -22,6 +22,9 @@ public:
      */
     ~VBO();
 
+    VBO(VBO&& other);
+    VBO& operator=(VBO&& other);
+
     /**
      * @brief Bind the VBO
      */

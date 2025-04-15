@@ -12,6 +12,26 @@ VAO::~VAO()
     GLCall(glDeleteVertexArrays(1, &m_rendererID));
 }
 
+VAO::VAO(VAO&& other)
+{
+    m_rendererID       = other.m_rendererID;
+    m_verticesCount    = other.m_verticesCount;
+    m_elementsCount    = other.m_elementsCount;
+    m_elementsDataType = other.m_elementsDataType;
+
+    other.m_rendererID = 0;
+}
+
+VAO& VAO::operator=(VAO&& other)
+{
+    m_rendererID       = other.m_rendererID;
+    m_verticesCount    = other.m_verticesCount;
+    m_elementsCount    = other.m_elementsCount;
+    m_elementsDataType = other.m_elementsDataType;
+
+    other.m_rendererID = 0;
+}
+
 void VAO::Bind() const noexcept
 {
     GLCall(glBindVertexArray(m_rendererID));
