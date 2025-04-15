@@ -81,6 +81,12 @@ public:
 #undef UNIFORM_FUNC_MATRIX_M_X_M
 #undef UNIFORM_FUNC_MATRIX_M_X_N
 
+    /**
+     * @brief Checks if the shader is valid/optimal in the current OpenGL state
+     * and if not, prints out exactly how
+     */
+    void Validate() const noexcept;
+
 private:
     /**
      * @brief Get the OpenGL location of this shader program's uniform by name

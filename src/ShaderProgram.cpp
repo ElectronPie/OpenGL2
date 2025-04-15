@@ -150,6 +150,21 @@ UNIFORM_FUNCS
 #undef UNIFORM_FUNC_MATRIX_M_X_M
 #undef UNIFORM_FUNC_MATRIX_M_X_N
 
+void ShaderProgram::Validate() const noexcept
+{
+    GLCall(glValidateProgram(m_rendererID));
+    int success;
+    GLCall(glGetProgramiv(m_rendererID, GL_VALIDATE_STATUS, &success));
+    if(success == GL_FALSE)
+    {
+        int logLength;
+        GLCall(glGetProgramiv(m_rendererID, GL_INFO_LOG_LENGTH, &logLength));
+        char* log = (char*)alloca(logLength * sizeof(char));
+        GLCall(glGetProgramInfoLog(m_rendererID, logLength, &logLength, log));
+        std::cout << "Failed to validate shader program:\n" << log << std::endl;
+    }
+}
+
 unsigned int ShaderProgram::GetUniformLocation(const std::string& name) const
 {
     int location;
