@@ -35,6 +35,7 @@ namespace Tests
         if(ImGui::Button("Reload"))
         {
             m_shaderProgram = ShaderProgram{"assets/shaders/TestShader.vert.glsl", m_fragmentShaderPath};
+            m_time          = 0.0f;
         }
     }
 
