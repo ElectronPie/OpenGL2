@@ -331,12 +331,12 @@ void Renderer::SetViewportSize(unsigned int width, unsigned int height)
 }
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
-static void Renderer::ClearGLErrors() noexcept
+void Renderer::ClearGLErrors() noexcept
 {
     while(glGetError() != GL_NO_ERROR);
 }
 
-static bool Renderer::CheckGLError(const char* function, const char* file, int line)
+bool Renderer::CheckGLError(const char* function, const char* file, int line)
 {
     bool result = true;
     while(GLenum error = glGetError())
