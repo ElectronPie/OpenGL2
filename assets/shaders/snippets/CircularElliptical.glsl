@@ -112,13 +112,6 @@ float DoubleEllipticSigmoid(float x, vec2 p)
 // Joining Two Lines with a Circular Arc Fillet
 // Adapted from Robert D. Miller / Graphics Gems III.
 
-float arcStartAngle = 0.0;
-float arcEndAngle = 0.0;
-vec2 arcStart = vec2(0.0);
-vec2 arcEnd = vec2(0.0);
-vec2 arcCenter = vec2(0.0);
-float arcRadius = 0.0;
-
 // Return signed distance from line ax + by + c = 0 to point p
 float LineToPoint(float a, float b, float c, vec2 p)
 {
@@ -131,8 +124,22 @@ float LineToPoint(float a, float b, float c, vec2 p)
     return lp;
 }
 
-void ComputeFilletParameters(vec2 p1, vec2 p2, vec2 p3, vec2 p4, float R)
+void ComputeFilletParameters(
+    in vec2 p1, in vec2 p2, in vec2 p3, in vec2 p4,
+    inout float R,
+    out float arcStartAngle,
+    out float arcEndAngle,
+    out vec2 arcStart,
+    out vec2 arcEnd,
+    out vec2 arcCenter
+)
 {
+    arcStartAngle = 0.0;
+    arcEndAngle = 0.0;
+    arcStart = vec2(0.0);
+    arcEnd = vec2(0.0);
+    arcCenter = vec2(0.0);
+
     float c1 = p2.x*p1.y - p1.x*p2.y;
     float a1 = p2.y - p1.y;
     float b1 = p1.x - p2.x;
@@ -142,6 +149,7 @@ void ComputeFilletParameters(vec2 p1, vec2 p2, vec2 p3, vec2 p4, float R)
     if(a1*b2 == a2*b1)
     {
         // Parallel or coincident lines
+        R = 0.0;
         return;
     }
 
@@ -151,12 +159,14 @@ void ComputeFilletParameters(vec2 p1, vec2 p2, vec2 p3, vec2 p4, float R)
     d1 = LineToPoint(a1, b1, c1, mP); // Find distance p1p2 to p3
     if(d1 == 0.0)
     {
+        R = 0.0;
         return;
     }
     mP = (p1 + p2)/2.0;
     d2 = LineToPoint(a2, b2, c2, mP); // Find distance p3p4 to p2
     if(d2 == 0.0)
     {
+        R = 0.0;
         return;
     }
 
@@ -222,9 +232,8 @@ void ComputeFilletParameters(vec2 p1, vec2 p2, vec2 p3, vec2 p4, float R)
     arcCenter     = pC;
     arcStartAngle = arc1;
     arcEndAngle   = arc2;
-    arcRadius     = R;
-    arcStart      = arcCenter + arcRadius*vec2(cos(arcStartAngle), sin(arcStartAngle));
-    arcEnd        = arcCenter + arcRadius*vec2(cos(arcEndAngle), sin(arcEndAngle));
+    arcStart      = arcCenter + R*vec2(cos(arcStartAngle), sin(arcStartAngle));
+    arcEnd        = arcCenter + R*vec2(cos(arcEndAngle), sin(arcEndAngle));
 }
 
 float CircularFillet(float x, vec2 p, float R)
@@ -239,7 +248,16 @@ float CircularFillet(float x, vec2 p, float R)
     a = clamp(a, min_param_a, max_param_a);
     b = clamp(b, min_param_b, max_param_b);
 
-    ComputeFilletParameters(vec2(0.0), p, p, vec2(1.0), R);
+    float arcStartAngle;
+    float arcEndAngle;
+    vec2 arcStart;
+    vec2 arcEnd;
+    vec2 arcCenter;
+    ComputeFilletParameters(
+        vec2(0.0), p, p, vec2(1.0),
+        R,
+        arcStartAngle, arcEndAngle, arcStart, arcEnd, arcCenter
+    );
     float t;
     float y;
     x = clamp(x, 0.0, 1.0);
@@ -256,7 +274,7 @@ float CircularFillet(float x, vec2 p, float R)
     }
     else
     {
-        y = arcCenter.y + sign(arcCenter.x - x)*sqrt(sq(arcRadius) - sq(x - arcCenter.x));
+        y = arcCenter.y + sign(arcCenter.x - x)*sqrt(sq(R) - sq(x - arcCenter.x));
     }
     return y;
 }
@@ -264,16 +282,12 @@ float CircularFillet(float x, vec2 p, float R)
 //------------------------------------------------
 // Adapted from Paul Bourke
 
-vec2 m_center = vec2(0.0);
-float m_dRadius = 0.0;
-
 // Check the given point are perpendicular to x or y axis
 bool IsPerpendicular(vec2 p1, vec2 p2, vec2 p3)
 {
     vec2 dA = p2 - p1;
     vec2 dB = p3 - p2;
     float epsilon = 0.000001;
-
 
     // checking whether the line of the two pts are vertical
     if(abs(dA.x) <= epsilon && abs(dB.y) <= epsilon)
@@ -292,14 +306,17 @@ bool IsPerpendicular(vec2 p1, vec2 p2, vec2 p3)
     {
         return true;
     }
-    else if(abs(dB.x)<= epsilon)
+    else if(abs(dB.x) <= epsilon)
     {
         return true;
     }
     else return false;
 }
 
-void CalcCircleFrom3Points(vec2 p1, vec2 p2, vec2 p3)
+void CalcCircleFrom3Points(
+    in vec2 p1, in vec2 p2, in vec2 p3,
+    out vec2 center, out float dRadius
+)
 {
     vec2 dA = p2 - p1;
     vec2 dB = p3 - p2;
@@ -307,8 +324,8 @@ void CalcCircleFrom3Points(vec2 p1, vec2 p2, vec2 p3)
 
     if(abs(dA.x) <= epsilon && abs(dB.x) <= epsilon)
     {
-        m_center = 0.5*vec2(p2.x + p3.x, p1.y + p2.y);
-        m_dRadius = length(m_center - p1);
+        center = 0.5*vec2(p2.x + p3.x, p1.y + p2.y);
+        dRadius = length(center - p1);
         return;
     }
 
@@ -317,16 +334,20 @@ void CalcCircleFrom3Points(vec2 p1, vec2 p2, vec2 p3)
     float bSlope = dB.y / dB.x;
     // Checking whether the given points are colinear
     if(abs(aSlope - bSlope) <= epsilon)
+    {
+        center = vec2(0.0, 0.0);
+        dRadius = 0.0;
         return;
+    }
 
     // Calc center
-    m_center.x = (
+    center.x = (
         aSlope*bSlope*(p1.y - p3.y) +
         bSlope*(p1.x + p2.x) -
         aSlope*(p2.x + p3.x)
     )/(2.0*(bSlope - aSlope));
-    m_center.y = (-1.0/aSlope)*(m_center.x - (p1.x+p2.x)/2.0) + (p1.y+p2.y)/2.0;
-    m_dRadius = length(m_center - p1);
+    center.y = (-1.0/aSlope)*(center.x - (p1.x+p2.x)/2.0) + (p1.y+p2.y)/2.0;
+    dRadius = length(center - p1);
 }
 
 float CircularArcThroughPoint(float x, vec2 p)
@@ -346,52 +367,55 @@ float CircularArcThroughPoint(float x, vec2 p)
     vec2 p2 = vec2(a, b);
     vec2 p3 = vec2(1);
 
+    vec2 center = vec2(0.0, 0.0);
+    float dRadius = 0.0;
+
     if(!IsPerpendicular(p1, p2, p3))
-        CalcCircleFrom3Points(p1, p2, p3);
+        CalcCircleFrom3Points(p1, p2, p3, center, dRadius);
     else if(!IsPerpendicular(p1, p3, p2))
-        CalcCircleFrom3Points(p1, p3, p2);
+        CalcCircleFrom3Points(p1, p3, p2, center, dRadius);
     else if(!IsPerpendicular(p2, p1, p3))
-        CalcCircleFrom3Points(p2, p1, p3);
+        CalcCircleFrom3Points(p2, p1, p3, center, dRadius);
     else if(!IsPerpendicular(p2, p3, p1))
-        CalcCircleFrom3Points(p2, p3, p1);
+        CalcCircleFrom3Points(p2, p3, p1, center, dRadius);
     else if(!IsPerpendicular(p3, p1, p2))
-        CalcCircleFrom3Points(p3, p1, p2);
+        CalcCircleFrom3Points(p3, p1, p2, center, dRadius);
     else if(!IsPerpendicular(p3, p2, p1))
-        CalcCircleFrom3Points(p3, p2, p1);
+        CalcCircleFrom3Points(p3, p2, p1, center, dRadius);
     else
     {
         return 0.0;
     }
 
-    if(m_dRadius == 0.0)
+    if(dRadius == 0.0)
         return x;
 
     // constrain
     if(
-        clamp(m_center.x, 0.0+epsilon, 1.0-epsilon) == m_center.x &&
-        clamp(m_center.y, 0.0+epsilon, 1.0-epsilon) == m_center.y
+        clamp(center.x, 0.0+epsilon, 1.0-epsilon) == center.x &&
+        clamp(center.y, 0.0+epsilon, 1.0-epsilon) == center.y
     )
     {
-        if(a < m_center.x)
+        if(a < center.x)
         {
-            m_center = vec2(1.0, 0.0);
-            m_dRadius = 1.0;
+            center = vec2(1.0, 0.0);
+            dRadius = 1.0;
         }
         else
         {
-            m_center = vec2(0.0, 1.0);
-            m_dRadius = 1.0;
+            center = vec2(0.0, 1.0);
+            dRadius = 1.0;
         }
     }
 
     float y = 0.0;
-    if(x >= m_center.x)
+    if(x >= center.x)
     {
-        y = m_center.y - sqrt(sq(m_dRadius) - sq(x - m_center.x));
+        y = center.y - sqrt(sq(dRadius) - sq(x - center.x));
     }
     else
     {
-        y = m_center.y + sqrt(sq(m_dRadius) - sq(x - m_center.x));
+        y = center.y + sqrt(sq(dRadius) - sq(x - center.x));
     }
     return y;
 }
