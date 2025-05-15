@@ -7,13 +7,13 @@
 
 #include <imgui.h>
 
-static Camera* camera;
-static GLFWscrollfun oldCallback;
+static Camera* s_camera;
+static GLFWscrollfun s_oldCallback;
 
 static void ScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 {
-    camera->ProcessMouseScroll(yOffset);
-    oldCallback(window, xOffset, yOffset);
+    s_camera->ProcessMouseScroll(yOffset);
+    s_oldCallback(window, xOffset, yOffset);
 }
 
 namespace Tests
@@ -39,13 +39,13 @@ namespace Tests
         m_shaderProgram.SetUniform1("u_texture1", 0);
         m_shaderProgram.SetUniform1("u_texture2", 1);
 
-        camera      = &m_camera;
-        oldCallback = glfwSetScrollCallback(m_rendererInstance.GetWindow(), ScrollCallback);
+        s_camera      = &m_camera;
+        s_oldCallback = glfwSetScrollCallback(m_rendererInstance.GetWindow(), ScrollCallback);
     }
 
     TestCamera::~TestCamera()
     {
-        glfwSetScrollCallback(m_rendererInstance.GetWindow(), oldCallback);
+        glfwSetScrollCallback(m_rendererInstance.GetWindow(), s_oldCallback);
     }
 
     void TestCamera::OnRender()
