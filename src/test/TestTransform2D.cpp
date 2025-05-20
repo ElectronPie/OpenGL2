@@ -4,17 +4,20 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <numeric>
 #include <sstream>
+
+#include "Renderer.hpp"
 
 namespace Tests
 {
     TestTransform2D::TestTransform2D():
         m_vbo{s_vertices, sizeof(s_vertices) / sizeof(s_vertices[0])},
         m_ebo{s_indices, sizeof(s_indices) / sizeof(s_indices[0])},
-        m_shaderProgram{"assets/shaders/TestTransform2D.vert.glsl", "assets/shaders/TestTransform2D.frag.glsl"},
-        m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"},
-        m_rendererInstance{Renderer::GetInstance()}
+        m_shaderProgram{
+            "assets/shaders/TestTransform2D/TestTransform2D.vert.glsl",
+            "assets/shaders/TestTransform2D/TestTransform2D.frag.glsl"
+        },
+        m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"}
     {
         // Setup vertex buffer layout
         m_layout.Push<float>(3); // position
@@ -39,7 +42,7 @@ namespace Tests
     {
         m_shaderProgram.SetUniformMat4("u_transform", m_transform);
 
-        m_rendererInstance.DrawElements(m_vao, m_shaderProgram);
+        Renderer::GetInstance().DrawElements(m_vao, m_shaderProgram);
     }
 
     void TestTransform2D::OnImGuiRender()

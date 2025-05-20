@@ -22,9 +22,11 @@ namespace Tests
         m_vbo{
             s_vertices, sizeof(s_vertices) / sizeof(s_vertices[0])
     },
-        m_shaderProgram{"assets/shaders/TestCamera.vert.glsl", "assets/shaders/TestCamera.frag.glsl"},
+        m_shaderProgram{
+            "assets/shaders/TestCamera/TestCamera.vert.glsl", "assets/shaders/TestCamera/TestCamera.frag.glsl"
+        },
         m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"},
-        m_rendererInstance{Renderer::GetInstance()}, m_camera{{0.0f, 0.0f, 3.0f}}
+        m_camera{{0.0f, 0.0f, 3.0f}}
     {
         // Setup vertex buffer layout
         m_layout.Push<float>(3); // position
@@ -40,12 +42,12 @@ namespace Tests
         m_shaderProgram.SetUniform1("u_texture2", 1);
 
         s_camera      = &m_camera;
-        s_oldCallback = glfwSetScrollCallback(m_rendererInstance.GetWindow(), ScrollCallback);
+        s_oldCallback = glfwSetScrollCallback(Renderer::GetInstance().GetWindow(), ScrollCallback);
     }
 
     TestCamera::~TestCamera()
     {
-        glfwSetScrollCallback(m_rendererInstance.GetWindow(), s_oldCallback);
+        glfwSetScrollCallback(Renderer::GetInstance().GetWindow(), s_oldCallback);
     }
 
     void TestCamera::OnRender()
@@ -59,7 +61,7 @@ namespace Tests
             float angle = 20.0f * i;
             model       = glm::rotate(model, glm::radians(angle), glm::vec3{1.0f, 0.3f, 0.5f});
             m_shaderProgram.SetUniformMat4("u_model", model);
-            m_rendererInstance.DrawVertices(m_vao, m_shaderProgram);
+            Renderer::GetInstance().DrawVertices(m_vao, m_shaderProgram);
         }
     }
 
@@ -99,7 +101,7 @@ namespace Tests
         }
         case 1: {
             // Keyboard input
-            GLFWwindow* window = m_rendererInstance.GetWindow();
+            GLFWwindow* window = Renderer::GetInstance().GetWindow();
             if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
                 m_camera.ProcessTranslation(Camera::Movement::Forward, deltaTime);
             if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -139,7 +141,7 @@ namespace Tests
         }
 
         // Update camera projection dimensions
-        auto [width, height] = m_rendererInstance.GetViewportSize();
+        auto [width, height] = Renderer::GetInstance().GetViewportSize();
         m_camera.width       = width;
         m_camera.height      = height;
         m_camera.UpdateProj();
