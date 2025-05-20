@@ -62,13 +62,12 @@ namespace Tests
 
         m_objectShaderProgram.SetUniform3("u_objectColor", m_objectColor);
         m_objectShaderProgram.SetUniform3("u_lightColor", m_lightColor);
-        m_objectShaderProgram.SetUniform3("u_lightPos", m_lightPos);
-        m_objectShaderProgram.SetUniform3("u_viewPos", m_camera.position);
+        m_objectShaderProgram.SetUniform3("u_lightPos", glm::vec3{m_camera.view * glm::vec4{m_lightPos, 1.0f}});
 
         m_objectShaderProgram.SetUniformMat4("u_model", glm::mat4{1.0f});
         m_objectShaderProgram.SetUniformMat4("u_view", m_camera.view);
         m_objectShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
-        m_objectShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::mat3{1.0f})); // Normal of the identity matrix
+        m_objectShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::inverse(glm::mat3{m_camera.view})));
 
         m_objectShaderProgram.SetUniform1("u_ambientStrength", m_ambientStrength);
         m_objectShaderProgram.SetUniform1("u_diffuseStrength", m_diffuseStrength);
@@ -83,7 +82,7 @@ namespace Tests
         m_lightShaderProgram.SetUniformMat4("u_model", model);
         m_lightShaderProgram.SetUniformMat4("u_view", m_camera.view);
         m_lightShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
-        m_lightShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::inverse(glm::mat3{model})));
+        //m_lightShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::inverse(glm::mat3{m_camera.view * model})));
 
         r.DrawVertices(m_objectVAO, m_objectShaderProgram);
         r.DrawVertices(m_lightVAO, m_lightShaderProgram);

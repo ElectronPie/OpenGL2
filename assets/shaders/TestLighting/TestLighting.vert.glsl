@@ -14,6 +14,6 @@ uniform mat3 u_normal;
 void main()
 {
     gl_Position = u_proj * u_view * u_model * vec4(a_pos, 1.0);
-    fragPos = vec3(u_model * vec4(a_pos, 1.0));
+    fragPos = vec3(u_view * u_model * vec4(a_pos, 1.0));
     normal = u_normal * a_normal;
 }
