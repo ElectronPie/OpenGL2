@@ -26,7 +26,7 @@ namespace Tests
         void OnUpdate(float deltaTime) override;
 
     private:
-        std::string m_fragmentShaderPath = "assets/shaders/TestShader.frag.glsl";
+        std::string m_fragmentShaderPath = "assets/shaders/TestShader/TestShader.frag.glsl";
 
         // clang-format off
         static inline float s_vertices[12] = {

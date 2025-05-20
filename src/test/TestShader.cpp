@@ -10,7 +10,7 @@ namespace Tests
     TestShader::TestShader():
         m_vbo{s_vertices, sizeof(s_vertices) / sizeof(s_vertices[0])},
         m_ebo{s_indices, sizeof(s_indices) / sizeof(s_indices[0])},
-        m_shaderProgram{"assets/shaders/TestShader.vert.glsl", m_fragmentShaderPath},
+        m_shaderProgram{"assets/shaders/TestShader/TestShader.vert.glsl", m_fragmentShaderPath},
         m_rendererInstance{Renderer::GetInstance()}
     {
         // Setup vertex buffer layout
@@ -34,7 +34,7 @@ namespace Tests
         ImGui::InputText("Shader path", &m_fragmentShaderPath);
         if(ImGui::Button("Reload"))
         {
-            m_shaderProgram = ShaderProgram{"assets/shaders/TestShader.vert.glsl", m_fragmentShaderPath};
+            m_shaderProgram = ShaderProgram{"assets/shaders/TestShader/TestShader.vert.glsl", m_fragmentShaderPath};
             m_time          = 0.0f;
         }
 
