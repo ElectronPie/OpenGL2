@@ -3,14 +3,18 @@
 #include <glm/glm.hpp>
 #include <imgui.h>
 
+#include "Renderer.hpp"
+
 namespace Tests
 {
     TestTexture2D::TestTexture2D():
         m_vbo{s_vertices, sizeof(s_vertices) / sizeof(s_vertices[0])},
         m_ebo{s_indices, sizeof(s_indices) / sizeof(s_indices[0])},
-        m_shaderProgram{"assets/shaders/TestTexture2D.vert.glsl", "assets/shaders/TestTexture2D.frag.glsl"},
-        m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"},
-        m_rendererInstance{Renderer::GetInstance()}
+        m_shaderProgram{
+            "assets/shaders/TestTexture2D/TestTexture2D.vert.glsl",
+            "assets/shaders/TestTexture2D/TestTexture2D.frag.glsl"
+        },
+        m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"}
     {
         // Setup vertex buffer layout
         m_layout.Push<float>(3); // position
@@ -40,7 +44,7 @@ namespace Tests
         m_shaderProgram.SetUniform1("u_texture2", 1);
 
         m_shaderProgram.SetUniform1("u_mixCoefficient", m_mixCoefficient);
-        m_rendererInstance.DrawElements(m_vao, m_shaderProgram);
+        Renderer::GetInstance().DrawElements(m_vao, m_shaderProgram);
     }
 
     void TestTexture2D::OnImGuiRender()

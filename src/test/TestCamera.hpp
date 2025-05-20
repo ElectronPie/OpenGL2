@@ -8,7 +8,6 @@
 #include "VAO.hpp"
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
-#include "Renderer.hpp"
 
 #include <glm/glm.hpp>
 
@@ -44,6 +43,9 @@ namespace Tests
 
     private:
         // clang-format off
+        /**
+         * @brief Vertices of a cube
+         */
         static inline float s_vertices[180] = {
             // position             // texture coords
             -0.5f, -0.5f, -0.5f,    0.0f, 0.0f,
@@ -89,14 +91,34 @@ namespace Tests
             -0.5f, +0.5f, -0.5f,    0.0f, 1.0f,
         };
         // clang-format on
+        /**
+         * @brief Vertex buffer object for the cube
+         */
         VBO m_vbo;
+        /**
+         * @brief The cube's vertex buffers' layout
+         */
         VBLayout m_layout;
+        /**
+         * @brief Cube's vertex array object
+         */
         VAO m_vao;
+        /**
+         * @brief The shader program
+         */
         ShaderProgram m_shaderProgram;
+        /**
+         * @brief A texture
+         */
         Texture m_texture1;
+        /**
+         * @brief A texture
+         */
         Texture m_texture2;
-        Renderer& m_rendererInstance;
 
+        /**
+         * @brief The cubes' positions
+         */
         static inline glm::vec3 s_cubePositions[] = {
             {0.0f,  0.0f,  0.0f  },
             {2.0f,  5.0f,  -15.0f},
@@ -115,12 +137,26 @@ namespace Tests
          */
         Camera m_camera;
 
+        /**
+         * @brief The way the camera should be handled
+         */
         int m_cameraMode     = 0;
+        /**
+         * @brief Internal time \(in seconds\)
+         */
         float m_timeMark     = 0.0f;
+        /**
+         * @brief The radius of the circle the camera makes
+         */
         float m_circleRadius = 10.0f;
 
+        /**
+         * @brief The cursor's position on the screen
+         */
         glm::vec2 m_cursorPos;
-
+        /**
+         * @brief Is the left mouse button pressed
+         */
         bool m_mouseButtonPressed = false;
     };
 } // namespace Tests

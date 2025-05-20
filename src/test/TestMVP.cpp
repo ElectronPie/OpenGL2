@@ -9,6 +9,8 @@
 
 #include <string>
 
+#include "Renderer.hpp"
+
 static inline void EditMatrix4(const std::string& name, glm::mat4& matrix)
 {
     if(ImGui::BeginTable(name.c_str(), 4))
@@ -31,24 +33,19 @@ namespace Tests
         m_planeVbo{s_planeVertices, sizeof(s_planeVertices) / sizeof(s_planeVertices[0])},
         m_planeEbo{s_planeIndices, sizeof(s_planeIndices) / sizeof(s_planeIndices[0])},
         m_cubeVbo{s_cubeVertices, sizeof(s_cubeVertices) / sizeof(s_cubeVertices[0])},
-        m_shaderProgram{"assets/shaders/TestMVP.vert.glsl", "assets/shaders/TestMVP.frag.glsl"},
-        m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"},
-        m_rendererInstance{Renderer::GetInstance()}, m_mode{0}
+        m_shaderProgram{"assets/shaders/TestMVP/TestMVP.vert.glsl", "assets/shaders/TestMVP/TestMVP.frag.glsl"},
+        m_texture1{"assets/textures/container.jpg"}, m_texture2{"assets/textures/awesomeface.png"}, m_mode{0}
     {
-        // Setup plane vertex buffer layout
-        m_planeLayout.Push<float>(3); // position
-        m_planeLayout.Push<float>(2); // texture coords
+        // Setup the vertex buffer layout
+        m_layout.Push<float>(3); // position
+        m_layout.Push<float>(2); // texture coords
 
         // Setup plane VAO
-        m_planeVao.AttachVBO(m_planeVbo, m_planeLayout);
+        m_planeVao.AttachVBO(m_planeVbo, m_layout);
         m_planeVao.AttachEBO(m_planeEbo);
 
-        // Setup cube vertex buffer layout
-        m_cubeLayout.Push<float>(3); // position
-        m_cubeLayout.Push<float>(2); // texture coords
-
         // Setup cube VAO
-        m_cubeVao.AttachVBO(m_cubeVbo, m_cubeLayout);
+        m_cubeVao.AttachVBO(m_cubeVbo, m_layout);
 
         // Bind textures to samplers
         m_texture1.Bind(0);
@@ -68,6 +65,7 @@ namespace Tests
 
     void TestMVP::OnRender()
     {
+        Renderer& r                  = Renderer::GetInstance();
         TransformData& transformData = m_transforms[m_mode];
 
         switch(m_mode)
@@ -76,13 +74,13 @@ namespace Tests
             m_shaderProgram.SetUniformMat4("u_model", transformData.model);
             m_shaderProgram.SetUniformMat4("u_view", transformData.view);
             m_shaderProgram.SetUniformMat4("u_proj", transformData.proj);
-            m_rendererInstance.DrawElements(m_planeVao, m_shaderProgram);
+            r.DrawElements(m_planeVao, m_shaderProgram);
             break;
         case 1: // Cube
             m_shaderProgram.SetUniformMat4("u_model", transformData.model);
             m_shaderProgram.SetUniformMat4("u_view", transformData.view);
             m_shaderProgram.SetUniformMat4("u_proj", transformData.proj);
-            m_rendererInstance.DrawVertices(m_cubeVao, m_shaderProgram);
+            r.DrawVertices(m_cubeVao, m_shaderProgram);
             break;
         case 2:
             m_shaderProgram.SetUniformMat4("u_view", transformData.view);
@@ -94,7 +92,7 @@ namespace Tests
                 float angle = 20.0f * i * PartyModeAngleCoefficient();
                 model       = glm::rotate(model, glm::radians(angle), glm::vec3{1.0f, 0.3f, 0.5f});
                 m_shaderProgram.SetUniformMat4("u_model", model);
-                m_rendererInstance.DrawVertices(m_cubeVao, m_shaderProgram);
+                r.DrawVertices(m_cubeVao, m_shaderProgram);
             }
         }
     }
@@ -237,7 +235,7 @@ namespace Tests
             {
                 if(transformData.projPerspUseViewportRatio)
                 {
-                    auto [width, height]          = m_rendererInstance.GetViewportSize();
+                    auto [width, height]          = Renderer::GetInstance().GetViewportSize();
                     transformData.projPerspWidth  = width;
                     transformData.projPerspHeight = height;
                 }
