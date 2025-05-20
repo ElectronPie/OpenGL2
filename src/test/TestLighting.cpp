@@ -21,12 +21,16 @@ namespace Tests
 {
     TestLighting::TestLighting():
         m_vbo{s_vertices, sizeof(s_vertices)/sizeof(s_vertices[0])},
-        m_objectShaderProgram{
-            "assets/shaders/TestLighting/TestLighting.vert.glsl",
-            "assets/shaders/TestLighting/Object.frag.glsl"
+        m_phongShaderProgram{
+            "assets/shaders/TestLighting/Phong.vert.glsl",
+            "assets/shaders/TestLighting/Phong.frag.glsl"
+        },
+        m_gouraudShaderProgram{
+            "assets/shaders/TestLighting/Gouraud.vert.glsl",
+            "assets/shaders/TestLighting/Gouraud.frag.glsl"
         },
         m_lightShaderProgram{
-            "assets/shaders/TestLighting/TestLighting.vert.glsl",
+            "assets/shaders/TestLighting/Light.vert.glsl",
             "assets/shaders/TestLighting/Light.frag.glsl"
         },
         m_camera{{0.0f, 0.0f, 3.0f}}
@@ -60,19 +64,34 @@ namespace Tests
     {
         Renderer& r = Renderer::GetInstance();
 
-        m_objectShaderProgram.SetUniform3("u_objectColor", m_objectColor);
-        m_objectShaderProgram.SetUniform3("u_lightColor", m_lightColor);
-        m_objectShaderProgram.SetUniform3("u_lightPos", glm::vec3{m_camera.view * glm::vec4{m_lightPos, 1.0f}});
+        m_phongShaderProgram.SetUniform3("u_objectColor", m_objectColor);
+        m_phongShaderProgram.SetUniform3("u_lightColor", m_lightColor);
+        m_phongShaderProgram.SetUniform3("u_lightPos", glm::vec3{m_camera.view * glm::vec4{m_lightPos, 1.0f}});
 
-        m_objectShaderProgram.SetUniformMat4("u_model", glm::mat4{1.0f});
-        m_objectShaderProgram.SetUniformMat4("u_view", m_camera.view);
-        m_objectShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
-        m_objectShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::inverse(glm::mat3{m_camera.view})));
+        m_phongShaderProgram.SetUniformMat4("u_model", glm::mat4{1.0f});
+        m_phongShaderProgram.SetUniformMat4("u_view", m_camera.view);
+        m_phongShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
+        m_phongShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::inverse(glm::mat3{m_camera.view})));
 
-        m_objectShaderProgram.SetUniform1("u_ambientStrength", m_ambientStrength);
-        m_objectShaderProgram.SetUniform1("u_diffuseStrength", m_diffuseStrength);
-        m_objectShaderProgram.SetUniform1("u_specularStrength", m_specularStrength);
-        m_objectShaderProgram.SetUniform1("u_shininess", 1 << m_shininessExponent);
+        m_phongShaderProgram.SetUniform1("u_ambientStrength", m_ambientStrength);
+        m_phongShaderProgram.SetUniform1("u_diffuseStrength", m_diffuseStrength);
+        m_phongShaderProgram.SetUniform1("u_specularStrength", m_specularStrength);
+        m_phongShaderProgram.SetUniform1("u_shininess", 1 << (m_shininessExponent - 1));
+
+        m_gouraudShaderProgram.SetUniform3("u_objectColor", m_objectColor);
+        m_gouraudShaderProgram.SetUniform3("u_lightColor", m_lightColor);
+        m_gouraudShaderProgram.SetUniform3("u_lightPos", m_lightPos);
+        m_gouraudShaderProgram.SetUniform3("u_viewPos", m_camera.position);
+
+        m_gouraudShaderProgram.SetUniformMat4("u_model", glm::mat4{1.0f});
+        m_gouraudShaderProgram.SetUniformMat4("u_view", m_camera.view);
+        m_gouraudShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
+        m_gouraudShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::mat3{1.0f}));
+
+        m_gouraudShaderProgram.SetUniform1("u_ambientStrength", m_ambientStrength);
+        m_gouraudShaderProgram.SetUniform1("u_diffuseStrength", m_diffuseStrength);
+        m_gouraudShaderProgram.SetUniform1("u_specularStrength", m_specularStrength);
+        m_gouraudShaderProgram.SetUniform1("u_shininess", 1 << (m_shininessExponent - 1));
 
         m_lightShaderProgram.SetUniform3("u_lightColor", m_lightColor);
 
@@ -82,21 +101,28 @@ namespace Tests
         m_lightShaderProgram.SetUniformMat4("u_model", model);
         m_lightShaderProgram.SetUniformMat4("u_view", m_camera.view);
         m_lightShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
-        //m_lightShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::inverse(glm::mat3{m_camera.view * model})));
 
-        r.DrawVertices(m_objectVAO, m_objectShaderProgram);
+        if(m_useGouraud)
+        {
+            r.DrawVertices(m_objectVAO, m_gouraudShaderProgram);
+        }
+        else
+        {
+            r.DrawVertices(m_objectVAO, m_phongShaderProgram);
+        }
         r.DrawVertices(m_lightVAO, m_lightShaderProgram);
     }
 
     void TestLighting::OnImGuiRender()
     {
+        ImGui::Checkbox("Use Gouraud lighting instead of Phong lighting", &m_useGouraud);
         ImGui::ColorEdit3("Object color", &m_objectColor[0]);
         ImGui::ColorEdit3("Light color", &m_lightColor[0]);
         ImGui::SliderFloat3("Light position", &m_lightPos[0], -5.0f, 5.0f);
         ImGui::SliderFloat("Ambient strength", &m_ambientStrength, 0.0f, 1.0f);
         ImGui::SliderFloat("Diffuse strength", &m_diffuseStrength, 0.0f, 1.0f);
         ImGui::SliderFloat("Specular strength", &m_specularStrength, 0.0f, 1.0f);
-        ImGui::InputInt("Shininess", &m_shininessExponent);
+        ImGui::InputInt("Shininess exponent", &m_shininessExponent);
     }
 
     void TestLighting::OnUpdate(float deltaTime)
