@@ -72,12 +72,12 @@ ShaderProgram::ShaderProgram(
 )
 {
     char errorBuffer[256];
-    char inject[] = {'\0'};
+    char inject[]      = {'\0'};
     char includePath[] = "assets/shaders/snippets";
 
     char* vertexSourcePathCStr = (char*)alloca(sizeof(char) * (vertexSourcePath.string().length() + 1));
     strcpy(vertexSourcePathCStr, vertexSourcePath.c_str());
-    char* vertexSource        = stb_include_file(vertexSourcePathCStr, inject, includePath, errorBuffer);
+    char* vertexSource = stb_include_file(vertexSourcePathCStr, inject, includePath, errorBuffer);
     if(vertexSource == nullptr)
     {
         std::cout << "Couldn't read vertex source:\n" << errorBuffer << std::endl;
@@ -88,10 +88,10 @@ ShaderProgram::ShaderProgram(
 
     char* fragmentSourcePathCStr = (char*)alloca(sizeof(char) * (fragmentSourcePath.string().length() + 1));
     strcpy(fragmentSourcePathCStr, fragmentSourcePath.c_str());
-    char* fragmentSource        = stb_include_file(fragmentSourcePathCStr, inject, includePath, errorBuffer);
+    char* fragmentSource = stb_include_file(fragmentSourcePathCStr, inject, includePath, errorBuffer);
     if(fragmentSource == nullptr)
     {
-        std::cout << "Couldn't read vertex source:\n" << errorBuffer << std::endl;
+        std::cout << "Couldn't read fragment source:\n" << errorBuffer << std::endl;
         return;
     }
     unsigned int fragmentShader = CompileShader(fragmentSource, GL_FRAGMENT_SHADER);

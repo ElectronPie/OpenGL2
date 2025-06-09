@@ -1,6 +1,8 @@
 #ifndef UNITARY_REMAPPINGS_INCLUDED
 #define UNITARY_REMAPPINGS_INCLUDED
 
+#include "BlinnWyvilCosApprox.glsl"
+
 // Taken from Inigo Quilez's article "Useful little functions"
 // https://iquilezles.org/articles/functions/
 

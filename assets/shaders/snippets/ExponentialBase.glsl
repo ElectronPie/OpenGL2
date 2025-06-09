@@ -1,5 +1,5 @@
-#ifndef EXPONENTIAL_INCLUDED
-#define EXPONENTIAL_INCLUDED
+#ifndef EXPONENTIAL_BASE_INCLUDED
+#define EXPONENTIAL_BASE_INCLUDED
 
 // Taken from Golan Levin's paper "Exponential Shaping Functions"
 // https://www.flong.com/archive/texts/code/shapers_exp/
