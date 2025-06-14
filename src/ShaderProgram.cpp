@@ -2,6 +2,12 @@
 
 #include "Renderer.hpp"
 
+extern "C"
+{
+#include <stb_include.h>
+}
+
+#include <cstring>
 #include <iostream>
 #include <fstream>
 
@@ -65,8 +71,31 @@ ShaderProgram::ShaderProgram(
     const std::filesystem::path& vertexSourcePath, const std::filesystem::path& fragmentSourcePath
 )
 {
-    unsigned int vertexShader   = CompileShader(ReadFile(vertexSourcePath), GL_VERTEX_SHADER);
-    unsigned int fragmentShader = CompileShader(ReadFile(fragmentSourcePath), GL_FRAGMENT_SHADER);
+    char errorBuffer[256];
+    char inject[]      = {'\0'};
+    char includePath[] = "assets/shaders/snippets";
+
+    char* vertexSourcePathCStr = (char*)alloca(sizeof(char) * (vertexSourcePath.string().length() + 1));
+    strcpy(vertexSourcePathCStr, vertexSourcePath.c_str());
+    char* vertexSource = stb_include_file(vertexSourcePathCStr, inject, includePath, errorBuffer);
+    if(vertexSource == nullptr)
+    {
+        std::cout << "Couldn't read vertex source:\n" << errorBuffer << std::endl;
+        return;
+    }
+    unsigned int vertexShader = CompileShader(vertexSource, GL_VERTEX_SHADER);
+    free(vertexSource);
+
+    char* fragmentSourcePathCStr = (char*)alloca(sizeof(char) * (fragmentSourcePath.string().length() + 1));
+    strcpy(fragmentSourcePathCStr, fragmentSourcePath.c_str());
+    char* fragmentSource = stb_include_file(fragmentSourcePathCStr, inject, includePath, errorBuffer);
+    if(fragmentSource == nullptr)
+    {
+        std::cout << "Couldn't read fragment source:\n" << errorBuffer << std::endl;
+        return;
+    }
+    unsigned int fragmentShader = CompileShader(fragmentSource, GL_FRAGMENT_SHADER);
+    free(fragmentSource);
 
     GLCall(m_rendererID = glCreateProgram());
     GLCall(glAttachShader(m_rendererID, vertexShader));
@@ -194,10 +223,10 @@ unsigned int ShaderProgram::GetUniformLocation(const std::string& name) const
     {
         GLCall(location = glGetUniformLocation(m_rendererID, name.c_str()));
         m_uniformLocationCache[name] = location;
-    }
-    if(location == -1)
-    {
-        std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
+        if(location == -1)
+        {
+            std::cout << "Warning: uniform " << std::quoted(name) << " doesn't exist!" << std::endl;
+        }
     }
     return location;
 }

@@ -2,7 +2,10 @@
 
 #include "Renderer.hpp"
 
+extern "C"
+{
 #include <stb_image.h>
+}
 
 #include <iostream>
 

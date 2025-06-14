@@ -36,11 +36,13 @@ list(APPEND OpenGL2_LIBRARIES glm::glm)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/debugbreak")
 list(APPEND OpenGL2_LIBRARIES debugbreak)
 
-#stb_image
+# stb_image
+# stb_include
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb")
 list(APPEND OpenGL2_LIBRARIES stb)
 
 # Dear ImGui
+set(IMGUI_USE_FREETYPE OFF CACHE BOOL "" FORCE)
 set(IMGUI_IMPL_GLFW ON CACHE BOOL "" FORCE)
 set(IMGUI_IMPL_OPENGL3 ON CACHE BOOL "" FORCE)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui")
@@ -93,6 +95,9 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestCamera.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestCamera.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestShader.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestShader.hpp"
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestLighting.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestLighting.hpp"
