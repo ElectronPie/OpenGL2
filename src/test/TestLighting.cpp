@@ -76,7 +76,7 @@ namespace Tests
         m_phongShaderProgram.SetUniform1("u_ambientStrength", m_ambientStrength);
         m_phongShaderProgram.SetUniform1("u_diffuseStrength", m_diffuseStrength);
         m_phongShaderProgram.SetUniform1("u_specularStrength", m_specularStrength);
-        m_phongShaderProgram.SetUniform1("u_shininess", 1 << (m_shininessExponent - 1));
+        m_phongShaderProgram.SetUniform1("u_shininess", m_shininess);
 
         m_gouraudShaderProgram.SetUniform3("u_objectColor", m_objectColor);
         m_gouraudShaderProgram.SetUniform3("u_lightColor", m_lightColor);
@@ -91,7 +91,7 @@ namespace Tests
         m_gouraudShaderProgram.SetUniform1("u_ambientStrength", m_ambientStrength);
         m_gouraudShaderProgram.SetUniform1("u_diffuseStrength", m_diffuseStrength);
         m_gouraudShaderProgram.SetUniform1("u_specularStrength", m_specularStrength);
-        m_gouraudShaderProgram.SetUniform1("u_shininess", 1 << (m_shininessExponent - 1));
+        m_gouraudShaderProgram.SetUniform1("u_shininess", m_shininess);
 
         m_lightShaderProgram.SetUniform3("u_lightColor", m_lightColor);
 
@@ -122,7 +122,7 @@ namespace Tests
         ImGui::SliderFloat("Ambient strength", &m_ambientStrength, 0.0f, 1.0f);
         ImGui::SliderFloat("Diffuse strength", &m_diffuseStrength, 0.0f, 1.0f);
         ImGui::SliderFloat("Specular strength", &m_specularStrength, 0.0f, 1.0f);
-        ImGui::InputInt("Shininess exponent", &m_shininessExponent);
+        ImGui::InputFloat("Shininess", &m_shininess);
     }
 
     void TestLighting::OnUpdate(float deltaTime)

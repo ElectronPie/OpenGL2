@@ -17,7 +17,7 @@ uniform vec3 u_viewPos;
 uniform float u_ambientStrength;
 uniform float u_diffuseStrength;
 uniform float u_specularStrength;
-uniform int u_shininess;
+uniform float u_shininess;
 
 vec3 mat4xvec3(mat4 A, vec3 x)
 {

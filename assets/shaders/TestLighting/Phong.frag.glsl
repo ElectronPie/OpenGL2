@@ -13,7 +13,7 @@ uniform vec3 u_lightPos;
 uniform float u_ambientStrength;
 uniform float u_diffuseStrength;
 uniform float u_specularStrength;
-uniform int u_shininess;
+uniform float u_shininess;
 
 void main()
 {

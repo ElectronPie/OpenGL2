@@ -104,7 +104,7 @@ namespace Tests
         float m_ambientStrength = 0.1f;
         float m_diffuseStrength = 1.0f;
         float m_specularStrength = 0.5f;
-        int m_shininessExponent = 5;
+        float m_shininess = 32.0f;
 
         Camera m_camera;
         glm::vec2 m_cursorPos;
