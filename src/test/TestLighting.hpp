@@ -91,10 +91,7 @@ namespace Tests
         VAO m_objectVAO;
         VAO m_lightVAO;
         ShaderProgram m_phongShaderProgram;
-        ShaderProgram m_gouraudShaderProgram;
         ShaderProgram m_lightShaderProgram;
-
-        bool m_useGouraud = false;
 
         glm::vec3 m_objectColor{1.0f, 0.5f, 0.31f};
         glm::vec3 m_lightColor{1.0f, 1.0f, 1.0f};

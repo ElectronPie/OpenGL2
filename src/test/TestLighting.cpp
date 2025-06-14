@@ -25,10 +25,6 @@ namespace Tests
             "assets/shaders/TestLighting/Phong.vert.glsl",
             "assets/shaders/TestLighting/Phong.frag.glsl"
         },
-        m_gouraudShaderProgram{
-            "assets/shaders/TestLighting/Gouraud.vert.glsl",
-            "assets/shaders/TestLighting/Gouraud.frag.glsl"
-        },
         m_lightShaderProgram{
             "assets/shaders/TestLighting/Light.vert.glsl",
             "assets/shaders/TestLighting/Light.frag.glsl"
@@ -78,21 +74,6 @@ namespace Tests
         m_phongShaderProgram.SetUniform1("u_specularStrength", m_specularStrength);
         m_phongShaderProgram.SetUniform1("u_shininess", m_shininess);
 
-        m_gouraudShaderProgram.SetUniform3("u_objectColor", m_objectColor);
-        m_gouraudShaderProgram.SetUniform3("u_lightColor", m_lightColor);
-        m_gouraudShaderProgram.SetUniform3("u_lightPos", m_lightPos);
-        m_gouraudShaderProgram.SetUniform3("u_viewPos", m_camera.position);
-
-        m_gouraudShaderProgram.SetUniformMat4("u_model", glm::mat4{1.0f});
-        m_gouraudShaderProgram.SetUniformMat4("u_view", m_camera.view);
-        m_gouraudShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
-        m_gouraudShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::mat3{1.0f}));
-
-        m_gouraudShaderProgram.SetUniform1("u_ambientStrength", m_ambientStrength);
-        m_gouraudShaderProgram.SetUniform1("u_diffuseStrength", m_diffuseStrength);
-        m_gouraudShaderProgram.SetUniform1("u_specularStrength", m_specularStrength);
-        m_gouraudShaderProgram.SetUniform1("u_shininess", m_shininess);
-
         m_lightShaderProgram.SetUniform3("u_lightColor", m_lightColor);
 
         glm::mat4 model{1.0f};
@@ -102,20 +83,12 @@ namespace Tests
         m_lightShaderProgram.SetUniformMat4("u_view", m_camera.view);
         m_lightShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
 
-        if(m_useGouraud)
-        {
-            r.DrawVertices(m_objectVAO, m_gouraudShaderProgram);
-        }
-        else
-        {
-            r.DrawVertices(m_objectVAO, m_phongShaderProgram);
-        }
+        r.DrawVertices(m_objectVAO, m_phongShaderProgram);
         r.DrawVertices(m_lightVAO, m_lightShaderProgram);
     }
 
     void TestLighting::OnImGuiRender()
     {
-        ImGui::Checkbox("Use Gouraud lighting instead of Phong lighting", &m_useGouraud);
         ImGui::ColorEdit3("Object color", &m_objectColor[0]);
         ImGui::ColorEdit3("Light color", &m_lightColor[0]);
         ImGui::SliderFloat3("Light position", &m_lightPos[0], -5.0f, 5.0f);
