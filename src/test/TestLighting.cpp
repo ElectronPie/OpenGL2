@@ -29,6 +29,9 @@ namespace Tests
             "assets/shaders/TestLighting/Light.vert.glsl",
             "assets/shaders/TestLighting/Light.frag.glsl"
         },
+        m_diffuseMap{"assets/textures/container2.png"},
+        m_specularMap{"assets/textures/container2_specular.png"},
+        m_emissionMap{"assets/textures/matrix.jpg"},
         m_camera{{0.0f, 0.0f, 3.0f}}
     {
         Renderer& r = Renderer::GetInstance();
@@ -36,6 +39,7 @@ namespace Tests
         // Setup vertex buffer layout
         m_layout.Push<float>(3);
         m_layout.Push<float>(3);
+        m_layout.Push<float>(2);
 
         // Setup object VAO
         m_objectVAO.AttachVBO(m_vbo, m_layout);
@@ -44,6 +48,10 @@ namespace Tests
         m_lightVAO.AttachVBO(m_vbo, m_layout);
 
         r.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+        m_diffuseMap.Bind(0);
+        m_specularMap.Bind(1);
+        m_emissionMap.Bind(2);
 
         // Setup GLFW callback for camera zoom
         s_camera      = &m_camera;
@@ -65,10 +73,10 @@ namespace Tests
         m_phongShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
         m_phongShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::inverse(glm::mat3{m_camera.view})));
 
-        m_phongShaderProgram.SetUniform3("u_material.ambient", m_material.ambient);
-        m_phongShaderProgram.SetUniform3("u_material.diffuse", m_material.diffuse);
-        m_phongShaderProgram.SetUniform3("u_material.specular", m_material.specular);
+        m_phongShaderProgram.SetUniform1("u_material.diffuse", 0);
+        m_phongShaderProgram.SetUniform1("u_material.specular", 1);
         m_phongShaderProgram.SetUniform1("u_material.shininess", m_material.shininess);
+        m_phongShaderProgram.SetUniform1("u_material.emission", 2);
 
         m_phongShaderProgram.SetUniform3("u_light.ambient", m_light.ambient);
         m_phongShaderProgram.SetUniform3("u_light.diffuse", m_light.diffuse);
@@ -97,9 +105,6 @@ namespace Tests
         ImGui::ColorEdit3("Light ambient", &m_light.ambient[0]);
         ImGui::ColorEdit3("Light diffuse", &m_light.diffuse[0]);
         ImGui::ColorEdit3("Light specular", &m_light.specular[0]);
-        ImGui::ColorEdit3("Material ambient", &m_material.ambient[0]);
-        ImGui::ColorEdit3("Material diffuse", &m_material.diffuse[0]);
-        ImGui::ColorEdit3("Material specular", &m_material.specular[0]);
         ImGui::InputFloat("Material shininess", &m_material.shininess);
     }
 
