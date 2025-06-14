@@ -13,58 +13,30 @@ uniform vec2 u_resolution;
 vec3 colorA = vec3(0.129,0.336,0.184);
 vec3 colorB = vec3(0.863,0.605,0.164);
 
+float plot(vec2 st, float pct)
+{
+    return smoothstep(pct - 0.01, pct, st.y) - smoothstep(pct, pct + 0.01, st.y);
+}
+
 void main()
 {
     vec2 st = gl_FragCoord.xy / u_resolution;
 
-    float speed = 0.5;
-    float pct = abs(fract(-u_time*speed/2.0)*2.0 - 1.0);
     float y;
     vec3 color = vec3(0);
 
-    //y = pct;
-    //y = SinEaseIn(pct);
-    //y = SinEaseOut(pct);
-    //y = SinEaseInOut(pct);
-    //y = SinEaseOutIn(pct);
-    //y = CircularEaseIn(pct);
-    //y = CircularEaseOut(pct);
-    //y = CircularEaseInOut(pct);
-    //y = CircularEaseOutIn(pct);
-    //y = QuadraticEaseIn(pct);
-    //y = QuadraticEaseOut(pct);
-    //y = QuadraticEaseInOut(pct);
-    //y = QuadraticEaseOutIn(pct);
-    //y = CubicEaseIn(pct);
-    //y = CubicEaseOut(pct);
-    //y = CubicEaseInOut(pct);
-    //y = CubicEaseOutIn(pct);
-    //y = QuartEaseIn(pct);
-    //y = QuartEaseOut(pct);
-    //y = QuartEaseInOut(pct);
-    //y = QuartEaseOutIn(pct);
-    //y = QuintEaseIn(pct);
-    //y = QuintEaseOut(pct);
-    //y = QuintEaseInOut(pct);
-    //y = QuintEaseOutIn(pct);
-    //y = ExponentialEaseIn(pct);
-    //y = ExponentialEaseOut(pct);
-    //y = ExponentialEaseInOut(pct);
-    //y = ExponentialEaseOutIn(pct);
-    //y = EaseInBack(pct);
-    //y = EaseOutBack(pct);
-    //y = EaseInOutBack(pct);
-    //y = EaseOutInBack(pct);
-    //y = ElasticEaseIn(pct);
-    //y = ElasticEaseOut(pct);
-    //y = ElasticEaseInOut(pct);
-    //y = ElasticEaseOutIn(pct);
-    //y = EaseInBounce(pct);
-    //y = EaseOutBounce(pct);
-    //y = EaseInOutBounce(pct);
-    y = EaseOutInBounce(pct);
+    vec3 pct = vec3(st.x);
+
+    pct.r = smoothstep(0.0,1.0, st.x);
+    pct.g = sin(st.x*PI);
+    pct.b = pow(st.x,0.5);
 
     color = mix(colorA, colorB, pct);
+
+    // Plot transition lines for each channel
+    color = mix(color,vec3(1.0,0.0,0.0),plot(st,pct.r));
+    color = mix(color,vec3(0.0,1.0,0.0),plot(st,pct.g));
+    color = mix(color,vec3(0.0,0.0,1.0),plot(st,pct.b));
 
     FragColor = vec4(color, 1.0);
 }
