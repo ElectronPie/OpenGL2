@@ -37,14 +37,6 @@ namespace Tests
             m_shaderProgram = ShaderProgram{"assets/shaders/TestShader/TestShader.vert.glsl", m_fragmentShaderPath};
             m_time          = 0.0f;
         }
-
-        ImGui::Combo("Easing type", &m_easingTypeID, s_easingTypes);
-        ImGui::BeginDisabled(m_easingTypeID == 0);
-        ImGui::Combo("Easing character", &m_easingCharacterID, s_easingCharacters);
-        ImGui::EndDisabled();
-
-        int functionID = m_easingTypeID == 0 ? 0 : m_easingTypeID * 4 - 3 + m_easingCharacterID;
-        m_shaderProgram.SetUniform1("u_functionID", functionID);
     }
 
     void TestShader::OnUpdate(float deltaTime)

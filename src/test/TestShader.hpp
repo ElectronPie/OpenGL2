@@ -51,22 +51,5 @@ namespace Tests
         float m_time = 0.0f;
         glm::vec2 m_mouse;
         glm::vec2 m_resolution;
-
-        int m_easingTypeID = 0;
-        static inline const char* s_easingTypes =
-            "Linear (none)\0"
-            "Sine\0"
-            "Circular\0"
-            "Quadratic\0"
-            "Cubic\0"
-            "Quartic\0"
-            "Quintic\0"
-            "Exponential\0"
-            "Ease-Back\0"
-            "Elastic\0"
-            "Bounce\0";
-
-        int m_easingCharacterID                      = 0;
-        static inline const char* s_easingCharacters = "In\0Out\0In-Out\0Out-In\0";
     };
 } // namespace Tests
