@@ -60,28 +60,32 @@ namespace Tests
     {
         Renderer& r = Renderer::GetInstance();
 
-        m_phongShaderProgram.SetUniform3("u_objectColor", m_objectColor);
-        m_phongShaderProgram.SetUniform3("u_lightColor", m_lightColor);
-        m_phongShaderProgram.SetUniform3("u_lightPos", glm::vec3{m_camera.view * glm::vec4{m_lightPos, 1.0f}});
-
         m_phongShaderProgram.SetUniformMat4("u_model", glm::mat4{1.0f});
         m_phongShaderProgram.SetUniformMat4("u_view", m_camera.view);
         m_phongShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
         m_phongShaderProgram.SetUniformMat3("u_normal", glm::transpose(glm::inverse(glm::mat3{m_camera.view})));
 
-        m_phongShaderProgram.SetUniform1("u_ambientStrength", m_ambientStrength);
-        m_phongShaderProgram.SetUniform1("u_diffuseStrength", m_diffuseStrength);
-        m_phongShaderProgram.SetUniform1("u_specularStrength", m_specularStrength);
-        m_phongShaderProgram.SetUniform1("u_shininess", m_shininess);
+        m_phongShaderProgram.SetUniform3("u_material.ambient", m_material.ambient);
+        m_phongShaderProgram.SetUniform3("u_material.diffuse", m_material.diffuse);
+        m_phongShaderProgram.SetUniform3("u_material.specular", m_material.specular);
+        m_phongShaderProgram.SetUniform1("u_material.shininess", m_material.shininess);
 
-        m_lightShaderProgram.SetUniform3("u_lightColor", m_lightColor);
+        m_phongShaderProgram.SetUniform3("u_light.ambient", m_light.ambient);
+        m_phongShaderProgram.SetUniform3("u_light.diffuse", m_light.diffuse);
+        m_phongShaderProgram.SetUniform3("u_light.specular", m_light.specular);
+        m_phongShaderProgram.SetUniform3("u_light.position", glm::vec3{m_camera.view * glm::vec4{m_light.position, 1.0f}});
 
         glm::mat4 model{1.0f};
-        model = glm::translate(model, m_lightPos);
+        model = glm::translate(model, m_light.position);
         model = glm::scale(model, glm::vec3(0.2f));
         m_lightShaderProgram.SetUniformMat4("u_model", model);
         m_lightShaderProgram.SetUniformMat4("u_view", m_camera.view);
         m_lightShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
+
+        m_lightShaderProgram.SetUniform3("u_light.ambient", m_light.ambient);
+        m_lightShaderProgram.SetUniform3("u_light.diffuse", m_light.diffuse);
+        m_lightShaderProgram.SetUniform3("u_light.specular", m_light.specular);
+        m_lightShaderProgram.SetUniform3("u_light.position", glm::vec3{m_camera.view * glm::vec4{m_light.position, 1.0f}});
 
         r.DrawVertices(m_objectVAO, m_phongShaderProgram);
         r.DrawVertices(m_lightVAO, m_lightShaderProgram);
@@ -89,13 +93,14 @@ namespace Tests
 
     void TestLighting::OnImGuiRender()
     {
-        ImGui::ColorEdit3("Object color", &m_objectColor[0]);
-        ImGui::ColorEdit3("Light color", &m_lightColor[0]);
-        ImGui::SliderFloat3("Light position", &m_lightPos[0], -5.0f, 5.0f);
-        ImGui::SliderFloat("Ambient strength", &m_ambientStrength, 0.0f, 1.0f);
-        ImGui::SliderFloat("Diffuse strength", &m_diffuseStrength, 0.0f, 1.0f);
-        ImGui::SliderFloat("Specular strength", &m_specularStrength, 0.0f, 1.0f);
-        ImGui::InputFloat("Shininess", &m_shininess);
+        ImGui::SliderFloat3("Light position", &m_light.position[0], -5.0f, 5.0f);
+        ImGui::ColorEdit3("Light ambient", &m_light.ambient[0]);
+        ImGui::ColorEdit3("Light diffuse", &m_light.diffuse[0]);
+        ImGui::ColorEdit3("Light specular", &m_light.specular[0]);
+        ImGui::ColorEdit3("Material ambient", &m_material.ambient[0]);
+        ImGui::ColorEdit3("Material diffuse", &m_material.diffuse[0]);
+        ImGui::ColorEdit3("Material specular", &m_material.specular[0]);
+        ImGui::InputFloat("Material shininess", &m_material.shininess);
     }
 
     void TestLighting::OnUpdate(float deltaTime)

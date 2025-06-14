@@ -93,15 +93,21 @@ namespace Tests
         ShaderProgram m_phongShaderProgram;
         ShaderProgram m_lightShaderProgram;
 
-        glm::vec3 m_objectColor{1.0f, 0.5f, 0.31f};
-        glm::vec3 m_lightColor{1.0f, 1.0f, 1.0f};
+        struct Material
+        {
+            glm::vec3 ambient{1.0f, 0.5f, 0.31f};
+            glm::vec3 diffuse{1.0f, 0.5f, 0.31f};
+            glm::vec3 specular{0.5f};
+            float shininess = 32.0f;
+        } m_material;
 
-        glm::vec3 m_lightPos{1.2f, 1.0f, 2.0f};
-
-        float m_ambientStrength = 0.1f;
-        float m_diffuseStrength = 1.0f;
-        float m_specularStrength = 0.5f;
-        float m_shininess = 32.0f;
+        struct Light
+        {
+            glm::vec3 position{1.2f, 1.0f, 2.0f};
+            glm::vec3 ambient{0.2f, 0.2f, 0.2f};
+            glm::vec3 diffuse{0.5f, 0.5f, 0.5f};
+            glm::vec3 specular{1.0f, 1.0f, 1.0f};
+        } m_light;
 
         Camera m_camera;
         glm::vec2 m_cursorPos;
