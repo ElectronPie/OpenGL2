@@ -29,9 +29,12 @@ namespace Tests
             "assets/shaders/TestLighting/Light.vert.glsl",
             "assets/shaders/TestLighting/Light.frag.glsl"
         },
-        m_diffuseMap{"assets/textures/container2.png"},
-        m_specularMap{"assets/textures/container2_specular.png"},
-        m_emissionMap{"assets/textures/matrix.jpg"},
+        m_material{
+            std::filesystem::path{"assets/textures/container2.png"},
+            std::filesystem::path{"assets/textures/container2_specular.png"},
+            std::filesystem::path{"assets/textures/matrix.jpg"},
+            32.0f
+        },
         m_camera{{0.0f, 0.0f, 3.0f}}
     {
         Renderer& r = Renderer::GetInstance();
@@ -49,9 +52,9 @@ namespace Tests
 
         r.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        m_diffuseMap.Bind(0);
-        m_specularMap.Bind(1);
-        m_emissionMap.Bind(2);
+        std::get<Texture>(m_material.diffuse).Bind(0);
+        std::get<Texture>(m_material.specular).Bind(1);
+        std::get<Texture>(m_material.emission).Bind(2);
 
         // Setup GLFW callback for camera zoom
         s_camera      = &m_camera;

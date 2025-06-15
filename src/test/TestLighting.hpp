@@ -6,7 +6,7 @@
 #include "VBLayout.hpp"
 #include "VAO.hpp"
 #include "ShaderProgram.hpp"
-#include "Texture.hpp"
+#include "Material.hpp"
 #include "Camera.hpp"
 
 namespace Tests
@@ -93,10 +93,7 @@ namespace Tests
         ShaderProgram m_phongShaderProgram;
         ShaderProgram m_lightShaderProgram;
 
-        struct Material
-        {
-            float shininess = 32.0f;
-        } m_material;
+        Material m_material;
 
         struct Light
         {
@@ -105,10 +102,6 @@ namespace Tests
             glm::vec3 diffuse{0.5f, 0.5f, 0.5f};
             glm::vec3 specular{1.0f, 1.0f, 1.0f};
         } m_light;
-
-        Texture m_diffuseMap;
-        Texture m_specularMap;
-        Texture m_emissionMap;
 
         Camera m_camera;
         glm::vec2 m_cursorPos;
