@@ -32,9 +32,24 @@ public:
 
 public:
     // Material attributes
+    /**
+     * @brief Optional ambient lighting value
+     */
     std::optional<glm::vec3> ambient;
+    /**
+     * @brief Diffuse map or color
+     */
     std::variant<Texture, glm::vec3> diffuse = glm::vec3{0.0f};
+    /**
+     * @brief Specular map or color
+     */
     std::variant<Texture, glm::vec3> specular = glm::vec3{0.0f};
+    /**
+     * @brief Emission map or color
+     */
     std::variant<Texture, glm::vec3> emission = glm::vec3{0.0f};
+    /**
+     * @brief Material shininess value
+     */
     float shininess;
 };
