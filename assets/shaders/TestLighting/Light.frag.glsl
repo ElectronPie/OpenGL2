@@ -2,17 +2,20 @@
 
 out vec4 FragColor;
 
-struct Light
+struct PointLight
 {
     vec3 position;
-
+    float attConst;
+    float attLinear;
+    float attQuadratic;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 };
-uniform Light u_light;
+uniform PointLight u_pointLight;
 
 void main()
 {
-    FragColor = vec4(u_light.ambient + u_light.diffuse + u_light.specular, 1.0);
+    vec3 color = (u_pointLight.ambient + u_pointLight.diffuse + u_pointLight.specular)/3.0;
+    FragColor = vec4(color, 1.0);
 }

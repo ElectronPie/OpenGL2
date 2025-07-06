@@ -181,11 +181,12 @@ void ShaderProgram::Unbind() const noexcept
         GLCall(glProgramUniformMatrix##M##fv(m_rendererID, GetUniformLocation(name), 1, GL_FALSE, &value[0][0])); \
     }
 
-#define UNIFORM_FUNC_MATRIX_M_X_N(M, N)                                                                               \
-    void ShaderProgram::SetUniformMat##M##x##N(const std::string& name, const glm::mat##M##x##N& value)               \
-    {                                                                                                                 \
-        GLCall(glProgramUniformMatrix##M##x##N##fv(m_rendererID, GetUniformLocation(name), 1, GL_FALSE, &value[0][0]) \
-        );                                                                                                            \
+#define UNIFORM_FUNC_MATRIX_M_X_N(M, N)                                                                            \
+    void ShaderProgram::SetUniformMat##M##x##N(const std::string& name, const glm::mat##M##x##N& value)            \
+    {                                                                                                              \
+        GLCall(                                                                                                    \
+            glProgramUniformMatrix##M##x##N##fv(m_rendererID, GetUniformLocation(name), 1, GL_FALSE, &value[0][0]) \
+        );                                                                                                         \
     }
 
 UNIFORM_FUNCS

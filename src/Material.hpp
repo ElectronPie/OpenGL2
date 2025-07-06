@@ -39,7 +39,7 @@ public:
     /**
      * @brief Diffuse map or color
      */
-    std::variant<Texture, glm::vec3> diffuse = glm::vec3{0.0f};
+    std::variant<Texture, glm::vec3> diffuse  = glm::vec3{0.0f};
     /**
      * @brief Specular map or color
      */
