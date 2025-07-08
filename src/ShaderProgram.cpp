@@ -76,7 +76,7 @@ ShaderProgram::ShaderProgram(
     char includePath[] = "assets/shaders/snippets";
 
     char* vertexSourcePathCStr = (char*)alloca(sizeof(char) * (vertexSourcePath.string().length() + 1));
-    strcpy(vertexSourcePathCStr, vertexSourcePath.c_str());
+    strcpy(vertexSourcePathCStr, vertexSourcePath.string().c_str());
     char* vertexSource = stb_include_file(vertexSourcePathCStr, inject, includePath, errorBuffer);
     if(vertexSource == nullptr)
     {
@@ -87,7 +87,7 @@ ShaderProgram::ShaderProgram(
     free(vertexSource);
 
     char* fragmentSourcePathCStr = (char*)alloca(sizeof(char) * (fragmentSourcePath.string().length() + 1));
-    strcpy(fragmentSourcePathCStr, fragmentSourcePath.c_str());
+    strcpy(fragmentSourcePathCStr, fragmentSourcePath.string().c_str());
     char* fragmentSource = stb_include_file(fragmentSourcePathCStr, inject, includePath, errorBuffer);
     if(fragmentSource == nullptr)
     {
