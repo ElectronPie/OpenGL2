@@ -214,6 +214,4 @@ private:
      * @brief Viewport height
      */
     unsigned int m_viewportHeight;
-
-    static Renderer m_instance;
 };

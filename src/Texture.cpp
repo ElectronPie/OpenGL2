@@ -23,7 +23,7 @@ Texture::Texture(const std::filesystem::path& texturePath)
     // Load and generate the texture
     int width, height, numChannels;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char* data = stbi_load(texturePath.c_str(), &width, &height, &numChannels, 4);
+    unsigned char* data = stbi_load(texturePath.string().c_str(), &width, &height, &numChannels, 4);
     if(data)
     {
         GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));

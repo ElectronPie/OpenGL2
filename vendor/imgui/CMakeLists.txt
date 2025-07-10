@@ -52,7 +52,7 @@ add_library(imgui STATIC
 target_include_directories(imgui PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/imgui")
 
 if(IMGUI_USE_CXX_STDLIB)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/misc/cpp/imgui_stdlib.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/misc/cpp/imgui_stdlib.cpp"
     )
@@ -66,7 +66,7 @@ if(IMGUI_USE_FONTS)
     )
 endif()
 if(IMGUI_USE_FREETYPE)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/misc/freetype/imgui_freetype.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/misc/freetype/imgui_freetype.cpp"
     )
@@ -75,7 +75,7 @@ if(IMGUI_USE_FREETYPE)
     )
 endif()
 if(IMGUI_USE_SINGLE_FILE)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/misc/single_file/imgui_single_file.h"
     )
     target_include_directories(imgui PUBLIC
@@ -84,123 +84,123 @@ if(IMGUI_USE_SINGLE_FILE)
 endif()
 
 if(IMGUI_IMPL_ALLEGRO5)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_allegro5.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_allegro5.h"
     )
 endif()
 if(IMGUI_IMPL_ANDROID)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_android.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_android.h"
     )
 endif()
 if(IMGUI_IMPL_DX9)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_dx9.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_dx9.h"
     )
 endif()
 if(IMGUI_IMPL_DX10)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_dx10.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_dx10.h"
     )
 endif()
 if(IMGUI_IMPL_DX11)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_dx11.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_dx11.h"
     )
 endif()
 if(IMGUI_IMPL_DX12)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_dx12.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_dx12.h"
     )
 endif()
 if(IMGUI_IMPL_GLFW)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.h"
     )
 endif()
 if(IMGUI_IMPL_GLUT)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glut.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glut.h"
     )
 endif()
 if(IMGUI_IMPL_METAL)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_metal.mm"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_metal.h"
     )
 endif()
 if(IMGUI_IMPL_OPENGL2)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl2.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl2.h"
     )
 endif()
 if(IMGUI_IMPL_OPENGL3)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3_loader.h"
     )
 endif()
 if(IMGUI_IMPL_OSX)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_osx.mm"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_osx.h"
     )
 endif()
 if(IMGUI_IMPL_SDL2)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdl2.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdl2.h"
     )
 endif()
 if(IMGUI_IMPL_SDLRENDERER2)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdlrenderer2.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdlrenderer2.h"
     )
 endif()
 if(IMGUI_IMPL_SDL3)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdl3.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdl3.h"
     )
 endif()
 if(IMGUI_IMPL_SDLRENDERER3)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdlrenderer3.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdlrenderer3.h"
     )
 endif()
 if(IMGUI_IMPL_SDLGPU3)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdlgpu3.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdlgpu3.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdlgpu3_shaders.h"
     )
 endif()
 if(IMGUI_IMPL_VULKAN)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_vulkan.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_vulkan.h"
     )
 endif()
 if(IMGUI_IMPL_WGPU)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_wgpu.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_wgpu.h"
     )
 endif()
 if(IMGUI_IMPL_WIN32)
-    target_sources(imgui PUBLIC
+    target_sources(imgui PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_win32.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_win32.h"
     )

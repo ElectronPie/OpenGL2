@@ -42,11 +42,11 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb")
 list(APPEND OpenGL2_LIBRARIES stb)
 
 # Dear ImGui
-set(IMGUI_USE_FREETYPE OFF CACHE BOOL "" FORCE)
 set(IMGUI_IMPL_GLFW ON CACHE BOOL "" FORCE)
 set(IMGUI_IMPL_OPENGL3 ON CACHE BOOL "" FORCE)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui")
 list(APPEND OpenGL2_LIBRARIES imgui)
+target_link_libraries(imgui PUBLIC glfw)
 
 set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Application.cpp"
@@ -77,6 +77,12 @@ set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Camera.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Camera.hpp"
 
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Material.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Material.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Light.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Light.hpp"
+
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.inl"
@@ -98,6 +104,9 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestShader.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestShader.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestLighting.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestLighting.hpp"
 )
 
 add_executable(OpenGL2

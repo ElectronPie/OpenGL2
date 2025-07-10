@@ -23,6 +23,7 @@
 #include "test/TestMVP.hpp"
 #include "test/TestCamera.hpp"
 #include "test/TestShader.hpp"
+#include "test/TestLighting.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
@@ -56,6 +57,7 @@ int main(int argc, char** argv)
     testMenu->RegisterTest<Tests::TestMVP>("MVP");
     testMenu->RegisterTest<Tests::TestCamera>("Camera");
     testMenu->RegisterTest<Tests::TestShader>("Shader");
+    testMenu->RegisterTest<Tests::TestLighting>("Lighting");
 
     testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 

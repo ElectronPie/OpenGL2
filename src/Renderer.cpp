@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <memory>
 
 static void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
@@ -125,11 +126,10 @@ static void APIENTRY GLDebugOutput(
 }
 #endif
 
-Renderer Renderer::m_instance;
-
 Renderer& Renderer::GetInstance()
 {
-    return m_instance;
+    static Renderer instance;
+    return instance;
 }
 
 Renderer::Renderer()
