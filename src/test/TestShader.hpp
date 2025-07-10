@@ -6,7 +6,6 @@
 #include "VBLayout.hpp"
 #include "VAO.hpp"
 #include "ShaderProgram.hpp"
-#include "Renderer.hpp"
 
 #include <glm/glm.hpp>
 
@@ -46,7 +45,8 @@ namespace Tests
         EBO m_ebo;
         VAO m_vao;
         ShaderProgram m_shaderProgram;
-        Renderer& m_rendererInstance;
+
+        glm::vec4 m_rectangle = glm::vec4(0.25f, 0.25f, 0.75f, 0.75f); // x1, y1, x2, y2
 
         float m_time = 0.0f;
         glm::vec2 m_mouse;
