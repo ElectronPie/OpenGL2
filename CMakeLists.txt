@@ -42,7 +42,6 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb")
 list(APPEND OpenGL2_LIBRARIES stb)
 
 # Dear ImGui
-set(IMGUI_USE_FREETYPE OFF CACHE BOOL "" FORCE)
 set(IMGUI_IMPL_GLFW ON CACHE BOOL "" FORCE)
 set(IMGUI_IMPL_OPENGL3 ON CACHE BOOL "" FORCE)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui")
