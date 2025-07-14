@@ -62,18 +62,18 @@ public:
      */
     void Unbind() const noexcept;
 
-#define UNIFORM_FUNC_VECTOR_1(PREFIX, TYPE) void SetUniform1(const std::string& name, TYPE value);
+#define UNIFORM_FUNC_VECTOR_1(PREFIX, TYPE) void SetUniform1(const std::string& name, TYPE value) const;
 
-#define UNIFORM_FUNC_VECTOR_2(PREFIX, TYPE) void SetUniform2(const std::string& name, glm::vec<2, TYPE> value);
+#define UNIFORM_FUNC_VECTOR_2(PREFIX, TYPE) void SetUniform2(const std::string& name, glm::vec<2, TYPE> value) const;
 
-#define UNIFORM_FUNC_VECTOR_3(PREFIX, TYPE) void SetUniform3(const std::string& name, glm::vec<3, TYPE> value);
+#define UNIFORM_FUNC_VECTOR_3(PREFIX, TYPE) void SetUniform3(const std::string& name, glm::vec<3, TYPE> value) const;
 
-#define UNIFORM_FUNC_VECTOR_4(PREFIX, TYPE) void SetUniform4(const std::string& name, glm::vec<4, TYPE> value);
+#define UNIFORM_FUNC_VECTOR_4(PREFIX, TYPE) void SetUniform4(const std::string& name, glm::vec<4, TYPE> value) const;
 
-#define UNIFORM_FUNC_MATRIX_M_X_M(M) void SetUniformMat##M(const std::string& name, const glm::mat##M& matrix);
+#define UNIFORM_FUNC_MATRIX_M_X_M(M) void SetUniformMat##M(const std::string& name, const glm::mat##M& matrix) const;
 
 #define UNIFORM_FUNC_MATRIX_M_X_N(M, N) \
-    void SetUniformMat##M##x##N(const std::string& name, const glm::mat##M##x##N& matrix);
+    void SetUniformMat##M##x##N(const std::string& name, const glm::mat##M##x##N& matrix) const;
 
     UNIFORM_FUNCS
 

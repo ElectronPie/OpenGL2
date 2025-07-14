@@ -9,7 +9,8 @@ extern "C"
 
 #include <iostream>
 
-Texture::Texture(const std::filesystem::path& texturePath)
+Texture::Texture(const std::filesystem::path& texturePath, Texture::Type type):
+    m_rendererID{0}, m_type{type}, m_name{texturePath.filename().string()}
 {
     GLCall(glGenTextures(1, &m_rendererID));
     Bind();

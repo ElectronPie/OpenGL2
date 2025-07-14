@@ -32,7 +32,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glm)
 list(APPEND OpenGL2_LIBRARIES glm::glm)
 
-#debugbreak
+# debugbreak
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/debugbreak")
 list(APPEND OpenGL2_LIBRARIES debugbreak)
 
@@ -47,6 +47,14 @@ set(IMGUI_IMPL_OPENGL3 ON CACHE BOOL "" FORCE)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui")
 list(APPEND OpenGL2_LIBRARIES imgui)
 target_link_libraries(imgui PUBLIC glfw)
+
+# assimp
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_ASSIMP_VIEWER OFF CACHE BOOL "" FORCE)
+set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/assimp")
+list(APPEND OpenGL2_LIBRARIES assimp)
 
 set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Application.cpp"
@@ -83,6 +91,12 @@ set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Light.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Light.hpp"
 
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Mesh.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Mesh.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Model.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Model.hpp"
+
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.inl"
@@ -107,6 +121,9 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestLighting.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestLighting.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestModel.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestModel.hpp"
 )
 
 add_executable(OpenGL2
