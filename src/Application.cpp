@@ -25,6 +25,7 @@
 #include "test/TestShader.hpp"
 #include "test/TestLighting.hpp"
 #include "test/TestModel.hpp"
+#include "test/TestDepth.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
@@ -60,6 +61,7 @@ int main(int argc, char** argv)
     testMenu->RegisterTest<Tests::TestShader>("Shader");
     testMenu->RegisterTest<Tests::TestLighting>("Lighting");
     testMenu->RegisterTest<Tests::TestModel>("Model");
+    testMenu->RegisterTest<Tests::TestDepth>("Depth");
 
     testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 
