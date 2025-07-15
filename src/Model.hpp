@@ -44,9 +44,13 @@ private:
      */
     std::vector<std::unique_ptr<Mesh>> m_meshes;
     /**
-     * @brief Vector to store loaded textures to avoid duplicates.
+     * @brief Vector of loaded textures belonging to the model.
      */
-    std::vector<std::shared_ptr<Texture>> m_loadedTextures;
+    std::vector<std::shared_ptr<Texture>> m_textures;
+    /**
+     * @brief Static vector to store loaded textures.
+     */
+    static std::vector<std::weak_ptr<Texture>> s_loadedTextures;
 
 private:
     /**

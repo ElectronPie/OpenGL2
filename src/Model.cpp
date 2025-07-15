@@ -5,6 +5,8 @@
 #include <iostream>
 #include <sstream>
 
+std::vector<std::weak_ptr<Texture>> Model::s_loadedTextures;
+
 Model::Model(const std::filesystem::path& modelPath, bool fllipUVs): m_directory{modelPath.parent_path()}
 {
     Assimp::Importer importer;
@@ -61,7 +63,7 @@ std::unique_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         Mesh::Vertex vertex;
         // Process vertex position, normals and texture coordinates
         vertex.position = glm::vec3{mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z};
-        vertex.normal = glm::vec3{mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z};
+        vertex.normal   = glm::vec3{mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z};
         if(mesh->mTextureCoords[0]) // Check if the mesh has texture coordinates
         {
             vertex.texCoords = glm::vec2{mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y};
@@ -115,11 +117,20 @@ std::vector<std::shared_ptr<Texture>> Model::LoadMaterialTextures(
         bool skip = false;
 
         // Check if the texture is already loaded
-        for(const auto& pTexture : m_loadedTextures)
+        for(const auto& wpTexture : s_loadedTextures)
         {
+            auto pTexture = wpTexture.lock();
+            if(!pTexture)
+            {
+                continue; // Skip expired weak pointers
+            }
             if(pTexture->GetName() == str.C_Str() && pTexture->GetType() == outType)
             {
                 textures.push_back(pTexture);
+                if(std::find(m_textures.begin(), m_textures.end(), pTexture) == m_textures.end())
+                {
+                    m_textures.push_back(pTexture);
+                }
                 skip = true;
                 break;
             }
@@ -129,9 +140,21 @@ std::vector<std::shared_ptr<Texture>> Model::LoadMaterialTextures(
         {
             auto pTexture = std::make_shared<Texture>(m_directory / str.C_Str(), outType);
             textures.push_back(pTexture);
-            m_loadedTextures.push_back(pTexture); // Store the texture to avoid duplicates
+            // Store the texture to avoid duplicates
+            m_textures.push_back(pTexture);
+            s_loadedTextures.emplace_back(pTexture);
         }
     }
+
+    // Clean up expired weak pointers
+    s_loadedTextures.erase(
+        std::remove_if(
+            s_loadedTextures.begin(),
+            s_loadedTextures.end(),
+            [](const std::weak_ptr<Texture>& wpTexture) { return wpTexture.expired(); }
+        ),
+        s_loadedTextures.end()
+    );
 
     return textures;
 }
