@@ -178,7 +178,15 @@ namespace Tests
         };
 
         /**
-         * @brief Flags whether to display the depth buffer
+         * @brief Is depth testing enabled
+         */
+        bool m_depthTestEnabled   = true;
+        /**
+         * @brief Whether to clear the depth buffer before rendering
+         */
+        bool m_clearDepthBuffer   = true;
+        /**
+         * @brief Whether to display the depth buffer
          */
         bool m_displayDepthBuffer = false;
 

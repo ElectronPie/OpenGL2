@@ -29,7 +29,6 @@ namespace Tests
         m_camera{{0.0f, 1.0f, 3.0f}}
     {
         Renderer& r = Renderer::GetInstance();
-        r.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         // Setup plane vertex buffer layout
         m_planeLayout.Push<float>(3); // position
@@ -90,6 +89,29 @@ namespace Tests
 
     void TestDepth::OnImGuiRender()
     {
+        Renderer& r = Renderer::GetInstance();
+        if(ImGui::Checkbox("Enable depth test", &m_depthTestEnabled))
+        {
+            if(m_depthTestEnabled)
+            {
+                r.EnableFeature(Renderer::FeatureFlags::DepthTest);
+            }
+            else
+            {
+                r.DisableFeature(Renderer::FeatureFlags::DepthTest);
+            }
+        }
+        if(ImGui::Checkbox("Clear depth buffer every frame", &m_clearDepthBuffer))
+        {
+            if(m_clearDepthBuffer)
+            {
+                r.clearFlags |= GL_DEPTH_BUFFER_BIT;
+            }
+            else
+            {
+                r.clearFlags &= ~GL_DEPTH_BUFFER_BIT;
+            }
+        }
         if(ImGui::Checkbox("Display depth buffer", &m_displayDepthBuffer))
         {
             m_shaderProgram.SetUniform1("u_displayDepthBuffer", m_displayDepthBuffer);
@@ -102,7 +124,9 @@ namespace Tests
                s_depthFuncsCount
            ))
         {
-            glDepthFunc(s_depthFuncs[m_currentDepthFuncIndex].first);
+            r.SetDepthTestFunction(
+                static_cast<Renderer::DepthTestFunction>(s_depthFuncs[m_currentDepthFuncIndex].first)
+            );
         }
     }
 

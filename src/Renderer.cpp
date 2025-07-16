@@ -264,7 +264,7 @@ void Renderer::DrawElements(const VAO& vao, const ShaderProgram& shaderProgram) 
 
 void Renderer::Clear() noexcept
 {
-    GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+    GLCall(glClear(clearFlags));
 }
 
 void Renderer::ClearColor(float r, float g, float b, float a) noexcept
@@ -328,6 +328,25 @@ void Renderer::SetViewportSize(unsigned int width, unsigned int height)
     GLCall(glViewport(0, 0, width, height));
     m_viewportWidth  = width;
     m_viewportHeight = height;
+}
+
+void Renderer::EnableFeature(FeatureFlags features) noexcept
+{
+    auto features_uint = static_cast<unsigned int>(features);
+    if(features_uint & static_cast<unsigned int>(FeatureFlags::DepthTest))
+        GLCall(glEnable(GL_DEPTH_TEST));
+}
+
+void Renderer::DisableFeature(FeatureFlags features) noexcept
+{
+    auto features_uint = static_cast<unsigned int>(features);
+    if(features_uint & static_cast<unsigned int>(FeatureFlags::DepthTest))
+        GLCall(glDisable(GL_DEPTH_TEST));
+}
+
+void Renderer::SetDepthTestFunction(DepthTestFunction func) noexcept
+{
+    GLCall(glDepthFunc(static_cast<GLenum>(func)));
 }
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)

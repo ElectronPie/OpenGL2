@@ -167,6 +167,49 @@ public:
      */
     void FinishFrame() noexcept;
 
+    /**
+     * @brief Feature flags for the renderer
+     */
+    enum class FeatureFlags
+    {
+        DepthTest = 1 << 0, ///< Enable depth testing
+    };
+
+    /**
+     * @brief Enable features of the renderer
+     *
+     * @param features Features to enable
+     */
+    void EnableFeature(FeatureFlags features) noexcept;
+    /**
+     * @brief Disable features of the renderer
+     *
+     * @param features Features to disable
+     */
+    void DisableFeature(FeatureFlags features) noexcept;
+
+    /**
+     * @brief Depth test functions
+     */
+    enum class DepthTestFunction
+    {
+        Never          = GL_NEVER,
+        Less           = GL_LESS,
+        Equal          = GL_EQUAL,
+        LessOrEqual    = GL_LEQUAL,
+        Greater        = GL_GREATER,
+        NotEqual       = GL_NOTEQUAL,
+        GreaterOrEqual = GL_GEQUAL,
+        Always         = GL_ALWAYS
+    };
+
+    /**
+     * @brief Set the depth test function
+     *
+     * @param func Depth test function to set
+     */
+    void SetDepthTestFunction(DepthTestFunction func) noexcept;
+
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
     /**
      * @brief Clears all OpenGL errors accumulated
@@ -186,6 +229,12 @@ public:
      */
     static bool CheckGLError(const char* function, const char* file, int line);
 #endif
+public:
+    /**
+     * @brief OpenGL clear flags used by Renderer::Clear
+     */
+    int clearFlags = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+
 private:
     /**
      * @brief Construct a new Renderer object
