@@ -29,13 +29,8 @@ namespace Tests
         m_lightShaderProgram{
             "assets/shaders/TestLighting/Light.vert.glsl", "assets/shaders/TestLighting/Light.frag.glsl"
         },
-        m_material{
-            std::filesystem::path{"assets/textures/container2.png"},
-            std::filesystem::path{"assets/textures/container2_specular.png"},
-            //std::filesystem::path{"assets/textures/matrix.jpg"},
-            glm::vec3{0.0f},
-            32.0f
-        },
+        m_diffuseMap{"assets/textures/container2.png"}, m_specularMap{"assets/textures/container2_specular.png"},
+        //m_emissionTexture{"assets/textures/matrix.jpg"},
         m_camera{{0.0f, 0.0f, 3.0f}}
     {
         Renderer& r = Renderer::GetInstance();
@@ -53,9 +48,9 @@ namespace Tests
 
         r.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        std::get<Texture>(m_material.diffuse).Bind(0);
-        std::get<Texture>(m_material.specular).Bind(1);
-        //std::get<Texture>(m_material.emission).Bind(2);
+        m_diffuseMap.Bind(0);
+        m_specularMap.Bind(1);
+        //m_emissionMap.Bind(2);
 
         // Setup GLFW callback for camera zoom
         s_camera      = &m_camera;
@@ -80,7 +75,7 @@ namespace Tests
 
         m_objectShaderProgram.SetUniform1("u_material.diffuse", 0);
         m_objectShaderProgram.SetUniform1("u_material.specular", 1);
-        m_objectShaderProgram.SetUniform1("u_material.shininess", m_material.shininess);
+        m_objectShaderProgram.SetUniform1("u_material.shininess", m_shininess);
 
         m_objectShaderProgram.SetUniform3("u_dirLight.direction", m_dirLight.direction);
         m_objectShaderProgram.SetUniform3("u_dirLight.ambient", m_dirLight.ambient);
@@ -121,7 +116,7 @@ namespace Tests
             m_lightShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
             m_lightShaderProgram.SetUniform3("u_pointLight.position", m_pointLights[i].position);
             m_lightShaderProgram.SetUniform1("u_pointLight.attConst", m_pointLights[i].attConst);
-            m_lightShaderProgram.SetUniform1("u_pointPointLight.attLinear", m_pointLights[i].attLinear);
+            m_lightShaderProgram.SetUniform1("u_pointLight.attLinear", m_pointLights[i].attLinear);
             m_lightShaderProgram.SetUniform1("u_pointLight.attQuadratic", m_pointLights[i].attQuadratic);
             m_lightShaderProgram.SetUniform3("u_pointLight.ambient", m_pointLights[i].ambient);
             m_lightShaderProgram.SetUniform3("u_pointLight.diffuse", m_pointLights[i].diffuse);
@@ -199,7 +194,7 @@ namespace Tests
         ImGui::SliderFloat("Outer cut off cosine##spot", &m_spotLight.outerCutOffCos, 0.0f, 1.0f);
 
         ImGui::Text("Material");
-        ImGui::InputFloat("Shininess##mat", &m_material.shininess);
+        ImGui::InputFloat("Shininess##mat", &m_shininess);
 
         ImGui::Text("Presets");
         if(ImGui::Combo("Presets", &m_currentPreset, s_presetNames))

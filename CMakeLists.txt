@@ -85,9 +85,6 @@ set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Camera.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Camera.hpp"
 
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Material.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Material.hpp"
-
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Light.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Light.hpp"
 
