@@ -12,24 +12,22 @@
 
 #include <glm/glm.hpp>
 
-#define __TEST_DEPTH_PAIR_STR(x) {x, #x}
-
 namespace Tests
 {
     /**
      * @brief Test for depth testing
      */
-    class TestDepth: public Test
+    class TestStencil: public Test
     {
     public:
         /**
-         * @brief Construct a new TestDepth object
+         * @brief Construct a new TestStencil object
          */
-        TestDepth();
+        TestStencil();
         /**
-         * @brief Destroy the TestDepth object
+         * @brief Destroy the TestStencil object
          */
-        virtual ~TestDepth();
+        virtual ~TestStencil();
 
         /**
          * @copydoc Tests::Test::OnRender
@@ -154,7 +152,11 @@ namespace Tests
         /**
          * @brief The shader program to display the scene
          */
-        ShaderProgram m_shaderProgram;
+        ShaderProgram m_objectShaderProgram;
+        /**
+         * @brief Shader program to display solid color (for object outlines)
+         */
+        ShaderProgram m_colorShaderProgram;
 
         /**
          * @brief The camera used to view the scene
@@ -178,39 +180,9 @@ namespace Tests
         };
 
         /**
-         * @brief Is depth testing enabled
+         * @brief Color for the object outlines
          */
-        bool m_depthTestEnabled   = true;
-        /**
-         * @brief Whether to clear the depth buffer before rendering
-         */
-        bool m_clearDepthBuffer   = true;
-        /**
-         * @brief Whether to display the depth buffer
-         */
-        bool m_displayDepthBuffer = false;
-
-        /**
-         * @brief Depth functions for the combo box
-         */
-        static inline std::pair<unsigned int, const char*> s_depthFuncs[] = {
-            __TEST_DEPTH_PAIR_STR(GL_LESS), // Default (index = 0)
-            __TEST_DEPTH_PAIR_STR(GL_LEQUAL),
-            __TEST_DEPTH_PAIR_STR(GL_EQUAL),
-            __TEST_DEPTH_PAIR_STR(GL_GREATER),
-            __TEST_DEPTH_PAIR_STR(GL_GEQUAL),
-            __TEST_DEPTH_PAIR_STR(GL_NOTEQUAL),
-            __TEST_DEPTH_PAIR_STR(GL_ALWAYS),
-            __TEST_DEPTH_PAIR_STR(GL_NEVER),
-        };
-        /**
-         * @brief Number of depth functions
-         */
-        constexpr static int s_depthFuncsCount = sizeof(s_depthFuncs) / sizeof(s_depthFuncs[0]);
-        /**
-         * @brief Current depth function index
-         */
-        int m_currentDepthFuncIndex            = 0; // GL_LESS
+        glm::vec3 m_outlineColor = {0.04f, 0.28f, 0.26f};
     };
 } //namespace Tests
 

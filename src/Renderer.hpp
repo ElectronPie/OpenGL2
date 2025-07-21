@@ -172,7 +172,8 @@ public:
      */
     enum class FeatureFlags
     {
-        DepthTest = 1 << 0, ///< Enable depth testing
+        DepthTest   = 1 << 0, ///< Enable depth testing
+        StencilTest = 1 << 1, ///< Enable stencil testing
     };
 
     /**
@@ -189,6 +190,13 @@ public:
     void DisableFeature(FeatureFlags features) noexcept;
 
     /**
+     * @brief Set the depth mask
+     *
+     * @param mask Mask to set for the depth buffer
+     */
+    void SetDepthMask(bool mask) noexcept;
+
+    /**
      * @brief Depth test functions
      */
     enum class DepthTestFunction
@@ -200,7 +208,7 @@ public:
         Greater        = GL_GREATER,
         NotEqual       = GL_NOTEQUAL,
         GreaterOrEqual = GL_GEQUAL,
-        Always         = GL_ALWAYS
+        Always         = GL_ALWAYS,
     };
 
     /**
@@ -209,6 +217,56 @@ public:
      * @param func Depth test function to set
      */
     void SetDepthTestFunction(DepthTestFunction func) noexcept;
+
+    /**
+     * @brief Set the stencil mask
+     *
+     * @param mask Mask to set for the stencil buffer
+     */
+    void SetStencilMask(unsigned int mask) noexcept;
+
+    /**
+     * @brief Stencil test functions
+     */
+    enum class StencilTestFunction
+    {
+        Never          = GL_NEVER,
+        Less           = GL_LESS,
+        Equal          = GL_EQUAL,
+        LessOrEqual    = GL_LEQUAL,
+        Greater        = GL_GREATER,
+        NotEqual       = GL_NOTEQUAL,
+        GreaterOrEqual = GL_GEQUAL,
+        Always         = GL_ALWAYS,
+    };
+
+    /**
+     * @brief Set the stencil test function
+     *
+     * @param func Stencil test function to set
+     * @param referenceValue Reference value for the stencil test
+     * @param mask Mask to apply to the stencil test operands
+     */
+    void SetStencilTestFunction(
+        StencilTestFunction func, int referenceValue = 0, unsigned int mask = 0xFFFFFFFF
+    ) noexcept;
+
+    /**
+     * @brief Stencil operations
+     */
+    enum class StencilOperation
+    {
+        Keep          = GL_KEEP,
+        Zero          = GL_ZERO,
+        Replace       = GL_REPLACE,
+        Invert        = GL_INVERT,
+        Increment     = GL_INCR,
+        Decrement     = GL_DECR,
+        IncrementWrap = GL_INCR_WRAP,
+        DecrementWrap = GL_DECR_WRAP,
+    };
+
+    void SetStencilOperation(StencilOperation sfail, StencilOperation dpfail, StencilOperation dppass) noexcept;
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
     /**

@@ -8,14 +8,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Renderer.hpp"
-#include "VAO.hpp"
-#include "VBO.hpp"
-#include "VBLayout.hpp"
-#include "EBO.hpp"
-#include "ShaderProgram.hpp"
-#include "Texture.hpp"
-
 #include "test/Test.hpp"
 #include "test/TestClearColor.hpp"
 #include "test/TestTexture2D.hpp"
@@ -26,6 +18,7 @@
 #include "test/TestLighting.hpp"
 #include "test/TestModel.hpp"
 #include "test/TestDepth.hpp"
+#include "test/TestStencil.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
@@ -62,6 +55,7 @@ int main(int argc, char** argv)
     testMenu->RegisterTest<Tests::TestLighting>("Lighting");
     testMenu->RegisterTest<Tests::TestModel>("Model");
     testMenu->RegisterTest<Tests::TestDepth>("Depth");
+    testMenu->RegisterTest<Tests::TestStencil>("Stencil");
 
     testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 

@@ -335,6 +335,8 @@ void Renderer::EnableFeature(FeatureFlags features) noexcept
     auto features_uint = static_cast<unsigned int>(features);
     if(features_uint & static_cast<unsigned int>(FeatureFlags::DepthTest))
         GLCall(glEnable(GL_DEPTH_TEST));
+    if(features_uint & static_cast<unsigned int>(FeatureFlags::StencilTest))
+        GLCall(glEnable(GL_STENCIL_TEST));
 }
 
 void Renderer::DisableFeature(FeatureFlags features) noexcept
@@ -342,11 +344,35 @@ void Renderer::DisableFeature(FeatureFlags features) noexcept
     auto features_uint = static_cast<unsigned int>(features);
     if(features_uint & static_cast<unsigned int>(FeatureFlags::DepthTest))
         GLCall(glDisable(GL_DEPTH_TEST));
+    if(features_uint & static_cast<unsigned int>(FeatureFlags::StencilTest))
+        GLCall(glDisable(GL_STENCIL_TEST));
+}
+
+void Renderer::SetDepthMask(bool mask) noexcept
+{
+    GLCall(glDepthMask(mask ? GL_TRUE : GL_FALSE));
 }
 
 void Renderer::SetDepthTestFunction(DepthTestFunction func) noexcept
 {
     GLCall(glDepthFunc(static_cast<GLenum>(func)));
+}
+
+void Renderer::SetStencilMask(unsigned int mask) noexcept
+{
+    GLCall(glStencilMask(mask));
+}
+
+void Renderer::SetStencilTestFunction(StencilTestFunction func, int referenceValue, unsigned int mask) noexcept
+{
+    GLCall(glStencilFunc(static_cast<GLenum>(func), referenceValue, mask));
+}
+
+void Renderer::SetStencilOperation(
+    StencilOperation stencilFail, StencilOperation depthFail, StencilOperation pass
+) noexcept
+{
+    GLCall(glStencilOp(static_cast<GLenum>(stencilFail), static_cast<GLenum>(depthFail), static_cast<GLenum>(pass)));
 }
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)

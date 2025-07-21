@@ -1,4 +1,4 @@
-#include "TestDepth.hpp"
+#include "TestStencil.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -17,7 +17,7 @@ static void ScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 
 namespace Tests
 {
-    TestDepth::TestDepth():
+    TestStencil::TestStencil():
         m_planeVBO{
             s_planeVertices, sizeof(s_planeVertices) / sizeof(s_planeVertices[0])
     },
@@ -25,10 +25,23 @@ namespace Tests
         m_planeTexture{"assets/textures/metal.jpg"},
         m_cubeVBO{s_cubeVertices, sizeof(s_cubeVertices) / sizeof(s_cubeVertices[0])},
         m_cubeTexture{"assets/textures/grey_marble.jpg"},
-        m_shaderProgram{"assets/shaders/TestDepth/TestDepth.vert.glsl", "assets/shaders/TestDepth/TestDepth.frag.glsl"},
+        m_objectShaderProgram{
+            "assets/shaders/TestStencil/TestStencil.vert.glsl", "assets/shaders/TestStencil/TestStencil.frag.glsl"
+        },
+        m_colorShaderProgram{
+            "assets/shaders/TestStencil/TestStencil.vert.glsl", "assets/shaders/TestStencil/SolidColor.frag.glsl"
+        },
         m_camera{{0.0f, 1.0f, 3.0f}}
     {
         Renderer& r = Renderer::GetInstance();
+
+        // Configure stencil buffer settings
+        r.clearFlags |= GL_STENCIL_BUFFER_BIT; // Clear stencil buffer every frame
+        r.EnableFeature(Renderer::FeatureFlags::StencilTest);
+        r.SetStencilTestFunction(Renderer::StencilTestFunction::NotEqual, 1, 0xFF);
+        r.SetStencilOperation(
+            Renderer::StencilOperation::Keep, Renderer::StencilOperation::Keep, Renderer::StencilOperation::Replace
+        );
 
         // Setup plane vertex buffer layout
         m_planeLayout.Push<float>(3); // position
@@ -46,91 +59,83 @@ namespace Tests
         m_cubeVAO.AttachVBO(m_cubeVBO, m_cubeLayout);
 
         // Setup shader uniforms
-        m_shaderProgram.SetUniform1("u_texture", 0);
-        m_shaderProgram.SetUniform1("u_displayDepthBuffer", false);
+        m_objectShaderProgram.SetUniform1("u_texture", 0);
 
         // Setup GLFW callback for camera zoom
         s_camera      = &m_camera;
         s_oldCallback = glfwSetScrollCallback(r.GetWindow(), ScrollCallback);
     }
 
-    TestDepth::~TestDepth()
+    TestStencil::~TestStencil()
     {
+        Renderer& r = Renderer::GetInstance();
+
+        // Reset stencil buffer/test configuration
+        r.clearFlags &= ~GL_STENCIL_BUFFER_BIT; // Don't clear the stencil buffer every frame
+        r.SetStencilTestFunction(Renderer::StencilTestFunction::Always, 0, 0xFF); // Reset stencil test function
+        r.DisableFeature(Renderer::FeatureFlags::StencilTest);
+
         // Reset GLFW scroll callback
         glfwSetScrollCallback(Renderer::GetInstance().GetWindow(), s_oldCallback);
     }
 
-    void TestDepth::OnRender()
+    void TestStencil::OnRender()
     {
         Renderer& r = Renderer::GetInstance();
+        r.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        m_shaderProgram.SetUniformMat4("u_view", m_camera.view);
-        m_shaderProgram.SetUniformMat4("u_proj", m_camera.proj);
-        m_shaderProgram.SetUniform1("u_near", m_camera.near);
-        m_shaderProgram.SetUniform1("u_far", m_camera.far);
+        // Update view and projection matrices
+        m_objectShaderProgram.SetUniformMat4("u_view", m_camera.view);
+        m_objectShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
+        m_colorShaderProgram.SetUniformMat4("u_view", m_camera.view);
+        m_colorShaderProgram.SetUniformMat4("u_proj", m_camera.proj);
 
-        // Render cubes
+        // Render plane
+        r.SetStencilMask(0x00); // Don't write to the stencil buffer
+        m_planeTexture.Bind();
+        m_objectShaderProgram.SetUniformMat4(
+            "u_model",
+            glm::rotate(glm::scale(glm::mat4{1.0f}, glm::vec3{4.0f}), glm::radians(-90.0f), glm::vec3{1.0f, 0.0f, 0.0f})
+        );
+        r.DrawElements(m_planeVAO, m_objectShaderProgram);
+
+        // Render cubes with the normal shader
+        r.SetStencilTestFunction(Renderer::StencilTestFunction::Always, 1, 0xFF);
+        r.SetStencilMask(0xFF); // Write to the stencil buffer
         m_cubeTexture.Bind();
         for(const glm::vec3& position : s_cubePositions)
         {
             glm::mat4 model = glm::translate(glm::mat4{1.0f}, position);
-            m_shaderProgram.SetUniformMat4("u_model", model);
-            r.DrawVertices(m_cubeVAO, m_shaderProgram);
+            m_objectShaderProgram.SetUniformMat4("u_model", model);
+            r.DrawVertices(m_cubeVAO, m_objectShaderProgram);
         }
 
-        // Render plane
-        m_planeTexture.Bind();
-        m_shaderProgram.SetUniformMat4(
-            "u_model",
-            glm::rotate(glm::scale(glm::mat4{1.0f}, glm::vec3{4.0f}), glm::radians(-90.0f), glm::vec3{1.0f, 0.0f, 0.0f})
-        );
-        r.DrawElements(m_planeVAO, m_shaderProgram);
+        r.SetStencilTestFunction(Renderer::StencilTestFunction::NotEqual, 1, 0xFF);
+        r.SetStencilMask(0x00); // Disable writing to the stencil buffer
+        r.SetDepthMask(false);  // Disable writing to the depth buffer
+
+        // Render scaled-up cube outlines with the color shader
+        m_colorShaderProgram.SetUniform3("u_color", m_outlineColor);
+        for(const glm::vec3& position : s_cubePositions)
+        {
+            glm::mat4 model = glm::translate(glm::mat4{1.0f}, position);
+            model           = glm::scale(model, glm::vec3{1.05f}); // Scale up the cube for the outline
+            m_colorShaderProgram.SetUniformMat4("u_model", model);
+            r.DrawVertices(m_cubeVAO, m_colorShaderProgram);
+        }
+
+        // Reset settings to normal
+        r.SetStencilTestFunction(Renderer::StencilTestFunction::Always, 0, 0xFF); // Reset stencil test function
+        r.SetStencilMask(0xFF);                                                   // Reset stencil mask
+        r.SetDepthMask(true);                                                     // Reset depth mask
     }
 
-    void TestDepth::OnImGuiRender()
+    void TestStencil::OnImGuiRender()
     {
-        Renderer& r = Renderer::GetInstance();
-        if(ImGui::Checkbox("Enable depth test", &m_depthTestEnabled))
-        {
-            if(m_depthTestEnabled)
-            {
-                r.EnableFeature(Renderer::FeatureFlags::DepthTest);
-            }
-            else
-            {
-                r.DisableFeature(Renderer::FeatureFlags::DepthTest);
-            }
-        }
-        if(ImGui::Checkbox("Clear depth buffer every frame", &m_clearDepthBuffer))
-        {
-            if(m_clearDepthBuffer)
-            {
-                r.clearFlags |= GL_DEPTH_BUFFER_BIT;
-            }
-            else
-            {
-                r.clearFlags &= ~GL_DEPTH_BUFFER_BIT;
-            }
-        }
-        if(ImGui::Checkbox("Display depth buffer", &m_displayDepthBuffer))
-        {
-            m_shaderProgram.SetUniform1("u_displayDepthBuffer", m_displayDepthBuffer);
-        }
-        if(ImGui::Combo(
-               "Depth test function",
-               &m_currentDepthFuncIndex,
-               [](void* user_data, int idx) -> const char* { return s_depthFuncs[idx].second; },
-               nullptr,
-               s_depthFuncsCount
-           ))
-        {
-            r.SetDepthTestFunction(
-                static_cast<Renderer::DepthTestFunction>(s_depthFuncs[m_currentDepthFuncIndex].first)
-            );
-        }
+        ImGui::ColorEdit3("Outline color", &m_outlineColor[0]);
     }
 
-    void TestDepth::OnUpdate(float deltaTime)
+    void TestStencil::OnUpdate(float deltaTime)
     {
         Renderer& r = Renderer::GetInstance();
 
