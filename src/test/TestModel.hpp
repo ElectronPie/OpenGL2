@@ -36,12 +36,19 @@ namespace Tests
         void OnUpdate(float deltaTime) override;
 
     private:
+        /**
+         * @brief The model to be loaded and displayed
+         */
         Model m_model;
+        /**
+         * @brief The shader program to draw the model with
+         */
         ShaderProgram m_shaderProgram;
 
+        /**
+         * @brief Camera for the scene
+         */
         Camera m_camera;
-        glm::vec2 m_cursorPos;
-        bool m_mouseButtonPressed = false;
 
         DirLight m_dirLight = {
             {1.0f, 0.0f, 0.0f},

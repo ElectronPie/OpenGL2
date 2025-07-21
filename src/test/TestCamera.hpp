@@ -149,14 +149,5 @@ namespace Tests
          * @brief The radius of the circle the camera makes
          */
         float m_circleRadius = 10.0f;
-
-        /**
-         * @brief The cursor's position on the screen
-         */
-        glm::vec2 m_cursorPos;
-        /**
-         * @brief Is the left mouse button pressed
-         */
-        bool m_mouseButtonPressed = false;
     };
 } // namespace Tests

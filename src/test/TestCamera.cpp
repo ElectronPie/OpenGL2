@@ -7,15 +7,6 @@
 
 #include <imgui.h>
 
-static Camera* s_camera;
-static GLFWscrollfun s_oldCallback;
-
-static void ScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
-{
-    s_camera->ProcessMouseScroll(yOffset);
-    s_oldCallback(window, xOffset, yOffset);
-}
-
 namespace Tests
 {
     TestCamera::TestCamera():
@@ -41,14 +32,12 @@ namespace Tests
         m_shaderProgram.SetUniform1("u_texture1", 0);
         m_shaderProgram.SetUniform1("u_texture2", 1);
 
-        s_camera      = &m_camera;
-        s_oldCallback = glfwSetScrollCallback(Renderer::GetInstance().GetWindow(), ScrollCallback);
+        // Initialize camera
+        m_camera.InitForGLFW();
     }
 
     TestCamera::~TestCamera()
-    {
-        glfwSetScrollCallback(Renderer::GetInstance().GetWindow(), s_oldCallback);
-    }
+    {}
 
     void TestCamera::OnRender()
     {
@@ -100,43 +89,7 @@ namespace Tests
             break;
         }
         case 1: {
-            // Keyboard input
-            GLFWwindow* window = Renderer::GetInstance().GetWindow();
-            if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-                m_camera.ProcessTranslation(Camera::Movement::Forward, deltaTime);
-            if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-                m_camera.ProcessTranslation(Camera::Movement::Backward, deltaTime);
-            if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-                m_camera.ProcessTranslation(Camera::Movement::Left, deltaTime);
-            if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-                m_camera.ProcessTranslation(Camera::Movement::Right, deltaTime);
-            if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-                m_camera.ProcessTranslation(Camera::Movement::Down, deltaTime);
-            if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-                m_camera.ProcessTranslation(Camera::Movement::Up, deltaTime);
-
-            // Mouse movement
-            double cursorX, cursorY;
-            glfwGetCursorPos(window, &cursorX, &cursorY);
-            float deltaX = cursorX - m_cursorPos.x;
-            float deltaY = m_cursorPos.y - cursorY; // Reversed since y-coordinates range from bottom to top
-            m_cursorPos  = {cursorX, cursorY};
-            if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
-            {
-                if(!m_mouseButtonPressed)
-                {
-                    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-                    m_mouseButtonPressed = true;
-                }
-                m_camera.ProcessMouseMovement(deltaX, deltaY);
-            }
-            else if(m_mouseButtonPressed)
-            {
-                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                m_mouseButtonPressed = false;
-            }
-
-            break;
+            m_camera.OnUpdate(deltaTime);
         }
         }
 

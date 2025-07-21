@@ -402,18 +402,9 @@ namespace Tests
          */
         void ApplyPreset(const Preset& preset);
 
-        // Camera and input handling
         /**
          * @brief Camera for the scene
          */
         Camera m_camera;
-        /**
-         * @brief Mouse cursor position
-         */
-        glm::vec2 m_cursorPos;
-        /**
-         * @brief Mouse button pressed state
-         */
-        bool m_mouseButtonPressed = false;
     };
 } // namespace Tests

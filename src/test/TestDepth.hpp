@@ -160,14 +160,6 @@ namespace Tests
          * @brief The camera used to view the scene
          */
         Camera m_camera;
-        /**
-         * @brief The cursor's position on the screen
-         */
-        glm::vec2 m_cursorPos;
-        /**
-         * @brief Is the left mouse button pressed
-         */
-        bool m_mouseButtonPressed = false;
 
         /**
          * @brief Positions of the cubes in the scene

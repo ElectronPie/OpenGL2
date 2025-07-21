@@ -67,12 +67,12 @@ public:
      */
     enum class Movement : uint8_t
     {
-        Forward  = 1,
-        Backward = 2,
-        Left     = 4,
-        Right    = 8,
-        Up       = 16,
-        Down     = 32
+        Forward  = 1 << 0,
+        Backward = 1 << 1,
+        Left     = 1 << 2,
+        Right    = 1 << 3,
+        Up       = 1 << 4,
+        Down     = 1 << 5,
     };
 
     /**
@@ -96,6 +96,21 @@ public:
      * @param yOffset
      */
     void ProcessMouseScroll(float yOffset);
+
+    /**
+     * @brief Initializes the camera to be able to move according to input from GLFW
+     */
+    void InitForGLFW();
+    /**
+     * @brief Deinitialize the camera, uncoupling it from a GLFW window
+     */
+    void Deinit();
+    /**
+     * @brief To be called whenever the scene recieves an update
+     *
+     * @param deltaTime
+     */
+    void OnUpdate(float deltaTime);
 
 public:
     // Camera attributes
@@ -169,4 +184,18 @@ public:
      * @brief Projection far plane
      */
     float far;
+
+private:
+    /**
+     * @brief Whether this camera was initialized to work with GLFW
+     */
+    bool m_initialized = false;
+    /**
+     * @brief The cursor's position on the screen
+     */
+    glm::vec2 m_cursorPos;
+    /**
+     * @brief Is the left mouse button pressed
+     */
+    bool m_mouseButtonPressed = false;
 };

@@ -8,15 +8,6 @@
 
 #include "Renderer.hpp"
 
-static Camera* s_camera;
-static GLFWscrollfun s_oldCallback;
-
-static void ScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
-{
-    s_camera->ProcessMouseScroll(yOffset);
-    s_oldCallback(window, xOffset, yOffset);
-}
-
 namespace Tests
 {
     TestLighting::TestLighting():
@@ -52,16 +43,12 @@ namespace Tests
         m_specularMap.Bind(1);
         //m_emissionMap.Bind(2);
 
-        // Setup GLFW callback for camera zoom
-        s_camera      = &m_camera;
-        s_oldCallback = glfwSetScrollCallback(r.GetWindow(), ScrollCallback);
+        // Initialize camera
+        m_camera.InitForGLFW();
     }
 
     TestLighting::~TestLighting()
-    {
-        // Reset GLFW scroll callback
-        glfwSetScrollCallback(Renderer::GetInstance().GetWindow(), s_oldCallback);
-    }
+    {}
 
     void TestLighting::OnRender()
     {
@@ -205,49 +192,7 @@ namespace Tests
 
     void TestLighting::OnUpdate(float deltaTime)
     {
-        Renderer& r = Renderer::GetInstance();
-
-        // Keyboard input
-        GLFWwindow* window = r.GetWindow();
-        if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            m_camera.ProcessTranslation(Camera::Movement::Forward, deltaTime);
-        if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-            m_camera.ProcessTranslation(Camera::Movement::Backward, deltaTime);
-        if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-            m_camera.ProcessTranslation(Camera::Movement::Left, deltaTime);
-        if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            m_camera.ProcessTranslation(Camera::Movement::Right, deltaTime);
-        if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-            m_camera.ProcessTranslation(Camera::Movement::Down, deltaTime);
-        if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-            m_camera.ProcessTranslation(Camera::Movement::Up, deltaTime);
-
-        // Mouse movement
-        double cursorX, cursorY;
-        glfwGetCursorPos(window, &cursorX, &cursorY);
-        float deltaX = cursorX - m_cursorPos.x;
-        float deltaY = m_cursorPos.y - cursorY; // Reversed since y-coordinates range from bottom to top
-        m_cursorPos  = {cursorX, cursorY};
-        if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
-        {
-            if(!m_mouseButtonPressed)
-            {
-                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-                m_mouseButtonPressed = true;
-            }
-            m_camera.ProcessMouseMovement(deltaX, deltaY);
-        }
-        else if(m_mouseButtonPressed)
-        {
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            m_mouseButtonPressed = false;
-        }
-
-        // Update camera projection dimensions
-        auto [width, height] = r.GetViewportSize();
-        m_camera.width       = width;
-        m_camera.height      = height;
-        m_camera.UpdateProj();
+        m_camera.OnUpdate(deltaTime);
     }
 
     void TestLighting::ApplyPreset(const TestLighting::Preset& preset)
