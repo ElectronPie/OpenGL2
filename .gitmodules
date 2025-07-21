@@ -11,3 +11,6 @@
 [submodule "vendor/assimp"]
 	path = vendor/assimp
 	url = https://github.com/assimp/assimp.git
+[submodule "vendor/epics"]
+	path = vendor/epics
+	url = https://github.com/ElectronPie/epics.git

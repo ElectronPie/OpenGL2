@@ -36,7 +36,7 @@ namespace Tests
         Renderer& r = Renderer::GetInstance();
 
         // Configure stencil buffer settings
-        r.clearFlags |= GL_STENCIL_BUFFER_BIT; // Clear stencil buffer every frame
+        r.clearFlags |= Renderer::ClearFlags::StencilBuffer; // Clear stencil buffer every frame
         r.EnableFeature(Renderer::FeatureFlags::StencilTest);
         r.SetStencilTestFunction(Renderer::StencilTestFunction::NotEqual, 1, 0xFF);
         r.SetStencilOperation(
@@ -71,7 +71,7 @@ namespace Tests
         Renderer& r = Renderer::GetInstance();
 
         // Reset stencil buffer/test configuration
-        r.clearFlags &= ~GL_STENCIL_BUFFER_BIT; // Don't clear the stencil buffer every frame
+        r.clearFlags &= ~Renderer::ClearFlags::StencilBuffer; // Don't clear the stencil buffer every frame
         r.SetStencilTestFunction(Renderer::StencilTestFunction::Always, 0, 0xFF); // Reset stencil test function
         r.DisableFeature(Renderer::FeatureFlags::StencilTest);
 

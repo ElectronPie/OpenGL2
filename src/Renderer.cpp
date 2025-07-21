@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 
 #include <GLFW/glfw3.h>
+
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
@@ -132,7 +133,7 @@ Renderer& Renderer::GetInstance()
     return instance;
 }
 
-Renderer::Renderer()
+Renderer::Renderer(): clearFlags{Renderer::ClearFlags::ColorBuffer | Renderer::ClearFlags::DepthBuffer}
 {
     // Initialize GLFW
     if(!glfwInit())
@@ -264,7 +265,7 @@ void Renderer::DrawElements(const VAO& vao, const ShaderProgram& shaderProgram) 
 
 void Renderer::Clear() noexcept
 {
-    GLCall(glClear(clearFlags));
+    GLCall(glClear(static_cast<int>(clearFlags)));
 }
 
 void Renderer::ClearColor(float r, float g, float b, float a) noexcept

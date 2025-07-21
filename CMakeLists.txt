@@ -56,6 +56,10 @@ set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/assimp")
 list(APPEND OpenGL2_LIBRARIES assimp)
 
+# epics
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/epics")
+list(APPEND OpenGL2_LIBRARIES epics)
+
 set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Application.cpp"
 

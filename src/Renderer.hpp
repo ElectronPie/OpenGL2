@@ -3,6 +3,7 @@
 #include <debugbreak.h>
 #include <glad/glad.h>
 #include <imgui.h>
+#include <epics/enums_as_flags11.hpp>
 
 #include <utility>
 
@@ -291,7 +292,13 @@ public:
     /**
      * @brief OpenGL clear flags used by Renderer::Clear
      */
-    int clearFlags = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+    enum class ClearFlags : int
+    {
+        ColorBuffer   = GL_COLOR_BUFFER_BIT,
+        DepthBuffer   = GL_DEPTH_BUFFER_BIT,
+        StencilBuffer = GL_STENCIL_BUFFER_BIT,
+    };
+    ClearFlags clearFlags;
 
 private:
     /**
@@ -322,3 +329,5 @@ private:
      */
     unsigned int m_viewportHeight;
 };
+
+EPS_ENUM_AS_FLAGS(Renderer::ClearFlags)

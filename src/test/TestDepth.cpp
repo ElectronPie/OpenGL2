@@ -105,11 +105,11 @@ namespace Tests
         {
             if(m_clearDepthBuffer)
             {
-                r.clearFlags |= GL_DEPTH_BUFFER_BIT;
+                r.clearFlags |= Renderer::ClearFlags::DepthBuffer;
             }
             else
             {
-                r.clearFlags &= ~GL_DEPTH_BUFFER_BIT;
+                r.clearFlags &= ~Renderer::ClearFlags::DepthBuffer;
             }
         }
         if(ImGui::Checkbox("Display depth buffer", &m_displayDepthBuffer))
