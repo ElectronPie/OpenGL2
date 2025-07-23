@@ -188,6 +188,7 @@ public:
         DepthTest   = 1 << 0, ///< Enable depth testing
         StencilTest = 1 << 1, ///< Enable stencil testing
         Blending    = 1 << 2, ///< Enable blending
+        FaceCulling = 1 << 3, ///< Enable face culling
     };
 
     /**
@@ -334,6 +335,9 @@ public:
      */
     void SetBlendingConstantColor(glm::vec4 color) noexcept;
 
+    /**
+     * @brief Blending equations
+     */
     enum class BlendingEquation
     {
         Add             = GL_FUNC_ADD,
@@ -349,6 +353,39 @@ public:
      * @param equation The blending equation to set
      */
     void SetBlendingEquation(BlendingEquation equation) noexcept;
+
+    /**
+     * @brief Types of faces to cull
+     */
+    enum class CullFace
+    {
+        Front = GL_FRONT,          ///< Only cull front faces
+        Back  = GL_BACK,           ///< Only cull back faces
+        All   = GL_FRONT_AND_BACK, ///< Cull both front and back faces
+    };
+
+    /**
+     * @brief Set the face type to cull
+     *
+     * @param cullFace The type of faces to cull
+     */
+    void SetCullFace(CullFace cullFace) noexcept;
+
+    /**
+     * @brief Type of vertex winding a face has to have to be considered a front face
+     */
+    enum class FrontFace
+    {
+        CW  = GL_CW,  ///< Clockwise
+        CCW = GL_CCW, ///< Counter-clockwise
+    };
+
+    /**
+     * @brief Set the type of face considered to be a front face
+     *
+     * @param frontFace The type of vertex winding of a face
+     */
+    void SetFrontFace(FrontFace frontFace) noexcept;
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
     /**

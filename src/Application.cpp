@@ -20,6 +20,7 @@
 #include "test/TestDepth.hpp"
 #include "test/TestStencil.hpp"
 #include "test/TestBlending.hpp"
+#include "test/TestFaceCulling.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
@@ -58,6 +59,7 @@ int main(int argc, char** argv)
     testMenu->RegisterTest<Tests::TestDepth>("Depth");
     testMenu->RegisterTest<Tests::TestStencil>("Stencil");
     testMenu->RegisterTest<Tests::TestBlending>("Blending");
+    testMenu->RegisterTest<Tests::TestFaceCulling>("Face culling");
 
     testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 

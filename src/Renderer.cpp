@@ -344,6 +344,8 @@ void Renderer::EnableFeatures(FeatureFlags features) noexcept
         GLCall(glEnable(GL_STENCIL_TEST));
     if(static_cast<bool>(features & FeatureFlags::Blending))
         GLCall(glEnable(GL_BLEND));
+    if(static_cast<bool>(features & FeatureFlags::FaceCulling))
+        GLCall(glEnable(GL_CULL_FACE));
 }
 
 void Renderer::DisableFeatures(FeatureFlags features) noexcept
@@ -354,6 +356,8 @@ void Renderer::DisableFeatures(FeatureFlags features) noexcept
         GLCall(glDisable(GL_STENCIL_TEST));
     if(static_cast<bool>(features & FeatureFlags::Blending))
         GLCall(glDisable(GL_BLEND));
+    if(static_cast<bool>(features & FeatureFlags::FaceCulling))
+        GLCall(glDisable(GL_CULL_FACE));
 }
 
 void Renderer::SetDepthMask(bool mask) noexcept
@@ -401,6 +405,16 @@ void Renderer::SetBlendingConstantColor(glm::vec4 color) noexcept
 void Renderer::SetBlendingEquation(BlendingEquation equation) noexcept
 {
     GLCall(glBlendEquation(static_cast<GLenum>(equation)));
+}
+
+void Renderer::SetCullFace(CullFace cullFace) noexcept
+{
+    GLCall(glCullFace(static_cast<GLenum>(cullFace)));
+}
+
+void Renderer::SetFrontFace(FrontFace frontFace) noexcept
+{
+    GLCall(glFrontFace(static_cast<GLenum>(frontFace)));
 }
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)

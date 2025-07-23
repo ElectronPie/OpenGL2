@@ -245,7 +245,7 @@ namespace Tests
          * @brief Value-name pairs of blending equation values
          */
         constexpr static inline std::pair<GLenum, const char*> s_equationValues[] = {
-            __TEST_BLENDING_PAIR_STR(GL_FUNC_ADD), // Default Blending function (index 0)
+            __TEST_BLENDING_PAIR_STR(GL_FUNC_ADD), // Default Blending equation (index 0)
             __TEST_BLENDING_PAIR_STR(GL_FUNC_SUBTRACT),
             __TEST_BLENDING_PAIR_STR(GL_FUNC_REVERSE_SUBTRACT),
             __TEST_BLENDING_PAIR_STR(GL_MIN),
