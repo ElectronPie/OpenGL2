@@ -131,6 +131,9 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestStencil.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestStencil.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestBlending.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestBlending.hpp"
 )
 
 add_executable(OpenGL2

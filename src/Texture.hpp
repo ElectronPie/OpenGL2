@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Renderer.hpp"
+
 #include <filesystem>
 
 /**
@@ -15,13 +17,43 @@ public:
         Specular,
     };
 
+    enum class WrapMode
+    {
+        ClampToEdge    = GL_CLAMP_TO_EDGE,
+        ClampToBorder  = GL_CLAMP_TO_BORDER,
+        Repeat         = GL_REPEAT,
+        MirroredRepeat = GL_MIRRORED_REPEAT,
+        //MirrorClampToBorder = GL_MIRROR_CLAMP_TO_BORDER,
+    };
+
+    enum class FilterFunction
+    {
+        Nearest              = GL_NEAREST,
+        Linear               = GL_LINEAR,
+        NearestMipMapNearest = GL_NEAREST_MIPMAP_NEAREST,
+        NearestMipMapLinear  = GL_NEAREST_MIPMAP_LINEAR,
+        LinearMipMapNearest  = GL_LINEAR_MIPMAP_NEAREST,
+        LinearMipMapLinear   = GL_LINEAR_MIPMAP_LINEAR,
+    };
+
 public:
     /**
      * @brief Construct a new Texture object
      *
      * @param texturePath path to the image file
+     * @param wrapModeS Horizontal wrap mode
+     * @param wrapModeT Vertical wrap mode
+     * @param minFilter Minimization filter function (also controls MipMaps)
+     * @param magFilter Magnification filter function
      */
-    Texture(const std::filesystem::path& texturePath, Type type = Type::None);
+    Texture(
+        const std::filesystem::path& texturePath,
+        Type type                = Type::None,
+        WrapMode wrapModeS       = WrapMode::Repeat,
+        WrapMode wrapModeT       = WrapMode::Repeat,
+        FilterFunction minFilter = FilterFunction::LinearMipMapLinear,
+        FilterFunction magFilter = FilterFunction::Linear
+    );
     /**
      * @brief Destroy the Texture object
      */

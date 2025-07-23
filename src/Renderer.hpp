@@ -1,8 +1,13 @@
 #pragma once
 
 #include <debugbreak.h>
+
 #include <glad/glad.h>
+
+#include <glm/glm.hpp>
+
 #include <imgui.h>
+
 #include <epics/enums_as_flags11.hpp>
 
 #include <utility>
@@ -136,6 +141,7 @@ public:
      * @param shaderProgram
      */
     void DrawElements(const VAO& vao, const ShaderProgram& shaderProgram) noexcept;
+
     /**
      * @brief Clear the color buffer/screen
      */
@@ -149,6 +155,12 @@ public:
      * @param a Alpha (opacity) channel
      */
     void ClearColor(float r, float g, float b, float a) noexcept;
+    /**
+     * @brief Set the clear color
+     *
+     * @param color The clear color to set
+     */
+    void ClearColor(glm::vec4 color) noexcept;
 
     /**
      * @brief Check whether the renderer should remain in use
@@ -175,6 +187,7 @@ public:
     {
         DepthTest   = 1 << 0, ///< Enable depth testing
         StencilTest = 1 << 1, ///< Enable stencil testing
+        Blending    = 1 << 2, ///< Enable blending
     };
 
     /**
@@ -182,13 +195,13 @@ public:
      *
      * @param features Features to enable
      */
-    void EnableFeature(FeatureFlags features) noexcept;
+    void EnableFeatures(FeatureFlags features) noexcept;
     /**
      * @brief Disable features of the renderer
      *
      * @param features Features to disable
      */
-    void DisableFeature(FeatureFlags features) noexcept;
+    void DisableFeatures(FeatureFlags features) noexcept;
 
     /**
      * @brief Set the depth mask
@@ -267,7 +280,75 @@ public:
         DecrementWrap = GL_DECR_WRAP,
     };
 
+    /**
+     * @brief Set the stencil operations to execute
+     *
+     * @param sfail Stencil operation to execute when stencil test fails
+     * @param dpfail Stencil operation to execute when stencil test passes but depth test fails
+     * @param dppass Stencil operation to execute when both stencil test and depth test pass
+     */
     void SetStencilOperation(StencilOperation sfail, StencilOperation dpfail, StencilOperation dppass) noexcept;
+
+    /**
+     * @brief Blending function factors
+     */
+    enum class BlendingFunctionFactor
+    {
+        Zero                     = GL_ZERO,
+        One                      = GL_ONE,
+        SourceColor              = GL_SRC_COLOR,
+        OneMinusSourceColor      = GL_ONE_MINUS_SRC_COLOR,
+        DestinationColor         = GL_DST_COLOR,
+        OneMinusDestinationColor = GL_ONE_MINUS_DST_COLOR,
+        SourceAlpha              = GL_SRC_ALPHA,
+        OneMinusSourceAlpha      = GL_ONE_MINUS_SRC_ALPHA,
+        DestinationAlpha         = GL_DST_ALPHA,
+        OneMinusDestinationAlpha = GL_ONE_MINUS_DST_ALPHA,
+        ConstantColor            = GL_CONSTANT_COLOR,
+        OneMinusConstantColor    = GL_ONE_MINUS_CONSTANT_COLOR,
+        ConstantAlpha            = GL_CONSTANT_ALPHA,
+        OneMinusConstantAlpha    = GL_ONE_MINUS_CONSTANT_ALPHA,
+    };
+
+    /**
+     * @brief Set the blending function factors
+     *
+     * @param sfactor Factor applied to the source color
+     * @param dfactor Factor applied to the destination color
+     */
+    void SetBlendingFunctionFactor(BlendingFunctionFactor sfactor, BlendingFunctionFactor dfactor) noexcept;
+
+    /**
+     * @brief Set the constant color used for calculating the blend function
+     *
+     * @param r Red channel
+     * @param g Green channel
+     * @param b Blue channel
+     * @param a Alpha (opacity) channel
+     */
+    void SetBlendingConstantColor(float r, float g, float b, float a) noexcept;
+    /**
+     * @brief Set the constant color used for calculating the blend function
+     *
+     * @param color The constant color to set
+     */
+    void SetBlendingConstantColor(glm::vec4 color) noexcept;
+
+    enum class BlendingEquation
+    {
+        Add             = GL_FUNC_ADD,
+        Subtract        = GL_FUNC_SUBTRACT,
+        ReverseSubtract = GL_FUNC_REVERSE_SUBTRACT,
+        Min             = GL_MIN,
+        Max             = GL_MAX,
+    };
+
+    /**
+     * @brief Set the blending equation
+     *
+     * @param equation The blending equation to set
+     */
+    void SetBlendingEquation(BlendingEquation equation) noexcept;
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)
     /**
@@ -292,7 +373,7 @@ public:
     /**
      * @brief OpenGL clear flags used by Renderer::Clear
      */
-    enum class ClearFlags : int
+    enum class ClearFlags
     {
         ColorBuffer   = GL_COLOR_BUFFER_BIT,
         DepthBuffer   = GL_DEPTH_BUFFER_BIT,
@@ -330,4 +411,5 @@ private:
     unsigned int m_viewportHeight;
 };
 
+EPS_ENUM_AS_FLAGS(Renderer::FeatureFlags)
 EPS_ENUM_AS_FLAGS(Renderer::ClearFlags)

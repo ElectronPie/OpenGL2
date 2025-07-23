@@ -214,8 +214,8 @@ Renderer::Renderer(): clearFlags{Renderer::ClearFlags::ColorBuffer | Renderer::C
     // Set key callback
     glfwSetKeyCallback(m_window, KeyCallback);
 
-    // Enable depth testing
-    GLCall(glEnable(GL_DEPTH_TEST));
+    // Enable depth testing and blending
+    EnableFeatures(Renderer::FeatureFlags::DepthTest & Renderer::FeatureFlags::Blending);
 
 #if defined(DEBUG) && defined(ENABLE_FANCY_DEBUG_OUTPUT)
     int flags;
@@ -271,6 +271,11 @@ void Renderer::Clear() noexcept
 void Renderer::ClearColor(float r, float g, float b, float a) noexcept
 {
     GLCall(glClearColor(r, g, b, a));
+}
+
+void Renderer::ClearColor(glm::vec4 color) noexcept
+{
+    GLCall(glClearColor(color.r, color.g, color.b, color.a));
 }
 
 bool Renderer::ShouldClose() const noexcept
@@ -331,22 +336,24 @@ void Renderer::SetViewportSize(unsigned int width, unsigned int height)
     m_viewportHeight = height;
 }
 
-void Renderer::EnableFeature(FeatureFlags features) noexcept
+void Renderer::EnableFeatures(FeatureFlags features) noexcept
 {
-    auto features_uint = static_cast<unsigned int>(features);
-    if(features_uint & static_cast<unsigned int>(FeatureFlags::DepthTest))
+    if(static_cast<bool>(features & FeatureFlags::DepthTest))
         GLCall(glEnable(GL_DEPTH_TEST));
-    if(features_uint & static_cast<unsigned int>(FeatureFlags::StencilTest))
+    if(static_cast<bool>(features & FeatureFlags::StencilTest))
         GLCall(glEnable(GL_STENCIL_TEST));
+    if(static_cast<bool>(features & FeatureFlags::Blending))
+        GLCall(glEnable(GL_BLEND));
 }
 
-void Renderer::DisableFeature(FeatureFlags features) noexcept
+void Renderer::DisableFeatures(FeatureFlags features) noexcept
 {
-    auto features_uint = static_cast<unsigned int>(features);
-    if(features_uint & static_cast<unsigned int>(FeatureFlags::DepthTest))
+    if(static_cast<bool>(features & FeatureFlags::DepthTest))
         GLCall(glDisable(GL_DEPTH_TEST));
-    if(features_uint & static_cast<unsigned int>(FeatureFlags::StencilTest))
+    if(static_cast<bool>(features & FeatureFlags::StencilTest))
         GLCall(glDisable(GL_STENCIL_TEST));
+    if(static_cast<bool>(features & FeatureFlags::Blending))
+        GLCall(glDisable(GL_BLEND));
 }
 
 void Renderer::SetDepthMask(bool mask) noexcept
@@ -374,6 +381,26 @@ void Renderer::SetStencilOperation(
 ) noexcept
 {
     GLCall(glStencilOp(static_cast<GLenum>(stencilFail), static_cast<GLenum>(depthFail), static_cast<GLenum>(pass)));
+}
+
+void Renderer::SetBlendingFunctionFactor(BlendingFunctionFactor sfactor, BlendingFunctionFactor dfactor) noexcept
+{
+    GLCall(glBlendFunc(static_cast<GLenum>(sfactor), static_cast<GLenum>(dfactor)));
+}
+
+void Renderer::SetBlendingConstantColor(float r, float g, float b, float a) noexcept
+{
+    GLCall(glBlendColor(r, g, b, a));
+}
+
+void Renderer::SetBlendingConstantColor(glm::vec4 color) noexcept
+{
+    GLCall(glBlendColor(color.r, color.g, color.b, color.a));
+}
+
+void Renderer::SetBlendingEquation(BlendingEquation equation) noexcept
+{
+    GLCall(glBlendEquation(static_cast<GLenum>(equation)));
 }
 
 #if defined(DEBUG) && !defined(ENABLE_FANCY_DEBUG_OUTPUT)

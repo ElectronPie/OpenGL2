@@ -9,17 +9,23 @@ extern "C"
 
 #include <iostream>
 
-Texture::Texture(const std::filesystem::path& texturePath, Texture::Type type):
-    m_rendererID{0}, m_type{type}, m_name{texturePath.filename().string()}
+Texture::Texture(
+    const std::filesystem::path& texturePath,
+    Texture::Type type,
+    Texture::WrapMode wrapModeS,
+    Texture::WrapMode wrapModeT,
+    Texture::FilterFunction minFilter,
+    Texture::FilterFunction magFilter
+): m_rendererID{0}, m_type{type}, m_name{texturePath.filename().string()}
 {
     GLCall(glGenTextures(1, &m_rendererID));
     Bind();
 
     // Set the texture wrapping/filtering options
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, static_cast<GLenum>(wrapModeS)));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, static_cast<GLenum>(wrapModeT)));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLenum>(minFilter)));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLenum>(magFilter)));
 
     // Load and generate the texture
     int width, height, numChannels;

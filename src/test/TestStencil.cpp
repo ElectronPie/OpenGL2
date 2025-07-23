@@ -1,7 +1,5 @@
 #include "TestStencil.hpp"
 
-#include <GLFW/glfw3.h>
-
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <imgui.h>
@@ -28,7 +26,7 @@ namespace Tests
 
         // Configure stencil buffer settings
         r.clearFlags |= Renderer::ClearFlags::StencilBuffer; // Clear stencil buffer every frame
-        r.EnableFeature(Renderer::FeatureFlags::StencilTest);
+        r.EnableFeatures(Renderer::FeatureFlags::StencilTest);
         r.SetStencilTestFunction(Renderer::StencilTestFunction::NotEqual, 1, 0xFF);
         r.SetStencilOperation(
             Renderer::StencilOperation::Keep, Renderer::StencilOperation::Keep, Renderer::StencilOperation::Replace
@@ -63,7 +61,7 @@ namespace Tests
         // Reset stencil buffer/test configuration
         r.clearFlags &= ~Renderer::ClearFlags::StencilBuffer; // Don't clear the stencil buffer every frame
         r.SetStencilTestFunction(Renderer::StencilTestFunction::Always, 0, 0xFF); // Reset stencil test function
-        r.DisableFeature(Renderer::FeatureFlags::StencilTest);
+        r.DisableFeatures(Renderer::FeatureFlags::StencilTest);
     }
 
     void TestStencil::OnRender()

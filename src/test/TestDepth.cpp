@@ -1,7 +1,5 @@
 #include "TestDepth.hpp"
 
-#include <GLFW/glfw3.h>
-
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <imgui.h>
@@ -81,11 +79,11 @@ namespace Tests
         {
             if(m_depthTestEnabled)
             {
-                r.EnableFeature(Renderer::FeatureFlags::DepthTest);
+                r.EnableFeatures(Renderer::FeatureFlags::DepthTest);
             }
             else
             {
-                r.DisableFeature(Renderer::FeatureFlags::DepthTest);
+                r.DisableFeatures(Renderer::FeatureFlags::DepthTest);
             }
         }
         if(ImGui::Checkbox("Clear depth buffer every frame", &m_clearDepthBuffer))
