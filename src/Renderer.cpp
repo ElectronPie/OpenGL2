@@ -10,7 +10,6 @@
 
 #include <iostream>
 #include <iomanip>
-#include <memory>
 
 static void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
