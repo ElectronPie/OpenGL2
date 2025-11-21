@@ -98,6 +98,14 @@ set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Model.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Model.hpp"
 
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/FBO.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/FBO.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/RBO.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/RBO.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Format.hpp"
+
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/Test.inl"
@@ -137,6 +145,9 @@ set(OpenGL2_SOURCES
 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestFaceCulling.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestFaceCulling.hpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestFramebuffer.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestFramebuffer.hpp"
 )
 
 add_executable(OpenGL2

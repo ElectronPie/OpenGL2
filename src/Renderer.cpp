@@ -214,7 +214,7 @@ Renderer::Renderer(): clearFlags{Renderer::ClearFlags::ColorBuffer | Renderer::C
     glfwSetKeyCallback(m_window, KeyCallback);
 
     // Enable depth testing and blending
-    EnableFeatures(Renderer::FeatureFlags::DepthTest & Renderer::FeatureFlags::Blending);
+    EnableFeatures(Renderer::FeatureFlags::DepthTest | Renderer::FeatureFlags::Blending);
 
 #if defined(DEBUG) && defined(ENABLE_FANCY_DEBUG_OUTPUT)
     int flags;

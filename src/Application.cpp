@@ -21,6 +21,7 @@
 #include "test/TestStencil.hpp"
 #include "test/TestBlending.hpp"
 #include "test/TestFaceCulling.hpp"
+#include "test/TestFramebuffer.hpp"
 
 static std::optional<std::string> GetTestNameFromArgs(int argc, char** argv)
 {
@@ -60,6 +61,7 @@ int main(int argc, char** argv)
     testMenu->RegisterTest<Tests::TestStencil>("Stencil");
     testMenu->RegisterTest<Tests::TestBlending>("Blending");
     testMenu->RegisterTest<Tests::TestFaceCulling>("Face culling");
+    testMenu->RegisterTest<Tests::TestFramebuffer>("Framebuffer");
 
     testMenu->UseTest(GetTestNameFromArgs(argc, argv).value_or(""));
 
