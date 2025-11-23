@@ -150,6 +150,75 @@ set(OpenGL2_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/test/TestFramebuffer.hpp"
 )
 
+set(OpenGL2_SHADER_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/Bezier.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/BlinnWyvilCosApprox.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/CircularArcThroughPoint.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/CircularEasings.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/CircularElliptical.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/CircularEllipticalBase.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/CircularFillet.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/Constants.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/Easings.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/ExponentialBase.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/ExponentialEasings.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/Identities.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/Impulses.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/Polynomial.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/PolynomialEasings.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/Pows.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/PulsesBumpsSteps.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/SinEasings.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/snippets/UnitaryRemappings.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestTexture2D/TestTexture2D.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestTexture2D/TestTexture2D.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestTransform2D/TestTransform2D.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestTransform2D/TestTransform2D.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestMVP/TestMVP.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestMVP/TestMVP.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestCamera/TestCamera.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestCamera/TestCamera.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestLighting/Light.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestLighting/Light.frag.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestLighting/Object.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestLighting/Object.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestModel/TestModel.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestModel/TestModel.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestDepth/TestDepth.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestDepth/TestDepth.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestStencil/TestStencil.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestStencil/TestStencil.frag.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestStencil/SolidColor.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestBlending/TestBlending.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestBlending/TestBlending.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFaceCulling/TestFaceCulling.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFaceCulling/TestFaceCulling.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestShader/TestShader.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestShader/TestShader.frag.glsl"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/Scene.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/Scene.frag.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/Screen.vert.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/Screen.frag.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/Inverse.frag.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/BlackAndWhite.frag.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/Grayscale.frag.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/Sharpen.frag.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/Blur.frag.glsl"
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders/TestFramebuffer/Edges.frag.glsl"
+)
+
 add_executable(OpenGL2
     ${OpenGL2_SOURCES}
 )
@@ -182,5 +251,6 @@ if(CLANG_FORMAT_EXE)
             "${CLANG_FORMAT_EXE}"
             -i
             ${OpenGL2_SOURCES}
+            ${OpenGL2_SHADER_SOURCES}
         VERBATIM)
 endif()

@@ -18,8 +18,8 @@ void main()
     }
     else
     {
-        float ndc = 2.0 * gl_FragCoord.z - 1.0; // Convert to NDC
+        float ndc   = 2.0 * gl_FragCoord.z - 1.0; // Convert to NDC
         float depth = (2.0 * u_near * u_far) / (u_far + u_near - ndc * (u_far - u_near));
-        FragColor = vec4(vec3(depth), 1.0f);
+        FragColor   = vec4(vec3(depth), 1.0f);
     }
 }

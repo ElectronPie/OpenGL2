@@ -19,18 +19,14 @@ float PolynomialEaseOut(float x, int n)
 float PolynomialEaseInOut(float x, int n)
 {
     x = clamp(x, 0.0, 1.0);
-    return x < 0.5 ?
-        pow(2.0*x, n)/2.0 :
-        (1.0 - pow(2.0 - 2.0*x, n))/2.0 + 0.5;
+    return x < 0.5 ? pow(2.0 * x, n) / 2.0 : (1.0 - pow(2.0 - 2.0 * x, n)) / 2.0 + 0.5;
 }
 
 //------------------------------------------------
 float PolynomialEaseOutIn(float x, int n)
 {
     x = clamp(x, 0.0, 1.0);
-    return x < 0.5 ?
-        (1.0 - pow(1.0 - 2.0*x, n))/2.0 :
-        pow(2.0*x - 1.0, n)/2.0 + 0.5;
+    return x < 0.5 ? (1.0 - pow(1.0 - 2.0 * x, n)) / 2.0 : pow(2.0 * x - 1.0, n) / 2.0 + 0.5;
 }
 
 //------------------------------------------------

@@ -10,23 +10,23 @@ float AlmostIdentity(float x, float m, float n)
     if(x > m)
         return x;
 
-    float a = 2.0*n - m;
-    float b = 2.0*m - 3.0*n;
-    float t = x/m;
-    return (a*t + b)*t*t + n;
+    float a = 2.0 * n - m;
+    float b = 2.0 * m - 3.0 * n;
+    float t = x / m;
+    return (a * t + b) * t * t + n;
 }
 
 float AlmostAbs(float x, float n)
 {
-    return sqrt(x*x + n*n);
+    return sqrt(x * x + n * n);
 }
 
 float SmoothstepIntegral(float x, float T)
 {
     if(x > T)
-        return x - T/2.0;
+        return x - T / 2.0;
 
-    return x*x*x*(1.0 - x*0.5/T)/T/T;
+    return x * x * x * (1.0 - x * 0.5 / T) / T / T;
 }
 
 #endif
