@@ -2,6 +2,8 @@
 
 #include "Format.hpp"
 
+#include <GLFW/glfw3.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <imgui.h>
@@ -9,6 +11,31 @@
 namespace Tests
 {
     using namespace std::literals::string_literals;
+
+    static TestFramebuffer* s_instance          = nullptr;
+    static GLFWframebuffersizefun s_oldCallback = nullptr;
+
+    void TestFramebuffer::FramebufferSizeCallback(GLFWwindow* window, int width, int height)
+    {
+        s_oldCallback(window, width, height);
+
+        s_instance->m_camera.width  = static_cast<float>(width);
+        s_instance->m_camera.height = static_cast<float>(height);
+        s_instance->m_camera.UpdateProj();
+
+        s_instance->m_screenTexture = Texture{width, height};
+        s_instance->m_FBO.AttachTexture(s_instance->m_screenTexture, FBO::Attachment::Color);
+        s_instance->m_RBO = RBO{width, height};
+        s_instance->m_FBO.AttachRenderbuffer(s_instance->m_RBO, FBO::Attachment::DepthStencil);
+
+        // Unbind FBO after reconfiguration
+        s_instance->m_FBO.Unbind();
+
+        // Setup shader uniforms
+        s_instance->m_sceneShaderProgram.SetUniform1("u_texture", 0);
+        s_instance->m_screenShaderProgram.SetUniform1("u_texture", 0);
+        s_instance->m_screenShaderProgram.SetUniform2("u_offset", glm::vec2{2.0f / width, 2.0f / height});
+    }
 
     TestFramebuffer::TestFramebuffer():
         m_planeVBO{
@@ -24,8 +51,7 @@ namespace Tests
         m_quadVBO{s_quadVertices, sizeof(s_quadVertices) / sizeof(s_quadVertices[0])},
         m_quadEBO{s_quadIndices, sizeof(s_quadIndices) / sizeof(s_quadIndices[0])},
         m_screenShaderProgram{
-            "assets/shaders/TestFramebuffer/Screen.vert.glsl",
-            "assets/shaders/TestFramebuffer/"s + s_shaderNames[m_currentShaderName] + ".frag.glsl"
+            "assets/shaders/TestFramebuffer/Screen.vert.glsl", "assets/shaders/TestFramebuffer/Screen.frag.glsl"
         },
         m_camera{{0.0f, 1.0f, 3.0f}}, m_screenTexture{}, m_RBO{}
     {
@@ -71,10 +97,17 @@ namespace Tests
 
         // Initialize camera
         m_camera.InitForGLFW();
+
+        s_instance         = this;
+        GLFWwindow* window = Renderer::GetInstance().GetWindow();
+        s_oldCallback      = glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
     }
 
     TestFramebuffer::~TestFramebuffer()
-    {}
+    {
+        GLFWwindow* window = Renderer::GetInstance().GetWindow();
+        glfwSetFramebufferSizeCallback(window, s_oldCallback);
+    }
 
     void TestFramebuffer::OnRender()
     {
@@ -120,34 +153,24 @@ namespace Tests
 
     void TestFramebuffer::OnImGuiRender()
     {
-        ImGui::Combo(
-            "glPolygonMode face type",
-            &m_currentFaceTypeIdx,
-            [](void* user_data, int idx) -> const char* { return s_faceTypes[idx].second; },
-            nullptr,
-            s_faceTypesCount
-        );
-        ImGui::Combo(
-            "Polygons draw mode",
-            &m_currentPolygonModeIdx,
-            [](void* user_data, int idx) -> const char* { return s_polygonModes[idx].second; },
-            nullptr,
-            s_polygonModesCount
-        );
-        if(ImGui::Button("Apply"))
+        if(ImGui::Combo(
+               "Polygons draw mode",
+               &m_currentPolygonModeIdx,
+               [](void* user_data, int idx) -> const char* { return s_polygonModes[idx].second; },
+               nullptr,
+               s_polygonModesCount
+           ))
         {
-            GLCall(
-                glPolygonMode(s_faceTypes[m_currentFaceTypeIdx].first, s_polygonModes[m_currentPolygonModeIdx].first)
-            );
+            GLCall(glPolygonMode(GL_FRONT_AND_BACK, s_polygonModes[m_currentPolygonModeIdx].first));
         }
 
-        if(ImGui::Combo("Screen fragment shader", &m_currentShaderName, s_shaderNames, s_shaderNamesCount))
+        if(ImGui::Combo("Screen fragment shader", &m_currentShaderNameIdx, s_shaderNames, s_shaderNamesCount))
         {
             Renderer& r = Renderer::GetInstance();
 
             m_screenShaderProgram = ShaderProgram{
                 "assets/shaders/TestFramebuffer/Screen.vert.glsl",
-                "assets/shaders/TestFramebuffer/"s + s_shaderNames[m_currentShaderName] + ".frag.glsl"
+                "assets/shaders/TestFramebuffer/"s + s_shaderNames[m_currentShaderNameIdx] + ".frag.glsl"
             };
             // Setup shader uniforms
             m_sceneShaderProgram.SetUniform1("u_texture", 0);

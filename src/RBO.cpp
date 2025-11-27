@@ -20,6 +20,22 @@ RBO::~RBO()
     GLCall(glDeleteRenderbuffers(1, &m_rendererID));
 }
 
+RBO::RBO(RBO&& other)
+{
+    m_rendererID = other.m_rendererID;
+
+    other.m_rendererID = 0;
+}
+
+RBO& RBO::operator=(RBO&& other)
+{
+    m_rendererID = other.m_rendererID;
+
+    other.m_rendererID = 0;
+
+    return *this;
+}
+
 void RBO::Bind() const noexcept
 {
     GLCall(glBindRenderbuffer(GL_RENDERBUFFER, m_rendererID));

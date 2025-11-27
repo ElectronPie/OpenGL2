@@ -223,23 +223,6 @@ namespace Tests
         RBO m_RBO;
 
         /**
-         * @brief Face types specified in the call to glPolygonMode
-         */
-        static inline std::pair<unsigned int, const char*> s_faceTypes[] = {
-            __TEST_FRAMEBUFFER_PAIR_STR(GL_FRONT),
-            __TEST_FRAMEBUFFER_PAIR_STR(GL_BACK),
-            __TEST_FRAMEBUFFER_PAIR_STR(GL_FRONT_AND_BACK), // Default (index = 2)
-        };
-        /**
-         * @brief Number of face types specified in the call to glPolygonMode
-         */
-        constexpr static int s_faceTypesCount = sizeof(s_faceTypes) / sizeof(s_faceTypes[0]);
-        /**
-         * @brief Current face type index
-         */
-        int m_currentFaceTypeIdx              = 2; // GL_FRONT_AND_BACK
-
-        /**
          * @brief Polygon modes specified in the call to glPolygonMode
          */
         static inline std::pair<unsigned int, const char*> s_polygonModes[] = {
@@ -275,7 +258,10 @@ namespace Tests
         /**
          * @brief Current shader name index
          */
-        int m_currentShaderName                 = 0; // Screen
+        int m_currentShaderNameIdx              = 0; // Screen
+
+    private:
+        static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
     };
 } // namespace Tests
 

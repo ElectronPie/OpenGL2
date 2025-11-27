@@ -23,6 +23,9 @@ public:
      */
     ~RBO() noexcept;
 
+    RBO(RBO&& other);
+    RBO& operator=(RBO&& other);
+
     /**
      * @brief Bind the RBO
      */
